@@ -150,11 +150,11 @@ const Header = () => {
           </ul>
 
           {/* Search Bar */}
-          <div className="hidden lg:flex items-center border-2 border-[#E7E6EF] rounded">
+          <div className="hidden lg:flex items-center justify-between border-2 border-[#E7E6EF] rounded">
             <input
               type="text"
               placeholder="Search"
-              className="outline-none px-2 py-1"
+              className="outline-none px-2 py-1 w-[calc(100%-80px)]"
             />
             <div className="bg-[#FB2E86] p-1">
               <Image

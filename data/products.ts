@@ -1,34 +1,83 @@
-const mockProducts: Record<
-  string,
-  { name: string; slug: string; description: string; price: number }
-> = {
-  "1": {
-    name: "Headphone",
-    slug: "Headphone",
-    description: "This is Product 1.",
-    price: 100,
+export const featuredProduct = [
+  {
+    id: 1,
+    name: "Vel elit euismod",
+    price: "$36.00",
+    code: "Y523201",
+    image: "/images/image1.png",
   },
-  "2": {
-    name: "Bag",
-    slug: "Bag",
-    description: "This is Product 2.",
-    price: 200,
+  {
+    id: 2,
+    name: "Ultrices condimentum imperdiet",
+    price: "$42.00",
+    code: "M523412",
+    image: "/images/image2.png",
   },
-  "3": {
-    name: "Gamepad",
-    slug: "Gamepad",
-    description: "This is Product 3.",
-    price: 300,
+  {
+    id: 3,
+    name: "Vitae suspendisse sed",
+    price: "$26.00",
+    code: "S546201",
+    image: "/images/image3.png",
   },
-};
-
-export function getProductBySlug(slug: string) {
-  return (
-    Object.values(mockProducts).find((product) => product.slug === slug) || null
-  );
-}
-
-export default mockProducts;
+  {
+    id: 4,
+    name: "Sed at fermentum",
+    price: "$23.00",
+    code: "Z623201",
+    image: "/images/image4.png",
+  },
+]
+const latestProducts = [
+  {
+    id: 1,
+    name: "Comfort Handy Craft",
+    price: 42.0,
+    oldPrice: 65.0,
+    image: "/chair1.jpg",
+    isSale: false,
+  },
+  {
+    id: 2,
+    name: "Comfort Foam Chair",
+    price: 42.0,
+    oldPrice: 66.0,
+    image: "/chair2.jpg",
+    isSale: true,
+  },
+  {
+    id: 1,
+    name: "Comfort Handy Craft",
+    price: 42.0,
+    oldPrice: 65.0,
+    image: "/chair1.jpg",
+    isSale: false,
+  },
+  {
+    id: 2,
+    name: "Comfort Handy Craft",
+    price: 42.0,
+    oldPrice: 66.0,
+    image: "/chair2.jpg",
+    isSale: true,
+  },
+  {
+    id: 1,
+    name: "Comfort Handy Craft",
+    price: 42.0,
+    oldPrice: 65.0,
+    image: "/chair1.jpg",
+    isSale: false,
+  },
+  {
+    id: 2,
+    name: "Comfort Handy Craft",
+    price: 42.0,
+    oldPrice: 66.0,
+    image: "/chair2.jpg",
+    isSale: true,
+  },
+]
 
 export const products = [
   {
@@ -152,7 +201,14 @@ export const shoplist = [
     price: "$26.00",
     oldPrice: "$52.00",
     rating: 5,
-    colors: ["bg-yellow-500", "bg-purple-500", "bg-pink-500", "bg-yellow-500", "bg-orange-500", "bg-purple-500"],
+    colors: [
+      "bg-yellow-500",
+      "bg-purple-500",
+      "bg-pink-500",
+      "bg-yellow-500",
+      "bg-orange-500",
+      "bg-purple-500",
+    ],
     image: "/products/l6.jpg",
   },
 ];
@@ -236,5 +292,27 @@ export const blogs = [
     image: "/images/blog5.jpg",
     excerpt:
       "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
+  },
+];
+export const contact = [
+  {
+    text: "+877-7-898-989",
+    description: "Support Forum For over 24hr",
+    bg: "bg-[#5726DF]",
+  },
+  {
+    text: "info@example.com",
+    description: "Free standard shipping",
+    bg: "bg-[#FB2E86]",
+  },
+  {
+    text: "20 Margaret St, London",
+    description: "Great Britain, 3NW-98JR",
+    bg: "bg-[#FFB265]",
+  },
+  {
+    text: "20 Margaret St, London",
+    description: "Great Britain, 3NW-98JR",
+    bg: "bg-[#1BE982]",
   },
 ];

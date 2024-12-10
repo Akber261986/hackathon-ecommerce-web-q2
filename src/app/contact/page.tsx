@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { contact } from "../../../data/products";
 
 const ContactPage = () => {
     return (
@@ -24,12 +25,7 @@ const ContactPage = () => {
           <div>
             <h2 className="text-2xl font-bold mb-4">Contact Way</h2>
             <ul className="grid grid-cols-2 gap-4 ">
-              {[
-                { text: "+877-7-898-989", description: "Support Forum For over 24hr", bg: "bg-[#5726DF]"},
-                { text: "info@example.com", description: "Free standard shipping", bg: "bg-[#FB2E86]" },
-                { text: "20 Margaret St, London", description: "Great Britain, 3NW-98JR", bg: "bg-[#FFB265]" },
-                { text: "20 Margaret St, London", description: "Great Britain, 3NW-98JR", bg: "bg-[#1BE982]" },
-              ].map((item, index) => (
+              {contact.map((item, index) => (
                 <li key={index} className="flex items-start space-x-4 py-2">
                   <div className={`w-8 h-8 rounded-full ${item.bg} flex-shrink-0`}></div>
                   <div>
