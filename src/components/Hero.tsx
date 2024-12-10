@@ -15,7 +15,7 @@ const Hero = () => {
         />
       </div>
         <p className="text-[#FB2E86]">Best Furniture For Your Castle....</p>
-        <h1 className="text-4xl text-[#151875] font-sans">New Furniture Collection Trends in 2020</h1>
+        <h1 className="text-4xl text-[#151875] font-bold">New Furniture Collection Trends in 2020</h1>
         <p className="text-[#8A8FB9]">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est
           adipiscing in phasellus non in justo.

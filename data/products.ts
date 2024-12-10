@@ -28,13 +28,13 @@ export const featuredProduct = [
     image: "/images/image4.png",
   },
 ]
-const latestProducts = [
+export const latestProducts = [
   {
     id: 1,
     name: "Comfort Handy Craft",
     price: 42.0,
     oldPrice: 65.0,
-    image: "/chair1.jpg",
+    image: "/images/image5.png",
     isSale: false,
   },
   {
@@ -42,7 +42,7 @@ const latestProducts = [
     name: "Comfort Foam Chair",
     price: 42.0,
     oldPrice: 66.0,
-    image: "/chair2.jpg",
+    image: "/images/image6.png",
     isSale: true,
   },
   {
@@ -50,7 +50,7 @@ const latestProducts = [
     name: "Comfort Handy Craft",
     price: 42.0,
     oldPrice: 65.0,
-    image: "/chair1.jpg",
+    image: "/images/image7.png",
     isSale: false,
   },
   {
@@ -58,7 +58,7 @@ const latestProducts = [
     name: "Comfort Handy Craft",
     price: 42.0,
     oldPrice: 66.0,
-    image: "/chair2.jpg",
+    image: "/images/image8.png",
     isSale: true,
   },
   {
@@ -66,7 +66,7 @@ const latestProducts = [
     name: "Comfort Handy Craft",
     price: 42.0,
     oldPrice: 65.0,
-    image: "/chair1.jpg",
+    image: "/images/image9.png",
     isSale: false,
   },
   {
@@ -74,7 +74,7 @@ const latestProducts = [
     name: "Comfort Handy Craft",
     price: 42.0,
     oldPrice: 66.0,
-    image: "/chair2.jpg",
+    image: "/images/image10.png",
     isSale: true,
   },
 ]

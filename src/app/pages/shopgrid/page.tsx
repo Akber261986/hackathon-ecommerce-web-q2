@@ -86,28 +86,28 @@ const ShopingGrid = () => {
                 className=""
               />
               <div className="absolute bottom-2 left-2 flex flex-col gap-2">
-                <button className="p-2 bg-white rounded-full shadow hover:bg-gray-200">
+                <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
                 <Image
                 src={"/icons/cart-b.svg"}
                 alt={"heart"}
-                width={24}
-                height={24}
+                width={20}
+                height={20}
               />
                 </button>
-                <button className="p-2 bg-white rounded-full shadow hover:bg-gray-200">
+                <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
                 <Image
                 src={"/icons/view.svg"}
                 alt={"heart"}
-                width={24}
-                height={24}
+                width={20}
+                height={20}
               />
                 </button>
-                <button className="p-2 bg-white rounded-full shadow hover:bg-gray-200">
+                <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
                 <Image
                 src={"/icons/heart-b.svg"}
                 alt={"heart"}
-                width={24}
-                height={24}
+                width={20}
+                height={20}
               />
                 </button>
               </div>
