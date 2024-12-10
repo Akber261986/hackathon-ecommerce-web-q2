@@ -298,21 +298,21 @@ export const contact = [
   {
     text: "+877-7-898-989",
     description: "Support Forum For over 24hr",
-    bg: "bg-[#5726DF]",
+    background: "bg-[#5625DF]",
   },
   {
     text: "info@example.com",
     description: "Free standard shipping",
-    bg: "bg-[#FB2E86]",
+    background: "bg-[#FB2E86]",
   },
   {
     text: "20 Margaret St, London",
     description: "Great Britain, 3NW-98JR",
-    bg: "bg-[#FFB265]",
+    background: "bg-[#FFB265]",
   },
   {
     text: "20 Margaret St, London",
     description: "Great Britain, 3NW-98JR",
-    bg: "bg-[#1BE982]",
+    background: "bg-[#1BE982]",
   },
 ];

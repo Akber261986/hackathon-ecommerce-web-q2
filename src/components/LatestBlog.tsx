@@ -4,8 +4,8 @@ const Blog = () => {
   return (
     <div>
       <h1 className="text-3xl text-center font-semibold py-10">Latest Blog</h1>
-      <div className="flex flex-col items-center lg:flex-row justify-evenly">
-        <div className="group">
+      <div className="flex flex-col items-center lg:flex-row justify-evenly p-4">
+        <div className="group p-4">
           <div className="space-y-4">
             <Image
               src={"/images/blog1.jpg"}
@@ -48,7 +48,7 @@ const Blog = () => {
             </button>
           </div>
         </div>
-        <div className="group">
+        <div className="group p-4">
           <div className="space-y-4">
             <Image
               src={"/images/blog2.jpg"}
@@ -91,7 +91,7 @@ const Blog = () => {
             </button>
           </div>
         </div>
-        <div className="group">
+        <div className="group p-4">
           <div className="space-y-4">
             <Image
               src={"/images/blog3.jpg"}

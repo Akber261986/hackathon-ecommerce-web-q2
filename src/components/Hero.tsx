@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <div className="relative  flex flex-col md:flex-row items-center bg-[#F2F0FF] px-4 sm:px-10 md:px-40">
+    <div className="relative flex flex-col md:flex-row items-center bg-[#F2F0FF] px-4 sm:px-10 md:px-40">
       <div className="space-y-7 px-4 md:px-10">
       <div className="">
         <Image

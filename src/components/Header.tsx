@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -8,33 +11,69 @@ import {
 } from "@/components/ui/sheet";
 
 const Header = () => {
+  const [show, setshow] = useState<boolean>(false);
+  const handleVisibility = () => {
+    setshow(!show);
+  };
   return (
-    <div className="font-sans">
+    <div className="font-sans ">
       {/* Upper Header */}
       <div className="flex flex-wrap items-center justify-center lg:justify-between bg-[#7E33E0] text-white px-4">
         <div className="hidden lg:flex items-center gap-6">
           <div className="flex items-center gap-2">
-            <Image src={"/icons/envelope.svg"} alt="env" width={16} height={16} />
+            <Image
+              src={"/icons/envelope.svg"}
+              alt="env"
+              width={16}
+              height={16}
+            />
             <p>akbardal@gmail.com</p>
           </div>
           <div className="flex items-center gap-2">
-            <Image src={"/icons/phone.svg"} alt="phone" width={16} height={16} />
+            <Image
+              src={"/icons/phone.svg"}
+              alt="phone"
+              width={16}
+              height={16}
+            />
             <p>(0321)3011912</p>
           </div>
         </div>
         <div className="flex items-center gap-4 py-3">
+          <select
+            id="sortBy"
+            className="p-1 rounded text-sm bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="bestMatch" className="text-black">
+              English
+            </option>
+            <option value="priceLowHigh" className="text-black">
+              Sindhi
+            </option>
+            <option value="priceHighLow" className="text-black">
+              Urdu
+            </option>
+          </select>
           <div className="flex items-center gap-1">
-            <p>English</p>
-            <Image src={"/icons/arrow-down.svg"} alt="env" width={16} height={16} />
+            <select
+              id="sortBy"
+              className="p-1 rounded text-sm bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500"
+            >
+              <option value="bestMatch" className="text-black">
+                USD
+              </option>
+              <option value="priceLowHigh" className="text-black">
+                PKR
+              </option>
+              <option value="priceHighLow" className="text-black">
+                EURO
+              </option>
+            </select>
           </div>
-          <div className="flex items-center gap-1">
-            <p>USD</p>
-            <Image src={"/icons/arrow-down.svg"} alt="env" width={16} height={16} />
-          </div>
-          <div className="flex items-center gap-1">
+          <Link href={"/login"} className="flex items-center gap-1">
             <p>Login</p>
             <Image src={"/icons/user.svg"} alt="env" width={16} height={16} />
-          </div>
+          </Link>
           <div className="flex items-center gap-1">
             <p>Wishlist</p>
             <Image src={"/icons/heart.svg"} alt="env" width={16} height={16} />
@@ -72,20 +111,34 @@ const Header = () => {
                 />
               </Link>
             </li>
-            <li>
-              <Link
-                href={"/pages/shopgrid"}
-                className="group flex items-center gap-1 hover:text-[#FB2E86]"
-              >
-                <p>Pages</p>
-                <Image
-                  src={"/icons/arrow-down-p.svg"}
-                  alt="env"
-                  width={16}
-                  height={16}
-                  className="invisible group-hover:visible"
-                />
-              </Link>
+            <li className="group relative flex items-center gap-1 ">
+              <p className="group-hover:text-[#FB2E86]">Pages</p>
+              <Image
+                src={"/icons/arrow-down-p.svg"}
+                alt="env"
+                width={16}
+                height={16}
+                className="invisible group-hover:visible"
+              />
+
+              <ul className="p-4 shadow-sm shadow-slate-300 absolute top-6 left-4 space-y-2 hidden group-hover:block z-10 bg-white">
+                <li>
+                  <Link
+                    href={"/pages/shopgrid"}
+                    className="hover:text-[#FB2E86] whitespace-nowrap"
+                  >
+                    Shop Grid
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={"/pages/shoplist"}
+                    className="hover:text-[#FB2E86]"
+                  >
+                    Shop list
+                  </Link>
+                </li>
+              </ul>
             </li>
             <li>
               <Link
@@ -119,7 +172,7 @@ const Header = () => {
             </li>
             <li>
               <Link
-                href={"/pages/shoplist"}
+                href={""}
                 className="group flex items-center gap-1 hover:text-[#FB2E86]"
               >
                 <p>Shop</p>
@@ -171,18 +224,48 @@ const Header = () => {
             <SheetTrigger className="lg:hidden">
               <Image src={"/icons/ham.svg"} alt="menu" width={24} height={24} />
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent side={"left"}>
               <SheetDescription>
-                <ul className="flex flex-col items-center gap-4 text-[#0D0E43] font-semibold">
+                <ul className="flex flex-col items-center gap-8 mt-16  text-[#0D0E43] font-semibold">
                   <li>
                     <Link href={"/"} className="hover:text-[#FB2E86]">
                       Home
                     </Link>
                   </li>
-                  <li>
-                    <Link href={"/pages/shopgrid"} className="hover:text-[#FB2E86]">
+                  <li onClick={handleVisibility} className="group relative">
+                    <p className="group-hover:text-[#FB2E86] cursor-pointer">
                       Pages
-                    </Link>
+                    </p>
+                    <Image
+                      src={"/icons/arrow-down-p.svg"}
+                      alt="env"
+                      width={16}
+                      height={16}
+                      className="invisible group-hover:visible absolute top-1 -right-6"
+                    />
+
+                    <ul
+                      className={`p-4 shadow-sm shadow-slate-300 absolute top-6 left-12 space-y-2 ${
+                        show ? "block" : "hidden"
+                      }`}
+                    >
+                      <li>
+                        <Link
+                          href={"/pages/shopgrid"}
+                          className="hover:text-[#FB2E86] whitespace-nowrap"
+                        >
+                          Shop Grid
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href={"/pages/shoplist"}
+                          className="hover:text-[#FB2E86]"
+                        >
+                          Shop list
+                        </Link>
+                      </li>
+                    </ul>
                   </li>
                   <li>
                     <Link href={"/about"} className="hover:text-[#FB2E86]">
@@ -195,7 +278,10 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link href={"/pages/shoplist"} className="hover:text-[#FB2E86]">
+                    <Link
+                      href={"/pages/shoplist"}
+                      className="hover:text-[#FB2E86]"
+                    >
                       Shop
                     </Link>
                   </li>

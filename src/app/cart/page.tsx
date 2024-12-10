@@ -38,7 +38,7 @@ const Cart = () => {
           <tbody>
             {cartItems.map((item) => (
               <tr key={item.id} className="text-center">
-                <td className="p-4 border flex items-center space-x-4">
+                <td className="p-2 md:p-4 border flex flex-col md:flex-row items-center space-x-4">
                   <Image
                     src={item.image}
                     alt={item.name}

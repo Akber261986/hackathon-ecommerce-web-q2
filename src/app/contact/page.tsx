@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { contact } from "../../../data/products";
+import { Button } from "@/components/ui/button";
 
 const ContactPage = () => {
     return (
@@ -27,7 +28,7 @@ const ContactPage = () => {
             <ul className="grid grid-cols-2 gap-4 ">
               {contact.map((item, index) => (
                 <li key={index} className="flex items-start space-x-4 py-2">
-                  <div className={`w-8 h-8 rounded-full ${item.bg} flex-shrink-0`}></div>
+                  <div className={`w-8 h-8 rounded-full ${item.background} `}></div>
                   <div>
                     <p className="font-semibold">{item.text}</p>
                     <p className="text-sm text-gray-600">{item.description}</p>
@@ -49,30 +50,31 @@ const ContactPage = () => {
                 <input
                   type="text"
                   placeholder="Your Name"
-                  className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="border border-gray-300 rounded-lg px-4 py-4 w-full focus:outline-none focus:ring-2 focus:ring-pink-500"
                 />
                 <input
                   type="email"
                   placeholder="Your Email"
-                  className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="border border-gray-300 rounded-lg px-4 py-4 w-full focus:outline-none focus:ring-2 focus:ring-pink-500"
                 />
               </div>
               <input
                 type="text"
                 placeholder="Subject"
-                className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="border border-gray-300 rounded-lg px-4 py-4 w-full focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
               <textarea
                 placeholder="Type Your Message"
-                className="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-pink-500"
-                rows={4}
+                className="border border-gray-300 rounded-lg px-4 py-4 w-full focus:outline-none focus:ring-2 focus:ring-pink-500"
+                rows={6}
               ></textarea>
-              <button
+              <Button
+              variant={"destructive"}
                 type="submit"
-                className="px-6 py-2 bg-pink-500 text-white font-semibold rounded-md shadow-md"
+                className="px-10 py-6"
               >
                 Send Mail
-              </button>
+              </Button>
             </form>
           </div>
            {/* Illustration */}
