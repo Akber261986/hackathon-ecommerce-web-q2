@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { featuredProduct } from "../../data/products";
 import { Button } from "./ui/button";
+import Link from "next/link";
 const FeaturedProducts = () => {
   return (
     <div>
@@ -126,10 +127,12 @@ const FeaturedProducts = () => {
                 height={400}
                 className="w-[200px] mb-8"
               />
+              <Link className="absolute bottom-36 invisible group-hover:visible" href={`/product/${product.id}`}>
               <Button
               variant={"green"}
-              className="absolute bottom-36 invisible group-hover:visible"
+              
               >View Details</Button>
+              </Link>
               <div className="absolute top-2 left-2  space-x-2">
                 <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
                 <Image

@@ -1,31 +1,39 @@
 export const featuredProduct = [
   {
-    id: 1,
+    id: '1',
     name: "Vel elit euismod",
     price: "$36.00",
+    oldPrice: "$42.00",
     code: "Y523201",
     image: "/images/image1.png",
+    rating: 4,
   },
   {
-    id: 2,
+    id: '2',
     name: "Ultrices condimentum imperdiet",
     price: "$42.00",
+    oldPrice: "$48.00",
     code: "M523412",
     image: "/images/image2.png",
+    rating: 5,
   },
   {
-    id: 3,
+    id: '3',
     name: "Vitae suspendisse sed",
     price: "$26.00",
+    oldPrice: "$30.00",
     code: "S546201",
     image: "/images/image3.png",
+    rating: 3,
   },
   {
-    id: 4,
+    id: '4',
     name: "Sed at fermentum",
     price: "$23.00",
+    oldPrice: "$28.00",
     code: "Z623201",
     image: "/images/image4.png",
+    rating: 4,
   },
 ]
 export const latestProducts = [
@@ -146,7 +154,7 @@ export const shoplist = [
     price: "$26.00",
     oldPrice: "$52.00",
     rating: 4,
-    colors: ["bg-purple-500", "bg-yellow-500", "bg-pink-500", "bg-blue-500"],
+    colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/products/l1.jpg",
   },
   {
@@ -157,7 +165,7 @@ export const shoplist = [
     price: "$26.00",
     oldPrice: "$52.00",
     rating: 5,
-    colors: ["bg-orange-500", "bg-yellow-500", "bg-purple-500"],
+    colors: ["bg-yellow-500", "bg-blue-500", "bg-pink-500", ],
     image: "/products/l2.jpg",
   },
   {
@@ -167,8 +175,8 @@ export const shoplist = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
     price: "$26.00",
     oldPrice: "$52.00",
-    rating: 5,
-    colors: ["bg-yellow-500", "bg-purple-500"],
+    rating: 3,
+    colors: ["bg-pink-500", "bg-blue-500", "bg-yellow-500",],
     image: "/products/l3.jpg",
   },
   {
@@ -179,7 +187,7 @@ export const shoplist = [
     price: "$26.00",
     oldPrice: "$52.00",
     rating: 4,
-    colors: ["bg-purple-500", "bg-yellow-500", "bg-pink-500", "bg-blue-500"],
+    colors: ["bg-blue-500", "bg-yellow-500", "bg-pink-500",],
     image: "/products/l4.jpg",
   },
   {
@@ -190,7 +198,7 @@ export const shoplist = [
     price: "$26.00",
     oldPrice: "$52.00",
     rating: 5,
-    colors: ["bg-orange-500", "bg-yellow-500", "bg-purple-500"],
+    colors: ["bg-pink-500", "bg-yellow-500", "bg-blue-500"],
     image: "/products/l5.jpg",
   },
   {
@@ -200,15 +208,8 @@ export const shoplist = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
     price: "$26.00",
     oldPrice: "$52.00",
-    rating: 5,
-    colors: [
-      "bg-yellow-500",
-      "bg-purple-500",
-      "bg-pink-500",
-      "bg-yellow-500",
-      "bg-orange-500",
-      "bg-purple-500",
-    ],
+    rating: 4,
+    colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/products/l6.jpg",
   },
 ];
@@ -294,25 +295,4 @@ export const blogs = [
       "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
   },
 ];
-export const contact = [
-  {
-    text: "+877-7-898-989",
-    description: "Support Forum For over 24hr",
-    background: "bg-[#5625DF]",
-  },
-  {
-    text: "info@example.com",
-    description: "Free standard shipping",
-    background: "bg-[#FB2E86]",
-  },
-  {
-    text: "20 Margaret St, London",
-    description: "Great Britain, 3NW-98JR",
-    background: "bg-[#FFB265]",
-  },
-  {
-    text: "20 Margaret St, London",
-    description: "Great Britain, 3NW-98JR",
-    background: "bg-[#1BE982]",
-  },
-];
+

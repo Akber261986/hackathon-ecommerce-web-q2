@@ -1,17 +1,16 @@
 import Image from "next/image";
 import { blogs } from "../../../data/products";
-import Link from "next/link";
 
 const BlogPage = () => {
   return (
-    <div>
-      <div className="py-16 ml-8 lg:ml-36 space-y-2">
-        <h1 className="text-4xl font-bold">Blog</h1>
-        <div className="flex item center gap-2 ">
-          <Link href={"/"}>Home</Link>
-          
-          <p className="text-[#FB2E86]">Blog post</p>
-        </div>
+    <div className="text-[#101750] font-sans">
+      <div className="bg-[#F6F5FF] py-28 px-4 sm:px-8">
+        <h1 className="text-4xl font-bold">Blog Page</h1>
+        <p className="flex gap-2">
+          <span>Home.</span>
+          <span>Page.</span>
+          <span className="text-[#FB2E86]">Blog Page</span>
+        </p>
       </div>
       <div className="flex flex-col lg:flex-row lg:justify-center px-6 lg:px-20 py-10">
         {/* Blog Posts Section */}

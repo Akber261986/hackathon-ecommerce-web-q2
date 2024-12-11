@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <div className="font-sans ">
       {/* Upper Header */}
-      <div className="flex flex-wrap items-center justify-center lg:justify-between bg-[#7E33E0] text-white px-4">
+      <div className="flex flex-wrap items-center justify-center lg:justify-between bg-[#7E33E0] text-white px-4 sm:px-8">
         <div className="hidden lg:flex items-center gap-6">
           <div className="flex items-center gap-2">
             <Image
@@ -87,15 +87,15 @@ const Header = () => {
       </div>
 
       {/* Main Header */}
-      <div className="flex flex-col items-center py-5 px-4 lg:px-10">
-        <div className="flex items-center justify-between w-full lg:w-auto gap-4 sm:gap-10">
+      <div className="flex  items-center py-5 px-4 sm:px-8">
+        <div className="flex items-center justify-between w-full">
           {/* Logo */}
           <div className="flex items-center">
             <Image src={"/images/logo.png"} alt="Logo" width={98} height={34} />
           </div>
 
           {/* Navigation */}
-          <ul className="hidden lg:flex items-center space-x-8 text-[#0D0E43] font-semibold">
+          <ul className="hidden md:flex items-center space-x-8 text-[#0D0E43] font-semibold">
             <li>
               <Link
                 href={"/"}
@@ -203,7 +203,7 @@ const Header = () => {
           </ul>
 
           {/* Search Bar */}
-          <div className="hidden lg:flex items-center justify-between border-2 border-[#E7E6EF] rounded">
+          <div className="flex items-center justify-between border-2 border-[#E7E6EF] rounded self-end">
             <input
               type="text"
               placeholder="Search"
@@ -221,7 +221,7 @@ const Header = () => {
 
           {/* Hamburger Menu */}
           <Sheet>
-            <SheetTrigger className="lg:hidden">
+            <SheetTrigger className="md:hidden">
               <Image src={"/icons/ham.svg"} alt="menu" width={24} height={24} />
             </SheetTrigger>
             <SheetContent side={"left"}>
