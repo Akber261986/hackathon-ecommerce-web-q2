@@ -1,24 +1,23 @@
 import Image from "next/image";
-import Link from "next/link";
 import { shoplist } from "../../../../data/products";
 
 const ShopList = () => {
   return (
     <div className="font-sans text-[#151875]">
-      <div className="py-28 px-8">
-        <h1 className="text-4xl font-bold">Shop List</h1>
-        <div className="flex item center gap-2">
-          <Link href={"/"}>Home</Link>
-          <p>Pages</p>
-          <p className="text-[#FB2E86]">Shoping List</p>
+      <div className="text-[#101750] font-sans bg-[#F6F5FF] py-16 px-4 sm:px-8">
+          <h1 className="text-4xl font-bold">Shoping List</h1>
+          <p className="flex gap-2">
+            <span>Home</span>
+            <span>. Page</span>
+            <span className="text-[#FB2E86]">. Shoping List</span>
+          </p>
         </div>
-      </div>
-      <div className="py-4 flex flex-col lg:flex-row justify-between px-8">
+      <div className="py-4 flex flex-col lg:flex-row justify-between px-8 text-[#3F509E]">
         <div>
-          <h1 className="text-2xl font-semibold font-[Josefin Sans] mb-2">
+          <h1 className="text-2xl font-semibold mb-2 text-[#151875]">
             Ecommerce Accesories & Fashion Item
           </h1>
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm mb-4">
             About 9,620 results (0.62 seconds)
           </p>
         </div>
@@ -27,7 +26,7 @@ const ShopList = () => {
           <div className="flex items-center gap-2">
             <label
               htmlFor="perPage"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium"
             >
               Per Page:
             </label>
@@ -42,7 +41,7 @@ const ShopList = () => {
           <div className="flex items-center gap-2">
             <label
               htmlFor="sortBy"
-              className="text-sm font-medium text-gray-700"
+              className="text-sm font-medium"
             >
               Sort By:
             </label>
@@ -58,9 +57,21 @@ const ShopList = () => {
 
           {/* View */}
           <div className="flex items-center gap-2">
-            <label htmlFor="view" className="text-sm font-medium text-gray-700">
+            <label htmlFor="view" className="text-sm font-medium">
               View:
             </label>
+            <Image
+                src={"/icons/squires.svg"}
+                alt={"squires"}
+                width={12}
+                height={12}
+              />
+            <Image
+                src={"/icons/fa-solid_list.svg"}
+                alt={"squires"}
+                width={12}
+                height={12}
+              />
             <input
               type="text"
               id="view"

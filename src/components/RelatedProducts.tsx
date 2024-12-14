@@ -25,7 +25,7 @@ const RelatedProducts: React.FC = () => {
             <div className="flex items-start justify-between">
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold">{product.name}</h3>
-                <p>${product.price}</p>
+                <p>${product.price.toFixed(2)}</p>
               </div>
               <div className="flex items-center">
               {Array.from({ length: 5 }).map((_, index) => (

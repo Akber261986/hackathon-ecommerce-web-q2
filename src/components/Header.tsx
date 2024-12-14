@@ -121,7 +121,7 @@ const Header = () => {
                 className="invisible group-hover:visible"
               />
 
-              <ul className="p-4 shadow-sm shadow-slate-300 absolute top-6 left-4 space-y-2 hidden group-hover:block z-10 bg-white">
+              <ul className="p-4 shadow-sm shadow-slate-300 absolute top-6 left-4 space-y-2 hidden group-hover:block z-10 bg-white whitespace-nowrap">
                 <li>
                   <Link
                     href={"/pages/shopgrid"}
@@ -136,6 +136,14 @@ const Header = () => {
                     className="hover:text-[#FB2E86]"
                   >
                     Shop list
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={"/pages/shopleftsider"}
+                    className="hover:text-[#FB2E86]"
+                  >
+                    Shop left Sider
                   </Link>
                 </li>
               </ul>
@@ -247,7 +255,7 @@ const Header = () => {
                     <ul
                       className={`p-4 shadow-sm shadow-slate-300 absolute top-6 left-12 space-y-2 ${
                         show ? "block" : "hidden"
-                      }`}
+                      } whitespace-nowrap`}
                     >
                       <li>
                         <Link
@@ -263,6 +271,14 @@ const Header = () => {
                           className="hover:text-[#FB2E86]"
                         >
                           Shop list
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href={"/pages/shopleftsider"}
+                          className="hover:text-[#FB2E86]"
+                        >
+                          Shop left Sider
                         </Link>
                       </li>
                     </ul>

@@ -99,15 +99,15 @@ export default function ProductDetailsPage({ params }: ProductDetailsProps) {
             <p className="font-semibold">Share</p>
             <Link href="https://facebook.com" className="hover:opacity-80">
               <Image
-                width={24}
+                width={20}
                 height={24}
-                src="/images/facebook.jpg"
+                src="/images/fb.png"
                 alt="Facebook"
               />
             </Link>
             <Link href="https://instagram.com" className="hover:opacity-80">
               <Image
-                width={24}
+                width={20}
                 height={24}
                 src="/images/instagram.png"
                 alt="Instagram"
@@ -115,7 +115,7 @@ export default function ProductDetailsPage({ params }: ProductDetailsProps) {
             </Link>
             <Link href="https://twitter.com" className="hover:opacity-80">
               <Image
-                width={24}
+                width={20}
                 height={24}
                 src="/images/twitter.png"
                 alt="Twitter"

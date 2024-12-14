@@ -1,7 +1,7 @@
 export default function Login() {
   return (
     <div>
-      <div className="text-[#101750] font-sans bg-[#F6F5FF] py-28 px-4 sm:px-8">
+      <div className="text-[#101750] font-sans bg-[#F6F5FF] py-16 px-4 sm:px-8">
         <h1 className="text-4xl font-bold">My Account</h1>
         <p className="flex gap-2">
           <span>Home.</span>

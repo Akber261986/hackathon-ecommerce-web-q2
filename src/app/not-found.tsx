@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 const Custom404: React.FC = () => {
   return (
     <div className="text-[#152970] font-sans">
-      <div className="pt-16 ml-8 lg:ml-36 space-y-2">
-        <h1 className="text-4xl font-bold">404 Not Found</h1>
-        <div className="flex item center gap-2 ">
-          <Link href={"/"}>Home</Link>
-
-          <p className="text-[#FB2E86]">404 Not Found</p>
+      <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
+          <h1 className="text-4xl font-bold">404 Not Found</h1>
+          <p className="flex gap-2">
+            <span>Home</span>
+            <span>. Page</span>
+            <span className="text-[#FB2E86]">. 404 Not Found</span>
+          </p>
         </div>
-      </div>
       <div className="flex flex-col items-center justify-center gap-8">
         <Image src={"/images/404.jpg"} alt="404" width={913} height={668} className=""/>
         <p className="text-2xl font-bold">Opps! The page you requested was not found!</p>

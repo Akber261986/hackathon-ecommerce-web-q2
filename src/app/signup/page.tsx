@@ -1,12 +1,12 @@
 export default function Signup() {
     return (
       <div>
-        <div className="text-[#101750] font-sans bg-[#F6F5FF] py-28 px-4 sm:px-8">
+        <div className="text-[#101750] font-sans bg-[#F6F5FF] py-16 px-4 sm:px-8">
           <h1 className="text-4xl font-bold">Sign Up</h1>
           <p className="flex gap-2">
-            <span>Home.</span>
-            <span>Page.</span>
-            <span className="text-[#FB2E86]">Sign Up</span>
+            <span>Home</span>
+            <span>. Page</span>
+            <span className="text-[#FB2E86]">. Sign Up</span>
           </p>
         </div>
         <div className="max-w-md mx-auto my-20 bg-white shadow-lg rounded-lg p-6 space-y-8 font-lato text-[#9096B2]">

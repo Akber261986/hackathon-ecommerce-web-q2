@@ -10,7 +10,8 @@ const config: Config = {
   theme: {
   	extend: {
 		fontFamily: {
-			sans: ['"Josefin Sans"', 'sans-serif'],
+			sans: ['var(--font-josefin)', 'sans-serif'], // Use the custom property
+			lato: ['var(--font-lato)', 'sans-serif'],       // Use the custom property
 		  },
   		colors: {
   			background: 'hsl(var(--background))',

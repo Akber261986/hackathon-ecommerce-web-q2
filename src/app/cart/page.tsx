@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { cartproducts } from "../../../data/products";
 import Image from "next/image";
+import Link from "next/link";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState(cartproducts);
@@ -24,7 +25,7 @@ const Cart = () => {
 
   return (
     <div className="text-[#101750] font-sans">
-      <div className="bg-[#F6F5FF] py-28 px-4 sm:px-8">
+      <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
         <h1 className="text-4xl font-bold">Shopping Cart</h1>
         <p className="flex gap-2">
           <span>Home.</span>
@@ -102,9 +103,11 @@ const Cart = () => {
               <span>Totals:</span>{" "}
               <span>${(calculateTotal() + 15).toFixed(2)}</span>
             </p>
-            <button className="w-full py-2 bg-green-500 text-white rounded-md">
-              Proceed To Checkout
-            </button>
+            <Link href={"chekout"}>
+              <button className="w-full py-2 bg-green-500 text-white rounded-md">
+                Proceed To Checkout
+              </button>
+            </Link>
           </div>
           {/* Shipping Calculator */}
           <div className="p-6 bg-gray-50 rounded-md shadow-md">

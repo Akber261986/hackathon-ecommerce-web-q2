@@ -296,3 +296,76 @@ export const blogs = [
   },
 ];
 
+export const shopLeftSider = [
+  {
+    id: 1,
+    name: "Dictum morbi",
+    price: 26,
+    oldPrice: 52,
+    rating: 4,
+    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
+    image: "/images/sls1.jpg"
+  },
+  {
+    id: 2,
+    name: "Sodales sit",
+    price: 35,
+    oldPrice: 40,
+    rating: 5,
+    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
+    image: "/images/sls2.jpg"
+  },
+  {
+    id: 3,
+    name: "Nibh varius",
+    price: 105,
+    oldPrice: 120,
+    rating: 4,
+    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
+    image: "/images/sls3.jpg"
+  },
+  {
+    id: 4,
+    name: "Mauris quis",
+    price: 66,
+    oldPrice: 75,
+    rating: 3,
+    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
+    image: "/images/sls4.jpg"
+  },
+  {
+    id: 5,
+    name: "Morbi sagittis",
+    price: 90,
+    oldPrice: 102,
+    rating: 5,
+    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
+    image: "/images/sls5.jpg"
+  },
+  {
+    id: 6,
+    name: "Ultricies venenatis",
+    price: 64,
+    oldPrice: 77,
+    rating: 4,
+    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
+    image: "/images/sls6.jpg"
+  },
+  {
+    id: 7,
+    name: "Scelerisque dignissim",
+    price: 26,
+    oldPrice: 52,
+    rating: 2,
+    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
+    image: "/images/sls7.jpg"
+  },
+]
+
