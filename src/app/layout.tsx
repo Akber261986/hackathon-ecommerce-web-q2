@@ -3,20 +3,21 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Josefin_Sans, Lato } from 'next/font/google';
+import { Josefin_Sans, Lato } from "next/font/google";
+import { CartProvider } from "@/context/CartContext";
 
 const josefinSans = Josefin_Sans({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-josefin', // Add this line
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-josefin", // Add this line
 });
 
 const lato = Lato({
-  weight: ['300', '400', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-lato', // Add this line
+  weight: ["300", "400", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-lato", // Add this line
 });
 
 const geistSans = localFont({
@@ -42,13 +43,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${josefinSans.variable} ${lato.variable}`}>
-  
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        {children}
-        <Footer />
+        <CartProvider>
+          <Header />
+          {children}
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

@@ -1,15 +1,22 @@
+'use client'
+
 import Tabs from "@/components/Tabs";
 import RelatedProducts from "@/components/RelatedProducts";
 import Link from "next/link";
 import Image from "next/image";
-import { featuredProduct } from "../../../../data/products";
+import { useCart } from "@/context/CartContext";
+import { allProducts} from "../../../../data/products";
 
 type ProductDetailsProps = {
-  params: { id: string };
+  params: { slug: string };
 };
 
 export default function ProductDetailsPage({ params }: ProductDetailsProps) {
-  const product = featuredProduct.find((p) => p.id === params.id);
+  const {addToCart} = useCart()
+  const randomNum = Math.floor(Math.random() * 10)
+console.log(randomNum);
+  const product = allProducts.find((p) => p.slug ===  params.slug);
+
   if (!product) {
     return <div className="text-center py-20 text-2xl">Product not found</div>;
   }
@@ -40,7 +47,7 @@ export default function ProductDetailsPage({ params }: ProductDetailsProps) {
                   width={200}
                   height={200}
                   src={img}
-                  alt={`Thumbnail ${product?.id}`}
+                  alt={` ${product?.slug}`}
                   className="w-20 h-20 md:w-28 md:h-28 rounded-lg cursor-pointer bg-gray-200"
                 />
               ))}
@@ -69,13 +76,13 @@ export default function ProductDetailsPage({ params }: ProductDetailsProps) {
                   ★
                 </span>
               ))}
-              <span className="ml-2">{`(${6 * product.rating})`}</span>
+              <span className="ml-2">{`(${(randomNum+1) * product.rating})`}</span>
             </div>
           </div>
           <div className="flex gap-4">
-            <p className="text-xl font-semibold">{product?.price}</p>
+            <p className="text-xl font-semibold">${product?.price}.00</p>
             <p className="text-red-600 font-semibold line-through">
-              {product?.oldPrice}
+              ${product?.oldPrice}.00
             </p>
           </div>
           <p className="font-semibold">Color</p>
@@ -83,7 +90,7 @@ export default function ProductDetailsPage({ params }: ProductDetailsProps) {
             High-quality plywood chair with ergonomic design. Corporis
             architecto dicta, in voluptate eius cupiditate vitae, soluta.
           </p>
-          <button className="font-semibold flex items-center gap-8 ">
+          <button onClick={()=>addToCart(product)} className="font-semibold flex items-center gap-8 ">
             <p>Add to Cart</p>
             <Image
               width={20}

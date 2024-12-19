@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useCart } from "@/context/CartContext";
 import {
   Sheet,
   SheetContent,
@@ -11,6 +12,7 @@ import {
 } from "@/components/ui/sheet";
 
 const Header = () => {
+  const {cartItems} = useCart()
   const [show, setshow] = useState<boolean>(false);
   const handleVisibility = () => {
     setshow(!show);
@@ -78,8 +80,9 @@ const Header = () => {
             <p>Wishlist</p>
             <Image src={"/icons/heart.svg"} alt="env" width={16} height={16} />
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 relative">
             <Link href={"/cart"}>
+            {cartItems.length > 0 && <div className="w-5 h-5 bg-[#FB2E86] text-white text-center rounded-full absolute -right-2 -top-2">{cartItems.length}</div>}
               <Image src={"/icons/cart.svg"} alt="env" width={24} height={24} />
             </Link>
           </div>

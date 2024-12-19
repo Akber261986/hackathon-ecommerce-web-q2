@@ -1,7 +1,13 @@
+'use client'
+
 import Image from "next/image";
-import { products } from "../../../../data/products";
+import Link from "next/link";
+import { filterProductsByCategory } from "../../../../data/products";
+import { useCart } from "@/context/CartContext";
 
 const ShopingGrid = () => {
+  const {addToCart} = useCart()
+  const shopGridProducts = filterProductsByCategory("shopGrid");
   return (
     <div className="font-sans text-[#151875]">
       <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -74,9 +80,9 @@ const ShopingGrid = () => {
       </div>
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {shopGridProducts.map((product) => (
             <div
-              key={product.id}
+              key={product.slug}
               className="bg-white group p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
               {/* Image */}
@@ -89,23 +95,30 @@ const ShopingGrid = () => {
                   className=""
                 />
                 <div className="absolute bottom-2 left-2 flex flex-col gap-2 invisible group-hover:visible">
-                  <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
+                  <button 
+                  onClick={()=>addToCart(product)}
+                  className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
                     <Image
                       src={"/icons/cart-b.svg"}
-                      alt={"heart"}
+                      alt={"cart"}
                       width={20}
                       height={20}
                     />
                   </button>
-                  <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
-                    <Image
-                      src={"/icons/view.svg"}
-                      alt={"heart"}
-                      width={20}
-                      height={20}
-                    />
-                  </button>
-                  <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
+                  <Link
+                    href={`/product/${product.slug}`}
+                    className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200"
+                  >
+                    <button>
+                      <Image
+                        src={"/icons/view.svg"}
+                        alt={"heart"}
+                        width={20}
+                        height={20}
+                      />
+                    </button>
+                  </Link>
+                  <button className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
                     <Image
                       src={"/icons/heart-b.svg"}
                       alt={"heart"}
@@ -129,9 +142,9 @@ const ShopingGrid = () => {
 
               {/* Price */}
               <div className="mt-2 flex items-center justify-center space-x-2">
-                <span className="text-lg font-bold">{product.price}</span>
+                <span className="text-lg font-bold">${product.price}.00</span>
                 <span className="text-red-500 line-through">
-                  {product.oldPrice}
+                  ${product.oldPrice}.00
                 </span>
               </div>
             </div>

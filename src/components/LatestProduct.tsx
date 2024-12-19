@@ -1,8 +1,13 @@
+'use client'
+
 import Image from "next/image";
 import Link from "next/link";
-import { latestProducts } from "../../data/products";
+import { filterProductsByCategory } from "../../data/products";
+import { useCart } from "@/context/CartContext";
 
 const LatestProduct = () => {
+  const {addToCart} = useCart()
+  const latestProducts = filterProductsByCategory("latestProducts");
   return (
     <div className="px-4 md:px-28 py-6">
       <div className="flex flex-col items-center gap-6">
@@ -49,7 +54,7 @@ const LatestProduct = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
         {latestProducts.map((product) => (
           <div
-            key={product.id}
+            key={product.slug}
             className="bg-white shadow-md group rounded-lg p-4 hover:shadow-lg transition flex flex-col justify-between"
           >
             <div className="relative h-full p-6 bg-[#EEEFFB]">
@@ -61,7 +66,7 @@ const LatestProduct = () => {
                 className="w-full object-cover rounded-t-lg"
               />
               <div className="absolute bottom-2 left-2 flex flex-col gap-2 invisible group-hover:visible">
-                <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
+                <button onClick={()=>addToCart(product)} className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
                   <Image
                     src={"/icons/cart-b.svg"}
                     alt={"heart"}
@@ -69,15 +74,22 @@ const LatestProduct = () => {
                     height={20}
                   />
                 </button>
-                <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
-                  <Image
-                    src={"/icons/view.svg"}
-                    alt={"heart"}
-                    width={20}
-                    height={20}
-                  />
-                </button>
-                <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
+
+                <Link
+                  href={`/product/${product.slug}`}
+                  className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200"
+                >
+                  <button>
+                    <Image
+                      src={"/icons/view.svg"}
+                      alt={"heart"}
+                      width={20}
+                      height={20}
+                    />
+                  </button>
+                </Link>
+
+                <button className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
                   <Image
                     src={"/icons/heart-b.svg"}
                     alt={"heart"}

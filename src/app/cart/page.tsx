@@ -1,27 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { cartproducts } from "../../../data/products";
+import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(cartproducts);
-
-  const updateQuantity = (id: number, newQuantity: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const calculateTotal = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  };
+  const { cartItems, removeFromCart, updateQuantity, clearCart, getTotalPrice} = useCart();
+ 
 
   return (
     <div className="text-[#101750] font-sans">
@@ -43,11 +28,12 @@ const Cart = () => {
                 <th className="p-4 border">Price</th>
                 <th className="p-4 border">Quantity</th>
                 <th className="p-4 border">Total</th>
+                <th className="p-4 border">Action</th>
               </tr>
             </thead>
             <tbody>
               {cartItems.map((item) => (
-                <tr key={item.id} className="text-center">
+                <tr key={item.slug} className="text-center">
                   <td className="p-2 md:p-4 border flex flex-col md:flex-row items-center space-x-4">
                     <Image
                       src={item.image}
@@ -58,18 +44,18 @@ const Cart = () => {
                     />
                     <div>
                       <p className="font-semibold">{item.name}</p>
-                      <p className="text-sm text-gray-500">
+                      {/* <p className="text-sm text-gray-500">
                         Color: {item.color}, Size: {item.size}
-                      </p>
+                      </p> */}
                     </div>
                   </td>
                   <td className="p-4 border">${item.price.toFixed(2)}</td>
-                  <td className="p-4 border">
+                  <td className="p-2 border">
                     <input
                       type="number"
                       value={item.quantity}
                       onChange={(e) =>
-                        updateQuantity(item.id, Number(e.target.value))
+                        updateQuantity(item.slug, Number(e.target.value))
                       }
                       className="w-16 px-2 py-1 border rounded-md"
                       min="1"
@@ -77,6 +63,9 @@ const Cart = () => {
                   </td>
                   <td className="p-4 border">
                     ${(item.price * item.quantity).toFixed(2)}
+                  </td>
+                  <td onClick={()=>removeFromCart(item.slug)} className="p-2 border text-center content-center cursor-pointer text-red-500">
+                    Remove
                   </td>
                 </tr>
               ))}
@@ -86,7 +75,7 @@ const Cart = () => {
             <button className="px-4 py-2 bg-pink-500 text-white rounded-md">
               Update Cart
             </button>
-            <button className="px-4 py-2 bg-pink-500 text-white rounded-md">
+            <button onClick={clearCart} className="px-4 py-2 bg-pink-500 text-white rounded-md">
               Clear Cart
             </button>
           </div>
@@ -97,11 +86,14 @@ const Cart = () => {
           <div>
             <h2 className="text-xl font-bold mb-4">Cart Totals</h2>
             <p className="flex justify-between mb-2">
-              <span>Subtotal:</span> <span>${calculateTotal().toFixed(2)}</span>
+              <span>Subtotal:</span> <span>${getTotalPrice().toFixed(2)}</span>
+            </p>
+            <p className="flex justify-between mb-2">
+              <span>Shipping:</span> <span>${(cartItems.length > 0 ? 15 : 0).toFixed(2)}</span>
             </p>
             <p className="flex justify-between mb-4">
-              <span>Totals:</span>{" "}
-              <span>${(calculateTotal() + 15).toFixed(2)}</span>
+              <span>Totals:</span>
+              <span>${(cartItems.length > 0 ? (getTotalPrice() + 15) : 0 ).toFixed(2)}</span>
             </p>
             <Link href={"chekout"}>
               <button className="w-full py-2 bg-green-500 text-white rounded-md">

@@ -1,8 +1,16 @@
+'use client'
+
 import Image from "next/image";
-import { featuredProduct } from "../../data/products";
+import { filterProductsByCategory } from "../../data/products";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { useCart } from "@/context/CartContext";
+
 const FeaturedProducts = () => {
+  const {addToCart} = useCart()
+  
+  const featuredProducts = filterProductsByCategory("featuredProducts");
+  
   return (
     <div>
       <div className="flex flex-col items-center gap-10 py-6">
@@ -113,9 +121,9 @@ const FeaturedProducts = () => {
         </div> */}
         <div className="p-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {featuredProduct.map((product) => (
+        {featuredProducts.map((product) => (
           <div
-            key={product.id}
+            key={product.slug}
             className="group bg-white pb-4 border rounded-xl shadow-md hover:shadow-lg transition-shadow hover:bg-[#00009D] hover:text-white relative"
           >
             {/* Image */}
@@ -127,13 +135,13 @@ const FeaturedProducts = () => {
                 height={400}
                 className="w-[200px] mb-8"
               />
-              <Link className="absolute bottom-36 invisible group-hover:visible" href={`/product/${product.id}`}>
+              <Link className="absolute bottom-36 invisible group-hover:visible" href={`/product/${product.slug}`}>
               <Button
               variant={"green"}
               
               >View Details</Button>
               </Link>
-              <div className="absolute top-2 left-2  space-x-2">
+              <div onClick={()=>addToCart(product)} className="absolute top-2 left-2  space-x-2">
                 <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
                 <Image
                 src={"/icons/cart-b.svg"}
@@ -178,7 +186,7 @@ const FeaturedProducts = () => {
                 {product.code}
               </span>
               <span className="text-lg font-bold">
-                {product.price}
+                ${product.price}.00
               </span>
             </div>
           </div>

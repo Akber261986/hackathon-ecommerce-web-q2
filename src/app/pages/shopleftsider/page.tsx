@@ -1,6 +1,10 @@
+'use client'
+
 import Image from "next/image";
-import { shopLeftSider } from "../../../../data/products";
+import { filterProductsByCategory } from "../../../../data/products";
+import { useCart } from "@/context/CartContext";
 import { Search } from "lucide-react";
+import Link from "next/link";
 const filterByColor = [
   { color: "bg-[#5E37FF]", name: "Blue" },
   { color: "bg-[#FF9437]", name: "Orange" },
@@ -11,6 +15,10 @@ const filterByColor = [
 ];
 
 const ShopLeftSider = () => {
+  const { addToCart } = useCart()
+  const shopLeftSideProducts = filterProductsByCategory("shopLeftSider")
+  console.log(shopLeftSideProducts);
+  
   return (
     <div>
       <div className="text-[#101750] font-sans bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -226,9 +234,9 @@ const ShopLeftSider = () => {
 
         {/* Product Listings */}
         <section className="space-y-6">
-          {shopLeftSider.map((product) => (
+          {shopLeftSideProducts.map((product) => (
             <div
-              key={product.id}
+              key={product.slug}
               className="flex lg:items-center flex-col lg:flex-row bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
               {/* Product Image */}
@@ -246,7 +254,7 @@ const ShopLeftSider = () => {
                   <h3 className="text-xl font-semibold">{product.name}</h3>
                   {/* Color Options */}
                   <div className="mt-2 flex items-start gap-1">
-                    {product.colors.map((color, index) => (
+                    {product.colors?.map((color, index) => (
                       <span
                         key={index}
                         className={`w-3 h-3 ${color} rounded-full`}
@@ -291,22 +299,24 @@ const ShopLeftSider = () => {
                       height={20}
                     />
                   </button>
-                  <button className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300">
+                  <button onClick={()=>addToCart(product)} className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300">
                     <Image
                       src={"/icons/cart-b.svg"}
-                      alt={"heart"}
+                      alt={"cart"}
                       width={20}
                       height={20}
                     />
                   </button>
+                  <Link href={`/product/${product.slug}`}>
                   <button className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300">
                     <Image
                       src={"/icons/view.svg"}
-                      alt={"heart"}
+                      alt={"view"}
                       width={20}
                       height={20}
-                    />
+                      />
                   </button>
+                      </Link>
                 </div>
               </div>
             </div>
