@@ -16,7 +16,7 @@ const BlogPage = () => {
         {/* Blog Posts Section */}
         <div className="lg:w-1/2">
           {blogs.map((blog) => (
-            <div key={blog.id} className="mb-10">
+            <div key={blog.slug} className="mb-10">
               <Image
                 src={blog.image}
                 alt={blog.title}
@@ -70,7 +70,7 @@ const BlogPage = () => {
             <h3 className="text-lg font-bold mb-2">Recent Posts</h3>
             <ul className="space-y-2">
               {blogs.slice(0, 3).map((blog) => (
-                <li key={blog.id} className="flex items-center space-x-4">
+                <li key={blog.slug} className="flex items-center space-x-4">
                   <Image
                     src={blog.image}
                     alt={blog.title}
