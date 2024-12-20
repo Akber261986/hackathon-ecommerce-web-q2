@@ -1,12 +1,11 @@
+"use client";
+
 import Link from "next/link";
-import { cartproducts } from "../../../data/products";
+import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 export default function CheckoutPage() {
-  const subtotal = cartproducts.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-  const total = subtotal + 6; // Assuming $6 for shipping
+  const { cartItems, getTotalPrice, } = useCart();
+  const total = getTotalPrice() + 15; // Assuming $6 for shipping
   return (
     <div className="text-[#1D3178] font-sans">
       <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -50,40 +49,45 @@ export default function CheckoutPage() {
                 <h2 className="text-lg font-bold mb-4 mt-8">
                   Shipping Address
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      placeholder="First name"
+                      required
+                      className=" border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Last name"
+                      required
+                      className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                    />
+                  </div>
                   <input
                     type="text"
-                    placeholder="First name"
-                    className=" border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                    placeholder="Address"
+                    required
+                    className="w-full border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
                   />
                   <input
                     type="text"
-                    placeholder="Last name"
-                    className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                    placeholder="Apartment, suite, etc. (optional)"
+                    className="w-full border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
                   />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Address"
-                  className="w-full border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
-                />
-                <input
-                  type="text"
-                  placeholder="Apartment, suite, etc. (optional)"
-                  className="w-full border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
-                />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
-                  <input
-                    type="text"
-                    placeholder="City"
-                    className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Postal Code"
-                    className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
-                  />
-                </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+                    <input
+                      type="text"
+                      placeholder="City"
+                      required
+                      className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Postal Code"
+                      required
+                      className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                    />
+                  </div>
               </div>
 
               {/* Continue Button */}
@@ -97,7 +101,7 @@ export default function CheckoutPage() {
           <div className="col-span-5 bg-white p-6 rounded-lg shadow-md">
             <div>
               <div className="space-y-4">
-                {cartproducts.map((item) => (
+                {cartItems.map((item) => (
                   <div
                     key={item.slug}
                     className="flex items-center justify-between border-b border-b-gray-200"
@@ -112,9 +116,9 @@ export default function CheckoutPage() {
                       />
                       <div>
                         <p className="font-medium">{item.name}</p>
-                        <p className="text-gray-500 text-sm">
+                        {/* <p className="text-gray-500 text-sm">
                           Size: {item.size}
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                     <p className="font-medium">${item.price}</p>
@@ -126,7 +130,7 @@ export default function CheckoutPage() {
               <div className="mt-6 bg-[#F4F4FC] p-4 space-y-8">
                 <div className="flex justify-between border-b border-b-[#E8E6F1] py-2">
                   <p className="text-lg font-semibold">Subtotal:</p>
-                  <p className="font-medium">${subtotal}</p>
+                  <p className="font-medium">${getTotalPrice()}</p>
                 </div>
                 <div className="flex justify-between border-b border-b-[#E8E6F1] py-2">
                   <p className="text-lg font-semibold">Total:</p>
@@ -139,8 +143,11 @@ export default function CheckoutPage() {
                   />
                   Shipping & taxes calculated at checkout.
                 </label>
-                <Link href={"ordercompeleted"}>
-                  <button className="w-full mt-4 bg-green-500 text-white py-2 rounded-md font-semibold hover:bg-green-600 transition">
+                <Link href={""}>
+                  <button
+                    type="submit"
+                    className="w-full mt-4 bg-green-500 text-white py-2 rounded-md font-semibold hover:bg-green-600 transition"
+                  >
                     Proceed to Checkout
                   </button>
                 </Link>

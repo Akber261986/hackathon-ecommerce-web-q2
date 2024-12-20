@@ -93,9 +93,9 @@ const Header = () => {
       <div className="flex  items-center py-5 px-4 sm:px-8">
         <div className="flex items-center justify-between w-full">
           {/* Logo */}
-          <div className="flex items-center">
+          <Link href={"/"} className="flex items-center">
             <Image src={"/images/logo.png"} alt="Logo" width={98} height={34} />
-          </div>
+          </Link>
 
           {/* Navigation */}
           <ul className="hidden md:flex items-center space-x-8 text-[#0D0E43] font-semibold">

@@ -22,12 +22,19 @@ const Hero = () => {
         </p>
         <Button variant={"destructive"}>Shop Now</Button>
       </div>
-      <div>
+      <div className="relative">
         <Image
           src={"/images/chair.png"}
           alt="chair"
           width={600}
           height={600}
+        />
+        <Image
+          src={"/images/offtag.png"}
+          alt="chair"
+          width={135}
+          height={135}
+          className="hidden md:block absolute top-6 -right-28 w-[8rem]"
         />
       </div>
     </div>

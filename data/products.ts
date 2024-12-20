@@ -1,166 +1,195 @@
 export interface Product {
-  slug: string
+  slug: string;
   name: string;
   price: number;
   oldPrice: number;
   code?: string;
   image: string;
   rating?: number | any;
-  category: string | string[]; 
+  category: string | string[];
   isSale?: boolean;
   description?: string;
   colors?: string[];
   descruption?: string;
   quantity: number;
+  size?: string[];
 }
 
-export const allProducts:Product[] = [
+export const allProducts: Product[] = [
   {
     slug: "product1",
     name: "Vel elit euismod",
-    price: 36.00,
-    oldPrice: 42.00,
+    price: 36.0,
+    oldPrice: 42.0,
     code: "Y523201",
     image: "/images/image1.png",
     rating: 4,
     category: ["featuredProducts", "latestProducts"],
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
   },
   {
     slug: "product2",
     name: "Ultrices condimentum imperdiet",
-    price: 42.00,
-    oldPrice: 48.00,
+    price: 42.0,
+    oldPrice: 48.0,
     code: "M523412",
     image: "/images/image2.png",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 5,
-    category: "featuredProducts"
+    category: "featuredProducts",
   },
   {
     slug: "product3",
     name: "Vitae suspendisse sed",
-    price: 26.00,
-    oldPrice: 30.00,
+    price: 26.0,
+    oldPrice: 30.0,
     code: "S546201",
     image: "/images/image3.png",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 3,
-    category: "featuredProducts"
+    category: "featuredProducts",
   },
   {
     slug: "product4",
     name: "Sed at fermentum",
-    price: 23.00,
-    oldPrice: 28.00,
+    price: 23.0,
+    oldPrice: 28.0,
     code: "Z623201",
     image: "/images/image4.png",
     isSale: true,
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    category: ["featuredProducts", "latestProducts"]
+    category: ["featuredProducts", "latestProducts"],
   },
   {
     slug: "product5",
     name: "Comfort Handy Craft",
-    price: 42.00,
-    oldPrice: 65.00,
+    price: 42.0,
+    oldPrice: 65.0,
     image: "/images/image5.png",
     rating: 4,
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     isSale: false,
-    category: ["latestProducts"]
+    category: ["latestProducts"],
   },
   {
     slug: "product6",
     name: "Comfort Foam Chair",
-    price: 42.00,
-    oldPrice: 66.00,
+    price: 42.0,
+    oldPrice: 66.0,
     image: "/images/image6.png",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
     isSale: true,
-    category: ["latestProducts"]
+    category: ["latestProducts"],
   },
   {
     slug: "product7",
     name: "Comfort Handy Craft",
-    price: 42.00,
-    oldPrice: 66.00,
+    price: 42.0,
+    oldPrice: 66.0,
     image: "/images/image8.png",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
     isSale: true,
-    category: ["latestProducts", "topProducts"]
+    category: ["latestProducts", "topProducts"],
   },
   {
     slug: "product8",
     name: "Comfort Handy Craft",
-    price: 42.00,
-    oldPrice: 65.00,
+    price: 42.0,
+    oldPrice: 65.0,
     image: "/images/image9.png",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
     isSale: false,
-    category: ["latestProducts"]
+    category: ["latestProducts"],
   },
   {
     slug: "product9",
     name: "Cantilever chair",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 72.00,
-    oldPrice: 88.00,
+    price: 72.0,
+    oldPrice: 88.0,
     image: "/images/image9.png",
-    category: ["trendingProducts"]
+    category: ["trendingProducts"],
   },
   {
-    slug: "product10" ,
+    slug: "product10",
     name: "Cantilever chair",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 40.00,
-    oldPrice: 52.00,
+    price: 40.0,
+    oldPrice: 52.0,
     image: "/images/image12.png",
-    category: ["trendingProducts"]
+    category: ["trendingProducts"],
   },
   {
-    slug: "product11" ,
+    slug: "product11",
     name: "Cantilever chair",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 36.00,
-    oldPrice: 47.00,
+    price: 36.0,
+    oldPrice: 47.0,
     image: "/images/image11.png",
-    category: ["trendingProducts" , "topProducts"]
+    category: ["trendingProducts", "topProducts"],
   },
   {
     slug: "product12",
     name: "Cantilever chair",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 22.00,
-    oldPrice: 27.00,
+    price: 22.0,
+    oldPrice: 27.0,
     image: "/images/image13.png",
-    category: ["topProducts"]
+    category: ["topProducts"],
   },
   {
     slug: "product13",
     name: "Sampara chair",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 28.00,
-    oldPrice: 36.00,
+    price: 28.0,
+    oldPrice: 36.0,
     image: "/images/image20.png",
-    category: ["topProducts"]
+    category: ["topProducts"],
   },
   {
     slug: "product14",
     name: "Vel elit euismod",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 32.00,
-    oldPrice: 42.00,
+    price: 32.0,
+    oldPrice: 42.0,
     image: "/products/p1.png",
     category: ["shopGrid", "trendingProducts"],
   },
@@ -168,9 +197,11 @@ export const allProducts:Product[] = [
     slug: "product15",
     name: "Ultrices condimentum imperdiet",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 88.00,
-    oldPrice: 96.00,
+    price: 88.0,
+    oldPrice: 96.0,
     image: "/products/p2.png",
     category: ["shopGrid"],
   },
@@ -178,9 +209,11 @@ export const allProducts:Product[] = [
     slug: "product16",
     name: "Vitae suspendisse sed",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 57.00,
-    oldPrice: 68.00,
+    price: 57.0,
+    oldPrice: 68.0,
     image: "/products/p3.png",
     category: ["shopGrid"],
   },
@@ -188,9 +221,11 @@ export const allProducts:Product[] = [
     slug: "product17",
     name: "Sed at fermentum",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 70.00,
-    oldPrice: 85.00,
+    price: 70.0,
+    oldPrice: 85.0,
     image: "/products/p4.png",
     category: ["shopGrid"],
   },
@@ -198,9 +233,11 @@ export const allProducts:Product[] = [
     slug: "product18",
     name: "Fusce pellentesque at",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 26.00,
-    oldPrice: 42.00,
+    price: 26.0,
+    oldPrice: 42.0,
     image: "/products/p5.png",
     category: ["shopGrid"],
   },
@@ -208,9 +245,11 @@ export const allProducts:Product[] = [
     slug: "product19",
     name: "Vestibulum magna laoreet",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 42.00,
-    oldPrice: 53.00,
+    price: 42.0,
+    oldPrice: 53.0,
     image: "/products/p6.png",
     category: ["shopGrid"],
   },
@@ -218,9 +257,11 @@ export const allProducts:Product[] = [
     slug: "product20",
     name: "Sollicitudin amet orci",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 32.00,
-    oldPrice: 38.00,
+    price: 32.0,
+    oldPrice: 38.0,
     image: "/products/p7.png",
     category: ["shopGrid"],
   },
@@ -228,9 +269,11 @@ export const allProducts:Product[] = [
     slug: "product21",
     name: "Ultrices mauris sit",
     quantity: 0,
+    colors: ["Red", "Blue", "Green"],
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    price: 26.00,
-    oldPrice: 42.00,
+    price: 26.0,
+    oldPrice: 42.0,
     image: "/products/p8.png",
     category: ["shopGrid"],
   },
@@ -239,9 +282,10 @@ export const allProducts:Product[] = [
     name: "Accumsan tincidunt",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
-    price: 26.00,
-    oldPrice: 52.00,
+    price: 26.0,
+    oldPrice: 52.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 4,
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/products/l1.jpg",
@@ -252,11 +296,12 @@ export const allProducts:Product[] = [
     name: "In nulla",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
-    price: 26.00,
-    oldPrice: 52.00,
+    price: 26.0,
+    oldPrice: 52.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 5,
-    colors: ["bg-yellow-500", "bg-blue-500", "bg-pink-500", ],
+    colors: ["bg-yellow-500", "bg-blue-500", "bg-pink-500"],
     image: "/products/l2.jpg",
     category: ["shopList"],
   },
@@ -265,11 +310,12 @@ export const allProducts:Product[] = [
     name: "Vel sem",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
-    price: 26.00,
-    oldPrice: 52.00,
+    price: 26.0,
+    oldPrice: 52.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 3,
-    colors: ["bg-pink-500", "bg-blue-500", "bg-yellow-500",],
+    colors: ["bg-pink-500", "bg-blue-500", "bg-yellow-500"],
     image: "/products/l3.jpg",
     category: ["shopList"],
   },
@@ -278,11 +324,12 @@ export const allProducts:Product[] = [
     name: "Accumsan tincidunt",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
-    price: 26.00,
-    oldPrice: 52.00,
+    price: 26.0,
+    oldPrice: 52.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    colors: ["bg-blue-500", "bg-yellow-500", "bg-pink-500",],
+    colors: ["bg-blue-500", "bg-yellow-500", "bg-pink-500"],
     image: "/products/l4.jpg",
     category: ["shopList"],
   },
@@ -291,9 +338,10 @@ export const allProducts:Product[] = [
     name: "In nulla",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
-    price: 26.00,
-    oldPrice: 52.00,
+    price: 26.0,
+    oldPrice: 52.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 5,
     colors: ["bg-pink-500", "bg-yellow-500", "bg-blue-500"],
     image: "/products/l5.jpg",
@@ -304,9 +352,10 @@ export const allProducts:Product[] = [
     name: "Vel sem",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
-    price: 26.00,
-    oldPrice: 52.00,
+    price: 26.0,
+    oldPrice: 52.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 4,
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/products/l6.jpg",
@@ -315,11 +364,13 @@ export const allProducts:Product[] = [
   {
     slug: "product28",
     name: "Dictum morbi",
-    price: 26.00,
-    oldPrice: 52.00,
+    price: 26.0,
+    oldPrice: 52.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls1.jpg",
     category: ["shopLeftSider"],
@@ -327,11 +378,13 @@ export const allProducts:Product[] = [
   {
     slug: "product29",
     name: "Sodales sit",
-    price: 35.00,
-    oldPrice: 40.00,
+    price: 35.0,
+    oldPrice: 40.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 5,
-    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls2.jpg",
     category: ["shopLeftSider"],
@@ -339,11 +392,13 @@ export const allProducts:Product[] = [
   {
     slug: "product30",
     name: "Nibh varius",
-    price: 105.00,
-    oldPrice: 120.00,
+    price: 105.0,
+    oldPrice: 120.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls3.jpg",
     category: ["shopLeftSider"],
@@ -351,11 +406,13 @@ export const allProducts:Product[] = [
   {
     slug: "product31",
     name: "Mauris quis",
-    price: 66.00,
-    oldPrice: 75.00,
+    price: 66.0,
+    oldPrice: 75.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 3,
-    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls4.jpg",
     category: ["shopLeftSider"],
@@ -363,11 +420,13 @@ export const allProducts:Product[] = [
   {
     slug: "product32",
     name: "Morbi sagittis",
-    price: 90.00,
-    oldPrice: 102.00,
+    price: 90.0,
+    oldPrice: 102.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 5,
-    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls5.jpg",
     category: ["shopLeftSider"],
@@ -375,11 +434,13 @@ export const allProducts:Product[] = [
   {
     slug: "product33",
     name: "Ultricies venenatis",
-    price: 64.00,
-    oldPrice: 77.00,
+    price: 64.0,
+    oldPrice: 77.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 4,
-    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls6.jpg",
     category: ["shopLeftSider"],
@@ -387,26 +448,29 @@ export const allProducts:Product[] = [
   {
     slug: "product34",
     name: "Scelerisque dignissim",
-    price: 26.00,
-    oldPrice: 52.00,
+    price: 26.0,
+    oldPrice: 52.0,
     quantity: 0,
+    size: ["x", "xl", "2xl"],
     rating: 2,
-    descruption: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls7.jpg",
-    category: ["shopLeftSider"]
-  }
+    category: ["shopLeftSider"],
+  },
 ];
 
-export const filterProductsByCategory = (category: string): typeof allProducts => {
-  return allProducts.filter(product =>
-    Array.isArray(product.category)
-      ? product.category.includes(category) // Check for categories stored as arrays
-      : product.category === category // Check for categories stored as strings
+export const filterProductsByCategory = (
+  category: string
+): typeof allProducts => {
+  return allProducts.filter(
+    (product) =>
+      Array.isArray(product.category)
+        ? product.category.includes(category) // Check for categories stored as arrays
+        : product.category === category // Check for categories stored as strings
   );
 };
-
-
 
 // data/product.ts
 export const cartproducts = [
@@ -497,10 +561,9 @@ export interface CartContextType {
   addToWishlist: (product: Product) => void;
   removeFromCart: (slug: string) => void;
   removeFromWishlist: (slug: string) => void;
-  clearCart: ()=> void;
+  clearCart: () => void;
   updateQuantity: (slug: string, quantity: number) => void;
   updateQuantityWishlist: (slug: string, quantity: number) => void;
   getTotalPrice: () => number;
+  calculateShipping: (country: string, city: string) => number;
 }
-
-

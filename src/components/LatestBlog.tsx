@@ -12,7 +12,7 @@ const Blog = () => {
               alt="blog"
               width={370}
               height={225}
-              className="rounded-lg"
+              className="rounded-lg transform scale-100 group-hover:scale-105 duration-300"
             />
             <div className="flex gap-10 ">
               <div className="flex gap-2">
@@ -55,7 +55,7 @@ const Blog = () => {
               alt="blog"
               width={370}
               height={225}
-              className="rounded-lg"
+              className="rounded-lg transform scale-100 group-hover:scale-105 duration-300"
             />
             <div className="flex gap-10 ">
               <div className="flex gap-2">
@@ -98,7 +98,7 @@ const Blog = () => {
               alt="blog"
               width={370}
               height={225}
-              className="rounded-lg"
+              className="rounded-lg transform scale-100 group-hover:scale-105 duration-300"
             />
             <div className="flex gap-10 ">
               <div className="flex gap-2">

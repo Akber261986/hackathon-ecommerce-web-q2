@@ -100,6 +100,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const getTotalPrice = () => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
+  const calculateShipping = (country:string, city:string) => {
+    // Example logic based on location
+    if (country === "Bangladesh" && city.includes("Dhaka")) {
+      return 10; // Flat rate for Dhaka
+    }
+    return 20; // General flat rate
+  };
+  
 
   return (
     <CartContext.Provider
@@ -114,6 +122,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         removeFromWishlist,
         updateQuantityWishlist,
         clearCart,
+        calculateShipping,
       }}
     >
       {children}
