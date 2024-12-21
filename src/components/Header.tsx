@@ -127,6 +127,14 @@ const Header = () => {
               <ul className="p-4 shadow-sm shadow-slate-300 absolute top-6 left-4 space-y-2 hidden group-hover:block z-10 bg-white whitespace-nowrap">
                 <li>
                   <Link
+                    href={"/about"}
+                    className="hover:text-[#FB2E86] whitespace-nowrap"
+                  >
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href={"/pages/shopgrid"}
                     className="hover:text-[#FB2E86] whitespace-nowrap"
                   >
@@ -153,10 +161,10 @@ const Header = () => {
             </li>
             <li>
               <Link
-                href={"/about"}
+                href={"/"}
                 className="group flex items-center gap-1 hover:text-[#FB2E86]"
               >
-                <p>About</p>
+                <p>Products</p>
                 <Image
                   src={"/icons/arrow-down-p.svg"}
                   alt="env"
@@ -262,6 +270,14 @@ const Header = () => {
                     >
                       <li>
                         <Link
+                          href={"/about"}
+                          className="hover:text-[#FB2E86] whitespace-nowrap"
+                        >
+                          About
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
                           href={"/pages/shopgrid"}
                           className="hover:text-[#FB2E86] whitespace-nowrap"
                         >
@@ -287,8 +303,8 @@ const Header = () => {
                     </ul>
                   </li>
                   <li>
-                    <Link href={"/about"} className="hover:text-[#FB2E86]">
-                      About
+                    <Link href={"/"} className="hover:text-[#FB2E86]">
+                      Products
                     </Link>
                   </li>
                   <li>

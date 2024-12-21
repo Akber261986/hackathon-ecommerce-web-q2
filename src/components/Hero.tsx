@@ -37,6 +37,7 @@ const Hero = () => {
           className="hidden md:block absolute top-6 -right-28 w-[8rem]"
         />
       </div>
+      
     </div>
   );
 };
