@@ -213,6 +213,14 @@ const Header = () => {
                     Single Blog
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    href={"/blog/faq"}
+                    className="hover:text-[#FB2E86] whitespace-nowrap"
+                  >
+                    FAQ
+                  </Link>
+                </li>
               </ul>
             </li>
             <li>
@@ -367,6 +375,14 @@ const Header = () => {
                           className="hover:text-[#FB2E86] whitespace-nowrap"
                         >
                           Single Blog
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href={"/blog/faq"}
+                          className="hover:text-[#FB2E86] whitespace-nowrap"
+                        >
+                          FAQ
                         </Link>
                       </li>
                     </ul>
