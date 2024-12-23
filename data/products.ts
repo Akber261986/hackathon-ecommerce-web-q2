@@ -473,52 +473,44 @@ export const filterProductsByCategory = (
 };
 
 // data/product.ts
-export const cartproducts = [
+export const offer = [
   {
     slug: "product35",
-    name: "Ultricies Vulputate",
+    name: "Duis lectus est.",
     color: "Brown",
     size: "XL",
-    price: 32.0,
+    price: 12,
     quantity: 1,
-    image: "/cart/cart.jpg",
+    image: "/images/offer1.jpg",
   },
   {
     slug: "product36",
-    name: "Elit Faucibus Posuere",
+    name: "Sed placerat.",
     color: "Brown",
     size: "XL",
-    price: 32.0,
+    price: 12,
     quantity: 1,
-    image: "/cart/cart5.jpg",
+    image: "/images/bag1a.jpg",
   },
   {
     slug: "product37",
-    name: "Ac Vitae Vestibulum",
+    name: "Netus proin.",
     color: "Brown",
     size: "XL",
-    price: 32.0,
+    price: 12,
     quantity: 1,
-    image: "/cart/cart2.jpg",
+    image: "/images/offer3.jpg",
   },
   {
     slug: "product38",
-    name: "Elit Massa Diam",
+    name: "Platea in.",
     color: "Brown",
     size: "XL",
-    price: 32.0,
+    price: 12,
     quantity: 1,
-    image: "/cart/cart3.jpg",
+    image: "/images/offer4.jpg",
   },
-  {
-    slug: "product39",
-    name: "Proin Pharetra Elementum",
-    color: "Brown",
-    size: "XL",
-    price: 32.0,
-    quantity: 1,
-    image: "/cart/cart4.jpg",
-  },
+  
 ];
 
 export const blogs = [
@@ -527,10 +519,14 @@ export const blogs = [
     title: "Mauris at orci non vulputate diam tincidunt nec.",
     date: "11 Aug 2023",
     category: "Art",
-    author: "John Doe",
+    author: "Surf Auxion",
     image: "/images/mia.jpg",
     excerpt:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, ",
+    headlines:
+      "“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat toamk risusu”",
   },
   {
     slug: "slug41",
@@ -541,6 +537,10 @@ export const blogs = [
     image: "/images/blog4.jpg",
     excerpt:
       "Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, ",
+    headlines:
+      "“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat toamk risusu”",
   },
   {
     slug: "slug42",
@@ -551,8 +551,117 @@ export const blogs = [
     image: "/images/blog5.jpg",
     excerpt:
       "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
+    descruption:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, ",
+    headlines:
+      "“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat toamk risusu”",
   },
+  {
+    slug: "slug43",
+    title: "It is a long estabilished fact",
+    date: "August 09 2024",
+    category: "Lifestyle",
+    author: "Emily Johnson",
+    image: "/images/blog6.jpg",
+    excerpt:
+      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
+  },
+  {
+    slug: "slug44",
+    title: "It is a long estabilished fact",
+    date: "August 09 2024",
+    category: "Lifestyle",
+    author: "Emily Johnson",
+    image: "/images/blog7.jpg",
+    excerpt:
+      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
+  },
+  {
+    slug: "slug45",
+    title: "It is a long estabilished fact",
+    date: "August 09 2024",
+    category: "Lifestyle",
+    author: "Emily Johnson",
+    image: "/images/blog8.jpg",
+    excerpt:
+      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
+  },
+  {
+    slug: "slug46",
+    title: "It is a long estabilished fact",
+    date: "August 09 2024",
+    category: "Lifestyle",
+    author: "Emily Johnson",
+    image: "/images/blog9.jpg",
+    excerpt:
+      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
+  },
+  {
+    slug: "slug47",
+    title: "Elit ornare in enim mauris.",
+    date: "August 09 2024",
+    category: "Lifestyle",
+    author: "Emily Johnson",
+    image: "/images/sale1.jpg",
+    excerpt:
+      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
+  },
+  {
+    slug: "slug48",
+    title: "Elit ornare in enim mauris.",
+    date: "August 09 2024",
+    category: "Lifestyle",
+    author: "Emily Johnson",
+    image: "/images/sale2.jpg",
+    excerpt:
+      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
+  },
+  {
+    slug: "slug49",
+    title: "Elit ornare in enim mauris.",
+    date: "August 09 2024",
+    category: "Lifestyle",
+    author: "Emily Johnson",
+    image: "/images/sale3.jpg",
+    excerpt:
+      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
+  },
+  
 ];
+export const blogProducts = [
+  {
+    slug: "product50",
+    name: "Quam sed",
+    price: 22,
+    oldPrice: 28,
+    rating: 4,
+    image: "/images/blogProduct1.jpg"
+  },
+  {
+    slug: "product51",
+    name: "Tristique sed",
+    price: 35,
+    oldPrice: 40,
+    rating: 4,
+    image: "/images/blogProduct2.jpg"
+  },
+  {
+    slug: "product52",
+    name: "A etiam",
+    price: 72,
+    oldPrice: 80,
+    rating: 5,
+    image: "/images/blogProduct3.jpg"
+  },
+  {
+    slug: "product53",
+    name: "Mi nisi",
+    price: 46,
+    oldPrice: 53,
+    rating: 3,
+    image: "/images/blogProduct4.jpg"
+  },
+]
 
 export interface CartContextType {
   cartItems: Product[];

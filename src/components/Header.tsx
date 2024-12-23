@@ -12,11 +12,20 @@ import {
 } from "@/components/ui/sheet";
 
 const Header = () => {
-  const {cartItems} = useCart()
+  const { cartItems } = useCart();
   const [show, setshow] = useState<boolean>(false);
-  const handleVisibility = () => {
+  const [nav, setNav] = useState<string>("");
+
+  const handleVisibilityBlog = () => {
     setshow(!show);
+    setNav("blog");
   };
+
+  const handleVisibilityPages = () => {
+    setshow(!show);
+    setNav("pages");
+  };
+
   return (
     <div className="font-sans ">
       {/* Upper Header */}
@@ -77,12 +86,16 @@ const Header = () => {
             <Image src={"/icons/user.svg"} alt="env" width={16} height={16} />
           </Link>
           <div className="flex items-center gap-1">
-            <p>Wishlist</p>
-            <Image src={"/icons/heart.svg"} alt="env" width={16} height={16} />
+            <p className="hidden sm:block">Wishlist</p>
+            <Image src={"/icons/heart.svg"} alt="env" width={20} height={20} />
           </div>
           <div className="flex items-center gap-1 relative">
             <Link href={"/cart"}>
-            {cartItems.length > 0 && <div className="w-5 h-5 bg-[#FB2E86] text-white text-center rounded-full absolute -right-2 -top-2">{cartItems.length}</div>}
+              {cartItems.length > 0 && (
+                <div className="w-5 h-5 bg-[#FB2E86] text-white text-center rounded-full absolute -right-2 -top-2">
+                  {cartItems.length}
+                </div>
+              )}
               <Image src={"/icons/cart.svg"} alt="env" width={24} height={24} />
             </Link>
           </div>
@@ -174,20 +187,33 @@ const Header = () => {
                 />
               </Link>
             </li>
-            <li>
-              <Link
-                href={"/blog"}
-                className="group flex items-center gap-1 hover:text-[#FB2E86]"
-              >
-                <p>Blog</p>
-                <Image
-                  src={"/icons/arrow-down-p.svg"}
-                  alt="env"
-                  width={16}
-                  height={16}
-                  className="invisible group-hover:visible"
-                />
-              </Link>
+            <li className="group relative flex items-center gap-1 ">
+              <p className="group-hover:text-[#FB2E86]">Blog</p>
+              <Image
+                src={"/icons/arrow-down-p.svg"}
+                alt="env"
+                width={16}
+                height={16}
+                className="invisible group-hover:visible"
+              />
+              <ul className="p-4 shadow-sm shadow-slate-300 absolute top-6 left-4 space-y-2 hidden group-hover:block z-10 bg-white whitespace-nowrap">
+                <li>
+                  <Link
+                    href={"/blog/blogpage"}
+                    className="hover:text-[#FB2E86] whitespace-nowrap"
+                  >
+                    Blog page
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={"/blog/singleblog"}
+                    className="hover:text-[#FB2E86] whitespace-nowrap"
+                  >
+                    Single Blog
+                  </Link>
+                </li>
+              </ul>
             </li>
             <li>
               <Link
@@ -222,7 +248,7 @@ const Header = () => {
           </ul>
 
           {/* Search Bar */}
-          <div className="flex items-center justify-between border-2 border-[#E7E6EF] rounded self-end">
+          <div className="flex items-center justify-between border-2 border-[#E7E6EF] rounded self-end mx-4">
             <input
               type="text"
               placeholder="Search"
@@ -251,7 +277,10 @@ const Header = () => {
                       Home
                     </Link>
                   </li>
-                  <li onClick={handleVisibility} className="group relative">
+                  <li
+                    onClick={handleVisibilityPages}
+                    className="group relative"
+                  >
                     <p className="group-hover:text-[#FB2E86] cursor-pointer">
                       Pages
                     </p>
@@ -265,7 +294,7 @@ const Header = () => {
 
                     <ul
                       className={`p-4 shadow-sm shadow-slate-300 absolute top-6 left-12 space-y-2 ${
-                        show ? "block" : "hidden"
+                        show && nav === "pages" ? "block" : "hidden"
                       } whitespace-nowrap`}
                     >
                       <li>
@@ -307,10 +336,40 @@ const Header = () => {
                       Products
                     </Link>
                   </li>
-                  <li>
-                    <Link href={"/blog"} className="hover:text-[#FB2E86]">
+                  <li onClick={handleVisibilityBlog} className="group relative">
+                    <p className="group-hover:text-[#FB2E86] cursor-pointer">
                       Blog
-                    </Link>
+                    </p>
+                    <Image
+                      src={"/icons/arrow-down-p.svg"}
+                      alt="env"
+                      width={16}
+                      height={16}
+                      className="invisible group-hover:visible absolute top-1 -right-6"
+                    />
+
+                    <ul
+                      className={`p-4 shadow-sm shadow-slate-300 absolute top-6 left-12 space-y-2 ${
+                        show && nav == "blog" ? "block" : "hidden"
+                      } whitespace-nowrap`}
+                    >
+                      <li>
+                        <Link
+                          href={"/blog/blogpage"}
+                          className="hover:text-[#FB2E86] whitespace-nowrap"
+                        >
+                          Blog Page
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href={"/blog/singleblog"}
+                          className="hover:text-[#FB2E86] whitespace-nowrap"
+                        >
+                          Single Blog
+                        </Link>
+                      </li>
+                    </ul>
                   </li>
                   <li>
                     <Link

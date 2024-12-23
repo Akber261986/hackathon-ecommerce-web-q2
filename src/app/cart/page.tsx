@@ -28,9 +28,9 @@ const Cart = () => {
         <div className="lg:col-span-2">
           <table className="w-full border-collapse border border-gray-300">
             <thead>
-              <tr className="bg-gray-100">
+              <tr className="bg-gray-100 ">
                 <th className="p-4 border">Product</th>
-                <th className="p-4 border">Price</th>
+                <th className="p-4 border hidden sm:block">Price</th>
                 <th className="p-4 border">Quantity</th>
                 <th className="p-4 border">Total</th>
               </tr>
@@ -56,6 +56,7 @@ const Cart = () => {
                     </div>
                     <div>
                       <p className="font-semibold">{item.name}</p>
+                      <p className="sm:hidden">${item.price}.00</p>
                       <p className="text-sm text-start text-gray-500">
                         {item.colors?.find((color) => (
                           <span
@@ -64,21 +65,40 @@ const Cart = () => {
                           ></span>
                         ))}
                       </p>
-
                     </div>
                   </td>
-                  <td className="p-4 border">${item.price.toFixed(2)}</td>
+                  <td className="p-4 border hidden sm:table-cell">${item.price.toFixed(2)}</td>
                   <td className="p-2 border">
-                    <input
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        updateQuantity(item.slug, Number(e.target.value))
-                      }
-                      className="w-16 px-2 py-1 border rounded-md"
-                      min="1"
-                    />
+                    <div className="flex flex-col-reverse sm:flex-row items-center justify-center text-xl text-[#BEBFC2]">
+                      {/* Decrement Button */}
+                      <button
+                        onClick={() => {
+                          if (item.quantity > 1) {
+                            updateQuantity(item.slug, item.quantity - 1);
+                          }
+                        }}
+                        className="bg-[#E7E7EF] w-10 h-10 content-center"
+                      >
+                        -
+                      </button>
+
+                      {/* Display Current Quantity */}
+                      <span className="bg-gray-100 w-10 sm:w-20 h-10 content-center">
+                        {item.quantity}
+                      </span>
+
+                      {/* Increment Button */}
+                      <button
+                        onClick={() =>
+                          updateQuantity(item.slug, item.quantity + 1)
+                        }
+                        className="bg-[#E7E7EF] w-10 h-10 content-center"
+                      >
+                        +
+                      </button>
+                    </div>
                   </td>
+
                   <td className="p-4 border">
                     ${(item.price * item.quantity).toFixed(2)}
                   </td>

@@ -112,9 +112,9 @@ const ShopList = () => {
                 </div>
                 {/* Price and Old Price */}
                 <div className="mt-4 flex items-center space-x-2">
-                  <span className=" text-lg font-bold">{product.price}</span>
+                  <span className=" text-lg font-bold">${product.price.toFixed(2)}</span>
                   <span className="text-red-500 line-through">
-                    {product.oldPrice}
+                    ${product.oldPrice.toFixed(2)}
                   </span>
                 </div>
                 <p className="mt-2 text-gray-600 w-96">{product.description}</p>
