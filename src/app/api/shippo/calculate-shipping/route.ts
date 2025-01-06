@@ -2,7 +2,7 @@
 // import { Shippo } from "shippo";
 
 // const shippoClient = new Shippo({
-//   apiKeyHeader: "shippo_test_42c448e3961935159809a739f86498904366b40a",
+//   apiKeyHeader: process.env.SHIPPO_API_KEY,
 //   shippoApiVersion: "2018-02-08",
 // });
 // export async function POST(req: NextRequest) {
