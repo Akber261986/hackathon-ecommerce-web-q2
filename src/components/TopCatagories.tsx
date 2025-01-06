@@ -2,13 +2,42 @@
 
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { filterProductsByCategory } from "../../data/products";
+import { AllProductType } from "../../data/products";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-
+import { client } from "@/sanity/lib/client";
+import { useEffect, useState } from "react";
+import { urlFor } from "@/sanity/lib/image";
+const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
+  const query = `*[_type == "allproducts" && "${category}" in category]{
+      slug,
+      name,
+      price,
+      code,
+      image,
+      isSale,
+      oldPrice,
+      category,
+      stock,
+    }`
+  const allProducts = await client.fetch(query)
+  return allProducts
+  
+}
 const TopCatagories = () => {
   const { addToCart } = useCart();
-  const topProducts = filterProductsByCategory("topProducts");
+  const [products, setProducts] = useState<AllProductType[]>([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await fetchProductsbyCategory("topProducts");
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
   return (
     <div>
       <div className="flex flex-col items-center gap-10 py-6 ">
@@ -16,7 +45,7 @@ const TopCatagories = () => {
           Top Catagories
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {topProducts.map((product) => (
+          {products.map((product) => (
             <div
               key={product.slug}
               className="group flex flex-col items-center "
@@ -25,7 +54,7 @@ const TopCatagories = () => {
                 <div className=" relative bg-[#eaedf7] px-10 pt-10 pb-2 rounded-full transform translate-x-0 group-hover:translate-x-3 duration-300 group-hover:-translate-y-2">
                   <div className="h-[200px]">
                     <Image
-                      src={product.image}
+                      src={urlFor(product.image).url()}
                       alt={product.name}
                       width={178}
                       height={200}

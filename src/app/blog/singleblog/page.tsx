@@ -1,8 +1,48 @@
 import Image from "next/image";
-import { blogs, offer, blogProducts } from "../../../../data/products";
+import { blogPostType, offerType, blogProductType } from "../../../../data/products";
+import { client } from "@/sanity/lib/client";
 import Link from "next/link";
+import { urlFor } from "@/sanity/lib/image";
 
-const BlogPage = () => {
+const BlogPage = async () => {
+  const quary =  `*[_type == "blog"]{
+    slug,
+    title,
+    price,
+    oldPrice,
+    rating,
+    stock,
+    image,
+  }`;
+  const blogProducts = await client.fetch(quary);
+  
+  const quaryblogpost = `*[_type == "blogPost"][]{
+  slug,
+  title,
+  date,
+  category,
+  author,
+  excerpt,
+  descruption,
+  headlines,
+  image,
+}`
+const blogPost = await client.fetch(quaryblogpost);
+const recentPost = blogPost.slice(3, 7);
+const saleProducts = blogPost.slice(7);
+const quaryOffer = `*[_type == "offer"]{
+  slug,
+  title,
+  color,
+  size,
+  price,
+  stock,
+  image,
+}`
+const offer = await client.fetch(quaryOffer);
+console.log(offer);
+
+
   return (
     <div className="text-[#151875] font-sans">
       <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -16,10 +56,10 @@ const BlogPage = () => {
       <div className="flex flex-col lg:flex-row lg:justify-center px-6 lg:px-20 py-10">
         {/* Blog Posts Section */}
         <div className="lg:w-2/3">
-          {blogs.slice(0, 1).map((blog) => (
+          {blogPost.slice(9).map((blog:blogPostType) => (
             <div key={blog.slug} className="mb-10">
               <Image
-                src={blog.image}
+                src={urlFor(blog.image).url()}
                 alt={blog.title}
                 width={870}
                 height={453}
@@ -59,7 +99,7 @@ const BlogPage = () => {
                 <br />
                 <p className="text-[#8A8FB9]">{blog.excerpt}</p>
                 <br />
-                <p className="text-[#8A8FB9]">{blog.descruption}</p>
+                <p className="text-[#8A8FB9]">{blog.description}</p>
                 <br />
                 <p className="text-[#969CB4] bg-[#FAFAFB] p-4 leading-8 font-semibold border-l-2 border-l-[#FC45A0]">
                   <i>{blog.headlines}</i>
@@ -97,10 +137,10 @@ const BlogPage = () => {
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 mt-6 py-6">
-            {blogProducts.map((product) => (
+            {blogProducts.map((product:blogProductType) => (
               <div key={product.slug}>
                 <Image
-                  src={product.image}
+                  src={urlFor(product.image).url()}
                   alt={product.slug}
                   width={210}
                   height={250}
@@ -238,7 +278,7 @@ const BlogPage = () => {
             {/* Comment Form */}
             <form className="mt-8 space-y-6 py-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="flex col-span-2 sm:col-span-1 gap-2 p-3 border border-[#8A8FB9] focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div className="flex col-span-2 sm:col-span-1 gap-2 p-3 border border-[#8A8FB9] focus:ring-2 focus:ring-blue-500">
                   <Image
                     src="/icons/user2.svg"
                     alt="User"
@@ -246,9 +286,9 @@ const BlogPage = () => {
                     height={16}
                     className="w-3 h-3 object-cover rounded-md mt-1"
                   />
-                  <input type="text" placeholder="Your Name*" />
+                  <input type="text" placeholder="Your Name*" className=" focus:outline-none" />
                 </div>
-                <div className="flex col-span-2 sm:col-span-1 gap-2 p-3 border border-[#8A8FB9] focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div className="flex col-span-2 sm:col-span-1 gap-2 p-3 border border-[#8A8FB9] focus:ring-2 focus:ring-blue-500">
                   <Image
                     src="/icons/mail.svg"
                     alt="User"
@@ -256,9 +296,9 @@ const BlogPage = () => {
                     height={16}
                     className="w-3 h-3 object-cover rounded-md mt-1"
                   />
-                  <input type="email" placeholder="Write Your Email*" />
+                  <input type="email" placeholder="Write Your Email*"  className=" focus:outline-none" />
                 </div>
-                <div className="flex gap-2 col-span-2 p-3 border border-[#8A8FB9] focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div className="flex gap-2 col-span-2 p-3 border border-[#8A8FB9] focus:ring-2 focus:ring-blue-500">
                   <Image
                     src="/icons/message.svg"
                     alt="User"
@@ -269,6 +309,7 @@ const BlogPage = () => {
                   <textarea
                     placeholder="Write your comment*"
                     rows={4}
+                    className=" focus:outline-none w-full" 
                   ></textarea>
                 </div>
               </div>
@@ -330,10 +371,10 @@ const BlogPage = () => {
           <div className="mb-6">
             <h3 className="text-lg font-bold mb-2">Recent Posts</h3>
             <ul className="space-y-2 text-[#3F509E]">
-              {blogs.slice(3, 7).map((blog) => (
+              {recentPost.map((blog:blogPostType) => (
                 <li key={blog.slug} className="flex items-center space-x-4">
                   <Image
-                    src={blog.image}
+                    src={urlFor(blog.image).url()}
                     alt={blog.title}
                     width={100}
                     height={100}
@@ -353,10 +394,10 @@ const BlogPage = () => {
           <div className="mb-6">
             <h3 className="text-lg font-bold mb-2">Sale Product</h3>
             <ul className="space-y-2 text-[#3F509E]">
-              {blogs.slice(7).map((blog) => (
+              {saleProducts.map((blog:blogPostType) => (
                 <li key={blog.slug} className="flex items-center space-x-4">
                   <Image
-                    src={blog.image}
+                    src={urlFor(blog.image).url()}
                     alt={blog.title}
                     width={100}
                     height={100}
@@ -376,13 +417,13 @@ const BlogPage = () => {
           <div className="mb-6">
             <h1 className="text-lg font-bold mb-2">Offer Product</h1>
             <ul className="grid grid-cols-2 gap-4">
-              {offer.map((offer) => (
+              {offer.map((offer:offerType) => (
                 <li
                   key={offer.slug}
                   className="flex flex-col items-center space-y-2"
                 >
                   <Image
-                    src={offer.image}
+                    src={urlFor(offer.image).url()}
                     alt={offer.slug}
                     width={126}
                     height={80}
@@ -390,7 +431,7 @@ const BlogPage = () => {
                   />
                   <div className="space-y-1">
                     <h4 className="text-sm text-center font-semibold whitespace-nowrap">
-                      {offer.name}
+                      {offer.title}
                     </h4>
                     <div className="flex items-center text-sm gap-1 text-[#8A8FB9]">
                       <p>${offer.price.toFixed(2)}</p>-

@@ -1,15 +1,41 @@
-'use client'
+'use client';
 
 import Image from "next/image";
-import { filterProductsByCategory } from "../../data/products";
+import { AllProductType} from "../../data/products";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { useState, useEffect } from "react";
+import { urlFor } from "@/sanity/lib/image";
+import { client } from "@/sanity/lib/client";
+const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
+  const query = `*[_type == "allproducts" && "${category}" in category]{
+      slug,
+      name,
+      price,
+      code,
+      image,
+      category,
+      stock,
+    }`
+  const allProducts = await client.fetch(query)
+  return allProducts
+}
 
-const FeaturedProducts = () => {
+const FeaturedProducts =  () => {
   const {addToCart} = useCart()
-  
-  const featuredProducts = filterProductsByCategory("featuredProducts");
+  const [products, setProducts] = useState<AllProductType[]>([])
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await fetchProductsbyCategory("featuredProducts")
+        setProducts(products)
+      } catch (error) {
+        console.error("Error fetching products:", error)
+      }
+    }
+    fetchProducts()
+  }, [])
   
   return (
     <div>
@@ -17,111 +43,9 @@ const FeaturedProducts = () => {
         <h1 className="text-[#151875] font-sans text-4xl  font-bold text-center">
           Featured Products
         </h1>
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          <div className="flex flex-col items-center shadow-sm shadow-gray-300">
-            <div className="bg-[#F6F7FB] px-10 pt-10 pb-2">
-              <div className="h-[178px]">
-                <Image
-                  src={"/images/image1.png"}
-                  alt="Logo"
-                  width={178}
-                  height={178}
-                />
-              </div>
-            </div>
-            <div className="text-center flex flex-col items-center gap-3">
-              <h1 className="text-[#FB2E86] text-lg font-bold">
-                Cantilever chair
-              </h1>
-              <Image
-                src={"/images/color.png"}
-                alt="co"
-                width={80}
-                height={100}
-              />
-              <p className="text-[#151875]">Code - Y523201</p>
-              <p className="text-[#151875]">$42.00</p>
-            </div>
-          </div>
-          <div className="flex flex-col items-center shadow-sm shadow-gray-300">
-            <div className="bg-[#F6F7FB] px-10 pt-10 pb-2">
-              <div className="h-[178px]">
-                <Image
-                  src={"/images/image2.png"}
-                  alt="Logo"
-                  width={178}
-                  height={178}
-                />
-              </div>
-            </div>
-            <div className="text-center flex flex-col items-center gap-3">
-              <h1 className="text-[#FB2E86] text-lg font-bold">
-                Cantilever chair
-              </h1>
-              <Image
-                src={"/images/color.png"}
-                alt="co"
-                width={80}
-                height={100}
-              />
-              <p className="text-[#151875]">Code - Y523201</p>
-              <p className="text-[#151875]">$42.00</p>
-            </div>
-          </div>
-          <div className="flex flex-col items-center shadow-sm shadow-gray-300">
-            <div className="bg-[#F6F7FB] px-10 pt-10 pb-2">
-              <div className="h-[178px]">
-                <Image
-                  src={"/images/image3.png"}
-                  alt="Logo"
-                  width={178}
-                  height={178}
-                />
-              </div>
-            </div>
-            <div className="text-center flex flex-col items-center gap-3">
-              <h1 className="text-[#FB2E86] text-lg font-bold">
-                Cantilever chair
-              </h1>
-              <Image
-                src={"/images/color.png"}
-                alt="co"
-                width={80}
-                height={100}
-              />
-              <p className="text-[#151875]">Code - Y523201</p>
-              <p className="text-[#151875]">$42.00</p>
-            </div>
-          </div>
-          <div className="flex flex-col items-center shadow-sm shadow-gray-300">
-            <div className="bg-[#F6F7FB] px-10 pt-10 pb-2">
-              <div className="h-[178px]">
-                <Image
-                  src={"/images/image4.png"}
-                  alt="Logo"
-                  width={178}
-                  height={178}
-                />
-              </div>
-            </div>
-            <div className="text-center flex flex-col items-center gap-3">
-              <h1 className="text-[#FB2E86] text-lg font-bold">
-                Cantilever chair
-              </h1>
-              <Image
-                src={"/images/color.png"}
-                alt="co"
-                width={80}
-                height={100}
-              />
-              <p className="text-[#151875]">Code - Y523201</p>
-              <p className="text-[#151875]">$42.00</p>
-            </div>
-          </div>
-        </div> */}
         <div className="p-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {featuredProducts.map((product) => (
+        {products.map((product) => (
           <div
             key={product.slug}
             className="group bg-white pb-4 border rounded-xl shadow-md hover:shadow-lg transition-shadow hover:bg-[#00009D] hover:text-white relative"
@@ -129,7 +53,7 @@ const FeaturedProducts = () => {
             {/* Image */}
             <div className=" p-16 h-72 bg-gray-100 rounded-t-lg overflow-hidden flex items-center justify-center">
               <Image
-                src={product.image}
+                src={urlFor(product.image).url()}
                 alt={product.name}
                 width={400}
                 height={400}
@@ -141,11 +65,11 @@ const FeaturedProducts = () => {
               
               >View Details</Button>
               </Link>
-              <div onClick={()=>addToCart(product)} className="absolute top-2 left-2  space-x-2">
-                <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
+              <div  className="absolute top-2 left-2  space-x-2">
+                <button onClick={()=>addToCart(product)} className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
                 <Image
                 src={"/icons/cart-b.svg"}
-                alt={"heart"}
+                alt={"cart"}
                 width={24}
                 height={24}
               />
@@ -153,7 +77,7 @@ const FeaturedProducts = () => {
                 <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
                 <Image
                 src={"/icons/view.svg"}
-                alt={"heart"}
+                alt={"view"}
                 width={24}
                 height={24}
               />

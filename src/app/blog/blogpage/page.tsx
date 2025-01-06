@@ -1,8 +1,37 @@
 import Image from "next/image";
-import { blogs, offer } from "../../../../data/products";
+import { blogPostType, offerType } from "../../../../data/products";
 import Link from "next/link";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
-const BlogPage = () => {
+
+const BlogPage = async () => {   
+    const quaryblogpost = `*[_type == "blogPost"] | order(_createdAt desc)[]{
+    slug,
+    title,
+    date,
+    category,
+    author,
+    excerpt,
+    descruption,
+    headlines,
+    image,
+  }`
+  const blogPost = await client.fetch(quaryblogpost);
+  const recentPost = blogPost.slice(3, 7);
+  const saleProducts = blogPost.slice(7);
+
+  const quaryOffer = `*[_type == "offer"]{
+    slug,
+    title,
+    color,
+    size,
+    price,
+    stock,
+    image,
+  }`
+  const offer = await client.fetch(quaryOffer);
+  console.log(offer);
   return (
     <div className="text-[#151875] font-sans">
       <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -16,10 +45,10 @@ const BlogPage = () => {
       <div className="flex flex-col lg:flex-row lg:justify-center px-6 lg:px-20 py-10">
         {/* Blog Posts Section */}
         <div className="lg:w-1/2">
-          {blogs.slice(0, 3).map((blog) => (
+          {blogPost.slice(0, 3).map((blog:blogPostType) => (
             <div key={blog.slug} className="mb-10">
               <Image
-                src={blog.image}
+                src={urlFor(blog.image).url()}
                 alt={blog.title}
                 width={870}
                 height={453}
@@ -110,10 +139,10 @@ const BlogPage = () => {
           <div className="mb-6">
             <h3 className="text-lg font-bold mb-2">Recent Posts</h3>
             <ul className="space-y-2 text-[#3F509E]">
-              {blogs.slice(3, 7).map((blog) => (
+              {recentPost.map((blog:blogPostType) => (
                 <li key={blog.slug} className="flex items-center space-x-4">
                   <Image
-                    src={blog.image}
+                    src={urlFor(blog.image).url()}
                     alt={blog.title}
                     width={100}
                     height={100}
@@ -133,10 +162,10 @@ const BlogPage = () => {
           <div className="mb-6">
             <h3 className="text-lg font-bold mb-2">Sale Product</h3>
             <ul className="space-y-2 text-[#3F509E]">
-              {blogs.slice(7).map((blog) => (
+              {saleProducts.map((blog:blogPostType) => (
                 <li key={blog.slug} className="flex items-center space-x-4">
                   <Image
-                    src={blog.image}
+                    src={urlFor(blog.image).url()}
                     alt={blog.title}
                     width={100}
                     height={100}
@@ -156,13 +185,13 @@ const BlogPage = () => {
           <div className="mb-6">
             <h1 className="text-lg font-bold mb-2">Offer Product</h1>
             <ul className="grid grid-cols-2 gap-4">
-              {offer.map((offer) => (
+              {offer.map((offer:offerType) => (
                 <li
                   key={offer.slug}
                   className="flex flex-col items-center space-y-2"
                 >
                   <Image
-                    src={offer.image}
+                    src={urlFor(offer.image).url()}
                     alt={offer.slug}
                     width={126}
                     height={80}
@@ -170,7 +199,7 @@ const BlogPage = () => {
                   />
                   <div className="space-y-1">
                     <h4 className="text-sm text-center font-semibold whitespace-nowrap">
-                      {offer.name}
+                      {offer.title}
                     </h4>
                     <div className="flex items-center text-sm gap-1 text-[#8A8FB9]">
                       <p>${offer.price.toFixed(2)}</p>-

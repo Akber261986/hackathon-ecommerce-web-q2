@@ -1,28 +1,67 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
+import { urlFor } from "@/sanity/lib/image";
+import router from "next/dist/client/router";
 import Image from "next/image";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 
 const Cart = () => {
   const {
     cartItems,
-    removeFromCart,
-    updateQuantity,
-    clearCart,
+    updateCartItemQuantity,
     getTotalPrice,
+    clearCart,
+    removeFromCart,
+    calculateShipping,
   } = useCart();
+ 
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [shippingCosts, setShippingCosts] = useState(0);
+  // const [message, setMessage] = useState<string>("");
+  
+  useEffect(() => {
+    if (country && city) {
+      (async () => {
+        const shippingCost = await calculateShipping(country, city);
+        setShippingCosts(shippingCost);
+      })();
+    }
+  }, [country, city]);
+
+  // useEffect(() => {
+  //   if (shippingCost > 0) {
+  //     setMessage(`Shipment calculated successfully`);
+  //     setTimeout(() => {
+  //       setMessage("");
+  //     }, 4000);
+  //   }
+  // }, [shippingCost]);
 
   return (
     <div className="text-[#101750] font-sans">
-      <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
+      {/* <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
+        {message && (
+          <div
+            className={`text-center text-green-500 bg-[#cef5ce] dark:bg-[#363333] fixed right-4 top-10 transform duration-500 ease-out origin-right ${message ? "scale-100" : ""} rounded-lg shadow-md dark:shadow-[#a6ff95] font-bold px-8 md:px-10 py-5 z-10 flex gap-4`}
+          >
+            <Image
+              src={"/icons/circle-check-solid.svg"}
+              alt="check"
+              width={20}
+              height={20}
+            />
+            <p className="scrolLineGreen">{message}</p>
+          </div>
+        )}
         <h1 className="text-4xl font-bold">Shopping Cart</h1>
         <p className="flex gap-2">
           <span>Home.</span>
           <span>Page.</span>
           <span className="text-[#FB2E86]">Shopping Cart</span>
         </p>
-      </div>
+      </div> */}
       <div className="p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items Table */}
         <div className="lg:col-span-2">
@@ -42,12 +81,12 @@ const Cart = () => {
                     <div className="relative">
                       <div
                         onClick={() => removeFromCart(item.slug)}
-                        className="w-4 h-4 flex items-center justify-center rounded-full bg-black text-white absolute -right-3 -top-3 cursor-pointer"
+                        className="w-4 h-4 flex items-center justify-center rounded-full bg-black text-white absolute -right-6 md:-right-3 md:-top-3 cursor-pointer"
                       >
                         x
                       </div>
                       <Image
-                        src={item.image}
+                        src={urlFor(item.image).url()}
                         alt={item.name}
                         width={500}
                         height={500}
@@ -67,14 +106,22 @@ const Cart = () => {
                       </p>
                     </div>
                   </td>
-                  <td className="p-4 border hidden sm:table-cell">${item.price.toFixed(2)}</td>
+                  <td className="p-4 border hidden sm:table-cell">
+                    ${item.price.toFixed(2)}
+                  </td>
                   <td className="p-2 border">
                     <div className="flex flex-col-reverse sm:flex-row items-center justify-center text-xl text-[#BEBFC2]">
                       {/* Decrement Button */}
                       <button
                         onClick={() => {
-                          if (item.quantity > 1) {
-                            updateQuantity(item.slug, item.quantity - 1);
+                          const currentItem = cartItems.find(
+                            (cartItem) => cartItem.slug === item.slug
+                          );
+                          if (currentItem && currentItem.quantity > 1) {
+                            updateCartItemQuantity(
+                              item.slug,
+                              currentItem.quantity - 1
+                            );
                           }
                         }}
                         className="bg-[#E7E7EF] w-10 h-10 content-center"
@@ -83,15 +130,26 @@ const Cart = () => {
                       </button>
 
                       {/* Display Current Quantity */}
-                      <span className="bg-gray-100 w-10 sm:w-20 h-10 content-center">
+                      <span className="bg-gray-100 w-10 sm:w-20 h-10 flex items-center justify-center">
                         {item.quantity}
                       </span>
 
                       {/* Increment Button */}
                       <button
-                        onClick={() =>
-                          updateQuantity(item.slug, item.quantity + 1)
-                        }
+                        onClick={() => {
+                          const currentItem = cartItems.find(
+                            (cartItem) => cartItem.slug === item.slug
+                          );
+                          if (
+                            currentItem &&
+                            currentItem.quantity < item.stock
+                          ) {
+                            updateCartItemQuantity(
+                              item.slug,
+                              currentItem.quantity + 1
+                            );
+                          }
+                        }}
                         className="bg-[#E7E7EF] w-10 h-10 content-center"
                       >
                         +
@@ -124,35 +182,40 @@ const Cart = () => {
           <div>
             <h2 className="text-xl font-bold mb-4">Cart Totals</h2>
             <p className="flex justify-between mb-2">
-              <span>Subtotal:</span> <span>${getTotalPrice().toFixed(2)}</span>
+              <span>Subtotal:</span> <span>${getTotalPrice()}</span>
             </p>
             <p className="flex justify-between mb-2">
-              <span>Shipping:</span>{" "}
-              <span>${(cartItems.length > 0 ? 15 : 0).toFixed(2)}</span>
+              <span>Shipping:</span> <span>${shippingCosts}</span>
             </p>
             <p className="flex justify-between mb-4">
               <span>Totals:</span>
-              <span>
-                ${(cartItems.length > 0 ? getTotalPrice() + 15 : 0).toFixed(2)}
-              </span>
+              <span>${(getTotalPrice() + shippingCosts)}</span>
             </p>
-            <Link href={"chekout"}>
-              <button className="w-full py-2 bg-green-500 text-white rounded-md">
-                Proceed To Checkout
-              </button>
-            </Link>
+            <button
+              onClick={async () => {
+                const shippingCost = await calculateShipping(country, city);
+                setShippingCosts(shippingCost); // Update the state with the calculated cost
+                // Redirect to the checkout page if needed
+                router.push("/checkout");
+              }}
+              className="w-full py-2 bg-green-500 text-white rounded-md"
+            >
+              Proceed To Checkout
+            </button>
           </div>
           {/* Shipping Calculator */}
           <div className="p-6 bg-gray-50 rounded-md shadow-md">
             <h2 className="text-xl font-bold mb-4">Calculate Shipping</h2>
             <input
+              onChange={(e) => setCountry(e.target.value)}
               type="text"
-              placeholder="Bangladesh"
+              placeholder="Pakistan, Bangladesh"
               className="w-full mb-3 px-3 py-2 border rounded-md"
             />
             <input
+              onChange={(e) => setCity(e.target.value)}
               type="text"
-              placeholder="Mirpur, Dhaka - 1200"
+              placeholder="Karachi, Dhaka"
               className="w-full mb-3 px-3 py-2 border rounded-md"
             />
             <input
@@ -160,9 +223,20 @@ const Cart = () => {
               placeholder="Postal Code"
               className="w-full mb-4 px-3 py-2 border rounded-md"
             />
-            <button className="w-full py-2 bg-blue-500 text-white rounded-md">
-              Calculate Shipping
-            </button>
+            <button
+  onClick={async () => {
+    const cost = await calculateShipping(country, city);
+    
+    if (cost > 0) {
+      alert(`Shipping cost calculated: $${cost}`);
+    } else {
+      alert("Failed to calculate shipping");
+    }
+  }}
+  className="w-full py-2 bg-blue-500 text-white rounded-md"
+>
+  Calculate Shipping
+</button>
           </div>
         </div>
       </div>

@@ -1,24 +1,67 @@
-'use client'
+"use client";
 
 import Tabs from "@/components/Tabs";
 import RelatedProducts from "@/components/RelatedProducts";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
-import { allProducts} from "../../../../data/products";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+import { AllProductType } from "../../../../data/products";
+import { useState, useEffect } from "react";
+const fetchProductsbySlug = async (
+  slug: string
+): Promise<AllProductType | null> => {
+  const query = `*[_type == "allproducts" && slug == $slug][0]{
+    slug,
+    name,
+    price,
+    oldPrice,
+    code,
+    image,
+    rating,
+    category,
+    isSale,
+    description,
+    colors,
+    stock,
+    size,
+  }`;
+  const allProducts = await client.fetch(query, { slug });
 
-type ProductDetailsProps = {
-  params: { slug: string };
+  return allProducts;
 };
 
+type ProductDetailsProps = {
+  params: {
+    slug: string;
+  };
+};
 export default function ProductDetailsPage({ params }: ProductDetailsProps) {
-  const {addToCart} = useCart()
-  const randomNum = Math.floor(Math.random() * 10)
-console.log(randomNum);
-  const product = allProducts.find((p) => p.slug ===  params.slug);
+  const { addToCart } = useCart();
+  const randomNum = Math.floor(Math.random() * 10);
+  const randomNum1 = Math.floor(Math.random() * 2);
+  console.log(randomNum1);
+
+  const { slug } = params;
+  const [product, setProduct] = useState<AllProductType | null>(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const data = await fetchProductsbySlug(slug);
+        setProduct(data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+    fetchProduct();
+  }, [slug]);
 
   if (!product) {
-    return <div className="text-center py-20 text-2xl">Product not found</div>;
+    return (
+      <div className="text-center py-20 text-2xl">Product loading ...</div>
+    );
   }
 
   return (
@@ -35,27 +78,37 @@ console.log(randomNum);
       </div>
 
       {/* Product Details Section */}
+
       <div className="flex flex-col md:flex-row items-start gap-8">
         {/* Images Section */}
         <div className="w-full flex-1 flex flex-col-reverse md:flex-row gap-4">
           <div className="flex gap-2 md:flex-col justify-between md:py-6">
-            {Array(3)
-              .fill(product?.image)
-              .map((img, index) => (
-                <Image
-                  key={index}
-                  width={200}
-                  height={200}
-                  src={img}
-                  alt={` ${product?.slug}`}
-                  className="w-20 h-20 md:w-28 md:h-28 rounded-lg cursor-pointer bg-gray-200"
-                />
-              ))}
+            <Image
+              width={600}
+              height={600}
+              src={urlFor(product.image).url()}
+              alt={product.name}
+              className="w-20 h-20 md:w-28 md:h-28 rounded-lg cursor-pointer bg-gray-200"
+            />
+            <Image
+              width={600}
+              height={600}
+              src={urlFor(product.image).url()}
+              alt={product.name}
+              className="w-20 h-20 md:w-28 md:h-28 rounded-lg cursor-pointer bg-gray-200"
+            />
+            <Image
+              width={600}
+              height={600}
+              src={urlFor(product.image).url()}
+              alt={product.name}
+              className="w-20 h-20 md:w-28 md:h-28 rounded-lg cursor-pointer bg-gray-200"
+            />
           </div>
           <Image
             width={600}
             height={600}
-            src={product?.image || "/placeholder.png"}
+            src={urlFor(product.image).url()}
             alt="Main Product"
             className="w-full md:w-3/4 h-auto md:h3/4 rounded-lg bg-gray-200 p-8"
           />
@@ -64,7 +117,7 @@ console.log(randomNum);
         {/* Details Section */}
         <div className="flex-1 space-y-6">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold">{product?.name}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold">{product.name}</h1>
             <div className="flex items-center">
               {Array.from({ length: 5 }).map((_, index) => (
                 <span
@@ -76,22 +129,30 @@ console.log(randomNum);
                   ★
                 </span>
               ))}
-              <span className="ml-2">{`(${(randomNum+1) * product.rating})`}</span>
+              <span className="ml-2">{`(${(randomNum + 1) * product.rating})`}</span>
             </div>
           </div>
           <div className="flex gap-4">
-            <p className="text-xl font-semibold">${product?.price}.00</p>
+            <p className="text-xl font-semibold">${product.price}.00</p>
             <p className="text-red-600 font-semibold line-through">
-              ${product?.oldPrice}.00
+              ${product.oldPrice}.00
             </p>
           </div>
-          <p className="font-semibold">Color</p>
+          <div className="font-semibold flex items-center gap-2">
+            <p>Color</p>
+            <div
+              className={`${product.colors[randomNum1] == "Yellow" ? "bg-yellow-400" : "bg-red-500"} w-4 h-4 rounded-full`}
+            ></div>
+          </div>
           <p className="text-[#A9ACC6] leading-7">
             High-quality plywood chair with ergonomic design. Corporis
             architecto dicta, in voluptate eius cupiditate vitae, soluta.
           </p>
-          <button onClick={()=>addToCart(product)} className="font-semibold flex items-center gap-8 ">
-            <p>Add to Cart</p>
+          <button
+            onClick={() => addToCart(product)}
+            className="font-semibold flex items-center gap-8 "
+          >
+            <p className={`${product.stock == 0 ? "text-red-500" : ""}`}>{product.stock > 0 ? "Add to Cart" : "Out of Stock"}</p>
             <Image
               width={20}
               height={20}
@@ -107,7 +168,7 @@ console.log(randomNum);
             <Link href="https://facebook.com" className="hover:opacity-80">
               <Image
                 width={20}
-                height={24}
+                height={20}
                 src="/images/fb.png"
                 alt="Facebook"
               />
@@ -115,7 +176,7 @@ console.log(randomNum);
             <Link href="https://instagram.com" className="hover:opacity-80">
               <Image
                 width={20}
-                height={24}
+                height={20}
                 src="/images/instagram.png"
                 alt="Instagram"
               />
@@ -123,7 +184,7 @@ console.log(randomNum);
             <Link href="https://twitter.com" className="hover:opacity-80">
               <Image
                 width={20}
-                height={24}
+                height={20}
                 src="/images/twitter.png"
                 alt="Twitter"
               />

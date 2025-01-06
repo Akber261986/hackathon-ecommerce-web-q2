@@ -1,13 +1,41 @@
 'use client'
 
 import Image from "next/image";
-import { filterProductsByCategory } from "../../../../data/products";
+import { AllProductType } from "../../../../data/products";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
-
+import { client } from "@/sanity/lib/client";
+import { useEffect, useState } from "react";
+import { urlFor } from "@/sanity/lib/image";
+const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
+  const query = `*[_type == "allproducts" && "${category}" in category] | order(_createdAt asc ){
+      slug,
+      name,
+      price,
+      image,
+      rating,
+      oldPrice,
+      description,
+      category,
+      stock,
+    }`
+  const allProducts = await client.fetch(query)
+  return allProducts
+}
 const ShopList = () => {
   const {addToCart} = useCart()
-  const shopListProducts = filterProductsByCategory("shopList");
+  const [products, setProducts] = useState<AllProductType[]>([])
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const products = await fetchProductsbyCategory("shopList")
+          setProducts(products)
+        } catch (error) {
+          console.error("Error fetching products:", error)
+        }
+      }
+      fetchProducts()
+    }, [])
   return (
     <div className="font-sans text-[#151875]">
       <div className="text-[#101750] font-sans bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -80,7 +108,7 @@ const ShopList = () => {
       </div>
       <div className="p-8">
         <div className="space-y-6">
-          {shopListProducts.map((product) => (
+          {products.map((product) => (
             <div
               key={product.slug}
               className="flex flex-col lg:flex-row bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
@@ -88,7 +116,7 @@ const ShopList = () => {
               {/* Product Image */}
               <div className="lg:w-1/3 flex-shrink-0">
                 <Image
-                  src={product.image}
+                  src={urlFor(product.image).url()}
                   alt={product.name}
                   width={500}
                   height={400}
@@ -101,18 +129,22 @@ const ShopList = () => {
                 <div className="w-96 flex justify-between items-center">
                   <h3 className="text-xl font-semibold">{product.name}</h3>
                   {/* Color Options */}
-                  <div className="mt-2 flex gap-1">
-                    {product.colors?.map((color, index) => (
+                  <div className="mt-2 flex items-start gap-1">
+                    {[
+                      { color: "bg-[#FF9437]" },
+                      { color: "bg-[#E60584]" },
+                      { color: "bg-[#5E37FF]" },
+                    ].map((color, index) => (
                       <span
                         key={index}
-                        className={`w-3 h-3 ${color} rounded-full`}
+                        className={`w-3 h-3 ${color.color} rounded-full`}
                       ></span>
                     ))}
                   </div>
                 </div>
                 {/* Price and Old Price */}
                 <div className="mt-4 flex items-center space-x-2">
-                  <span className=" text-lg font-bold">${product.price.toFixed(2)}</span>
+                  <span className=" text-md font-semibold">${product.price.toFixed(2)}</span>
                   <span className="text-red-500 line-through">
                     ${product.oldPrice.toFixed(2)}
                   </span>

@@ -1,10 +1,13 @@
 'use client'
 
 import Image from "next/image";
-import { filterProductsByCategory } from "../../../../data/products";
+import { AllProductType } from "../../../../data/products";
 import { useCart } from "@/context/CartContext";
 import { Search } from "lucide-react";
 import Link from "next/link";
+import { client } from "@/sanity/lib/client";
+import { useEffect, useState } from "react";
+import { urlFor } from "@/sanity/lib/image";
 const filterByColor = [
   { color: "bg-[#5E37FF]", name: "Blue" },
   { color: "bg-[#FF9437]", name: "Orange" },
@@ -13,12 +16,36 @@ const filterByColor = [
   { color: "bg-[#E248FF]", name: "Purple" },
   { color: "bg-[#26CBFF]", name: "Sky" },
 ];
-
+const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
+  const query = `*[_type == "allproducts" && "${category}" in category] | order(_createdAt asc){
+      slug,
+      name,
+      price,
+      rating,
+      image,
+      oldPrice,
+      description,
+      category,
+      stock,
+    }`
+  const allProducts = await client.fetch(query)
+  return allProducts
+  
+}
 const ShopLeftSider = () => {
   const { addToCart } = useCart()
-  const shopLeftSideProducts = filterProductsByCategory("shopLeftSider")
-  console.log(shopLeftSideProducts);
-  
+  const [products, setProducts] = useState<AllProductType[]>([])
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const products = await fetchProductsbyCategory("shopLeftSider")
+          setProducts(products)
+        } catch (error) {
+          console.error("Error fetching products:", error)
+        }
+      }
+      fetchProducts()
+    }, [])
   return (
     <div>
       <div className="text-[#101750] font-sans bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -149,7 +176,7 @@ const ShopLeftSider = () => {
                     {"★".repeat(rating)}
                     {"☆".repeat(5 - rating)}
                   </span>
-                  ({Math.floor(Math.random() * 200)})
+                  <p>({(rating)* 23})</p>
                 </li>
               ))}
             </ul>
@@ -168,14 +195,14 @@ const ShopLeftSider = () => {
                 "3dcart",
                 "Bags",
                 "Watches",
-              ].map((category, index) => (
+              ].map((categoryitem, index) => (
                 <li key={index}>
                   <label className="flex items-center gap-2">
                     <input
                       type="checkbox"
                       className="accent-[#E60584] w-4 h-4"
                     />
-                    {category}
+                    {categoryitem}
                   </label>
                 </li>
               ))}
@@ -234,14 +261,14 @@ const ShopLeftSider = () => {
 
         {/* Product Listings */}
         <section className="space-y-6">
-          {shopLeftSideProducts.map((product) => (
+          {products.map((product) => (
             <div
               key={product.slug}
               className="flex lg:items-center flex-col lg:flex-row bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
               {/* Product Image */}
               <Image
-                src={product.image}
+                src={urlFor(product.image).url()}
                 alt={product.name}
                 width={284}
                 height={200}
@@ -254,10 +281,14 @@ const ShopLeftSider = () => {
                   <h3 className="text-xl font-semibold">{product.name}</h3>
                   {/* Color Options */}
                   <div className="mt-2 flex items-start gap-1">
-                    {product.colors?.map((color, index) => (
+                    {[
+                      { color: "bg-[#FF9437]" },
+                      { color: "bg-[#E60584]" },
+                      { color: "bg-[#5E37FF]" },
+                    ].map((color, index) => (
                       <span
                         key={index}
-                        className={`w-3 h-3 ${color} rounded-full`}
+                        className={`w-3 h-3 ${color.color} rounded-full`}
                       ></span>
                     ))}
                   </div>
@@ -287,7 +318,7 @@ const ShopLeftSider = () => {
                   </div>
                 </div>
                 <p className="mt-2 text-[#9295AA] text-base">
-                  {product.descruption}
+                  {product.description}
                 </p>
                 {/* Action Buttons */}
                 <div className="mt-4 flex space-x-4">

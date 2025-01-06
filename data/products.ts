@@ -1,21 +1,23 @@
-export interface Product {
-  slug: string;
-  name: string;
-  price: number;
-  oldPrice: number;
-  code?: string;
-  image: string;
-  rating?: number | any;
-  category: string | string[];
-  isSale?: boolean;
-  description?: string;
-  colors?: string[];
-  descruption?: string;
-  quantity: number;
-  size?: string[];
-}
+export interface AllProductType 
+  {
+    slug: string;
+    name: string;
+    price: number;
+    oldPrice: number;
+    code?: string;
+    image: string;
+    rating: number ;
+    category: string | string[];
+    isSale?: boolean;
+    description?: string;
+    colors: string[];
+    quantity: number;
+    stock: number;
+    size?: string[];
+  };
 
-export const allProducts: Product[] = [
+
+export const allProducts: AllProductType[] = [
   {
     slug: "product1",
     name: "Vel elit euismod",
@@ -25,7 +27,8 @@ export const allProducts: Product[] = [
     image: "/images/image1.png",
     rating: 4,
     category: ["featuredProducts", "latestProducts"],
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
   },
@@ -36,7 +39,8 @@ export const allProducts: Product[] = [
     oldPrice: 48.0,
     code: "M523412",
     image: "/images/image2.png",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 5,
@@ -49,7 +53,8 @@ export const allProducts: Product[] = [
     oldPrice: 30.0,
     code: "S546201",
     image: "/images/image3.png",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 3,
@@ -63,7 +68,8 @@ export const allProducts: Product[] = [
     code: "Z623201",
     image: "/images/image4.png",
     isSale: true,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -76,7 +82,8 @@ export const allProducts: Product[] = [
     oldPrice: 65.0,
     image: "/images/image5.png",
     rating: 4,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     isSale: false,
@@ -88,7 +95,8 @@ export const allProducts: Product[] = [
     price: 42.0,
     oldPrice: 66.0,
     image: "/images/image6.png",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -101,7 +109,8 @@ export const allProducts: Product[] = [
     price: 42.0,
     oldPrice: 66.0,
     image: "/images/image8.png",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -114,7 +123,8 @@ export const allProducts: Product[] = [
     price: 42.0,
     oldPrice: 65.0,
     image: "/images/image9.png",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -124,7 +134,8 @@ export const allProducts: Product[] = [
   {
     slug: "product9",
     name: "Cantilever chair",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -136,7 +147,8 @@ export const allProducts: Product[] = [
   {
     slug: "product10",
     name: "Cantilever chair",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -148,7 +160,8 @@ export const allProducts: Product[] = [
   {
     slug: "product11",
     name: "Cantilever chair",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -160,7 +173,8 @@ export const allProducts: Product[] = [
   {
     slug: "product12",
     name: "Cantilever chair",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -172,7 +186,8 @@ export const allProducts: Product[] = [
   {
     slug: "product13",
     name: "Sampara chair",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -184,7 +199,8 @@ export const allProducts: Product[] = [
   {
     slug: "product14",
     name: "Vel elit euismod",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -196,7 +212,8 @@ export const allProducts: Product[] = [
   {
     slug: "product15",
     name: "Ultrices condimentum imperdiet",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -208,7 +225,8 @@ export const allProducts: Product[] = [
   {
     slug: "product16",
     name: "Vitae suspendisse sed",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -220,7 +238,8 @@ export const allProducts: Product[] = [
   {
     slug: "product17",
     name: "Sed at fermentum",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -232,7 +251,8 @@ export const allProducts: Product[] = [
   {
     slug: "product18",
     name: "Fusce pellentesque at",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -244,7 +264,8 @@ export const allProducts: Product[] = [
   {
     slug: "product19",
     name: "Vestibulum magna laoreet",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -256,7 +277,8 @@ export const allProducts: Product[] = [
   {
     slug: "product20",
     name: "Sollicitudin amet orci",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -268,7 +290,8 @@ export const allProducts: Product[] = [
   {
     slug: "product21",
     name: "Ultrices mauris sit",
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     colors: ["Red", "Blue", "Green"],
     size: ["x", "xl", "2xl"],
     rating: 4,
@@ -284,7 +307,8 @@ export const allProducts: Product[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
     price: 26.0,
     oldPrice: 52.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 4,
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
@@ -298,7 +322,8 @@ export const allProducts: Product[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
     price: 26.0,
     oldPrice: 52.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 5,
     colors: ["bg-yellow-500", "bg-blue-500", "bg-pink-500"],
@@ -312,7 +337,8 @@ export const allProducts: Product[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
     price: 26.0,
     oldPrice: 52.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 3,
     colors: ["bg-pink-500", "bg-blue-500", "bg-yellow-500"],
@@ -326,7 +352,8 @@ export const allProducts: Product[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
     price: 26.0,
     oldPrice: 52.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 4,
     colors: ["bg-blue-500", "bg-yellow-500", "bg-pink-500"],
@@ -340,7 +367,8 @@ export const allProducts: Product[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
     price: 26.0,
     oldPrice: 52.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 5,
     colors: ["bg-pink-500", "bg-yellow-500", "bg-blue-500"],
@@ -354,7 +382,8 @@ export const allProducts: Product[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in pharetra non in justo.",
     price: 26.0,
     oldPrice: 52.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 4,
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
@@ -366,10 +395,11 @@ export const allProducts: Product[] = [
     name: "Dictum morbi",
     price: 26.0,
     oldPrice: 52.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 4,
-    descruption:
+    description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls1.jpg",
@@ -380,10 +410,11 @@ export const allProducts: Product[] = [
     name: "Sodales sit",
     price: 35.0,
     oldPrice: 40.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 5,
-    descruption:
+    description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls2.jpg",
@@ -394,10 +425,11 @@ export const allProducts: Product[] = [
     name: "Nibh varius",
     price: 105.0,
     oldPrice: 120.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 4,
-    descruption:
+    description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls3.jpg",
@@ -408,10 +440,11 @@ export const allProducts: Product[] = [
     name: "Mauris quis",
     price: 66.0,
     oldPrice: 75.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 3,
-    descruption:
+    description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls4.jpg",
@@ -422,10 +455,11 @@ export const allProducts: Product[] = [
     name: "Morbi sagittis",
     price: 90.0,
     oldPrice: 102.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 5,
-    descruption:
+    description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls5.jpg",
@@ -436,10 +470,11 @@ export const allProducts: Product[] = [
     name: "Ultricies venenatis",
     price: 64.0,
     oldPrice: 77.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 4,
-    descruption:
+    description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls6.jpg",
@@ -450,10 +485,11 @@ export const allProducts: Product[] = [
     name: "Scelerisque dignissim",
     price: 26.0,
     oldPrice: 52.0,
-    quantity: 0,
+    stock: 0,
+quantity: 0,
     size: ["x", "xl", "2xl"],
     rating: 2,
-    descruption:
+    description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.",
     colors: ["bg-yellow-500", "bg-pink-500", "bg-blue-500"],
     image: "/images/sls7.jpg",
@@ -472,207 +508,50 @@ export const filterProductsByCategory = (
   );
 };
 
-// data/product.ts
-export const offer = [
-  {
-    slug: "product35",
-    name: "Duis lectus est.",
-    color: "Brown",
-    size: "XL",
-    price: 12,
-    quantity: 1,
-    image: "/images/offer1.jpg",
-  },
-  {
-    slug: "product36",
-    name: "Sed placerat.",
-    color: "Brown",
-    size: "XL",
-    price: 12,
-    quantity: 1,
-    image: "/images/bag1a.jpg",
-  },
-  {
-    slug: "product37",
-    name: "Netus proin.",
-    color: "Brown",
-    size: "XL",
-    price: 12,
-    quantity: 1,
-    image: "/images/offer3.jpg",
-  },
-  {
-    slug: "product38",
-    name: "Platea in.",
-    color: "Brown",
-    size: "XL",
-    price: 12,
-    quantity: 1,
-    image: "/images/offer4.jpg",
-  },
-  
-];
+// data is fetching by CMS sanity
+export interface offerType {
+  slug: string;
+  title: string;
+  color: string;
+  size: string;
+  price: number;
+  stock: number;
+  image: string;
+}
+export interface blogPostType {
+  slug: string;
+  title: string;
+  date: string;
+  category: string;
+  author: string;
+  image: string;
+  excerpt: string;
+  description: string;
+  headlines: string;
+}
 
-export const blogs = [
-  {
-    slug: "slug40",
-    title: "Mauris at orci non vulputate diam tincidunt nec.",
-    date: "11 Aug 2023",
-    category: "Art",
-    author: "Surf Auxion",
-    image: "/images/mia.jpg",
-    excerpt:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.",
-    descruption:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, ",
-    headlines:
-      "“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat toamk risusu”",
-  },
-  {
-    slug: "slug41",
-    title: "Aenean vitae in aliquam ultrices lectus. Etiam.",
-    date: "8 Aug 2023",
-    category: "Travel",
-    author: "Jane Smith",
-    image: "/images/blog4.jpg",
-    excerpt:
-      "Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla.",
-    descruption:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, ",
-    headlines:
-      "“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat toamk risusu”",
-  },
-  {
-    slug: "slug42",
-    title: "Cras vehicula libero sed dignissim.",
-    date: "5 Aug 2023",
-    category: "Lifestyle",
-    author: "Emily Johnson",
-    image: "/images/blog5.jpg",
-    excerpt:
-      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
-    descruption:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, montes, lacus consequat integer viverra. Sit morbi etiam quam rhoncus. Velit in arcu platea donec vitae ante posuere malesuada.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Velit dapibus est, nunc, ",
-    headlines:
-      "“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo dictum sapien, amet, consequat toamk risusu”",
-  },
-  {
-    slug: "slug43",
-    title: "It is a long estabilished fact",
-    date: "August 09 2024",
-    category: "Lifestyle",
-    author: "Emily Johnson",
-    image: "/images/blog6.jpg",
-    excerpt:
-      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
-  },
-  {
-    slug: "slug44",
-    title: "It is a long estabilished fact",
-    date: "August 09 2024",
-    category: "Lifestyle",
-    author: "Emily Johnson",
-    image: "/images/blog7.jpg",
-    excerpt:
-      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
-  },
-  {
-    slug: "slug45",
-    title: "It is a long estabilished fact",
-    date: "August 09 2024",
-    category: "Lifestyle",
-    author: "Emily Johnson",
-    image: "/images/blog8.jpg",
-    excerpt:
-      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
-  },
-  {
-    slug: "slug46",
-    title: "It is a long estabilished fact",
-    date: "August 09 2024",
-    category: "Lifestyle",
-    author: "Emily Johnson",
-    image: "/images/blog9.jpg",
-    excerpt:
-      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
-  },
-  {
-    slug: "slug47",
-    title: "Elit ornare in enim mauris.",
-    date: "August 09 2024",
-    category: "Lifestyle",
-    author: "Emily Johnson",
-    image: "/images/sale1.jpg",
-    excerpt:
-      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
-  },
-  {
-    slug: "slug48",
-    title: "Elit ornare in enim mauris.",
-    date: "August 09 2024",
-    category: "Lifestyle",
-    author: "Emily Johnson",
-    image: "/images/sale2.jpg",
-    excerpt:
-      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
-  },
-  {
-    slug: "slug49",
-    title: "Elit ornare in enim mauris.",
-    date: "August 09 2024",
-    category: "Lifestyle",
-    author: "Emily Johnson",
-    image: "/images/sale3.jpg",
-    excerpt:
-      "Etiam aliquet commodo elit, sed consequat sapien vehicula at. Nulla facilisi. Cras vehicula libero sed dignissim.",
-  },
-  
-];
-export const blogProducts = [
-  {
-    slug: "product50",
-    name: "Quam sed",
-    price: 22,
-    oldPrice: 28,
-    rating: 4,
-    image: "/images/blogProduct1.jpg"
-  },
-  {
-    slug: "product51",
-    name: "Tristique sed",
-    price: 35,
-    oldPrice: 40,
-    rating: 4,
-    image: "/images/blogProduct2.jpg"
-  },
-  {
-    slug: "product52",
-    name: "A etiam",
-    price: 72,
-    oldPrice: 80,
-    rating: 5,
-    image: "/images/blogProduct3.jpg"
-  },
-  {
-    slug: "product53",
-    name: "Mi nisi",
-    price: 46,
-    oldPrice: 53,
-    rating: 3,
-    image: "/images/blogProduct4.jpg"
-  },
-]
+export interface blogProductType {
+  slug: string;
+  name: string;
+  price: number;
+  oldPrice: number;
+  rating: number;
+  image: string;
+}
+
 
 export interface CartContextType {
-  cartItems: Product[];
-  wishlistItems: Product[];
-  addToCart: (product: Product) => void;
-  addToWishlist: (product: Product) => void;
-  removeFromCart: (slug: string) => void;
-  removeFromWishlist: (slug: string) => void;
+  cartItems: AllProductType[]; 
+  addToCart: (product: AllProductType) => void; 
+  removeFromCart: (slug: string) => void; 
   clearCart: () => void;
-  updateQuantity: (slug: string, quantity: number) => void;
-  updateQuantityWishlist: (slug: string, quantity: number) => void;
+  updateCartItemQuantity: (slug: string, quantity: number) => void; 
   getTotalPrice: () => number;
-  calculateShipping: (country: string, city: string) => number;
+  calculateShipping: (country:string, city:string)=> Promise<number>;
+  wishlistItems: AllProductType[];
+  addToWishlist: (product: AllProductType) => void;
+  removeFromWishlist: (slug: string) => void;
+  updateWishlistItemQuantity: (slug: string, quantity: number) => void;
 }
+
+

@@ -2,12 +2,41 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { filterProductsByCategory } from "../../data/products";
+import { AllProductType } from "../../data/products";
 import { useCart } from "@/context/CartContext";
-
+import { client } from "@/sanity/lib/client";
+import { useEffect, useState } from "react";
+import { urlFor } from "@/sanity/lib/image";
+const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
+  const query = `*[_type == "allproducts" && "${category}" in category]{
+      slug,
+      name,
+      price,
+      code,
+      image,
+      isSale,
+      oldPrice,
+      category,
+      stock,
+    }`
+  const allProducts = await client.fetch(query)
+  return allProducts
+  
+}
 const LatestProduct = () => {
   const {addToCart} = useCart()
-  const latestProducts = filterProductsByCategory("latestProducts");
+  const [products, setProducts] = useState<AllProductType[]>([])
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const products = await fetchProductsbyCategory("latestProducts")
+          setProducts(products)
+        } catch (error) {
+          console.error("Error fetching products:", error)
+        }
+      }
+      fetchProducts()
+    }, [])
   return (
     <div className="px-4 md:px-28 py-6">
       <div className="flex flex-col items-center gap-6">
@@ -52,14 +81,14 @@ const LatestProduct = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
-        {latestProducts.map((product) => (
+        {products.map((product) => (
           <div
             key={product.slug}
             className="bg-white shadow-md group rounded-lg p-4 hover:shadow-lg transition flex flex-col justify-between"
           >
             <div className="relative h-full p-6 bg-[#EEEFFB]">
               <Image
-                src={product.image}
+                src={urlFor(product.image).url()}
                 alt={product.name}
                 width={300}
                 height={300}

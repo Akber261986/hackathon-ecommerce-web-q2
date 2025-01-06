@@ -2,12 +2,39 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { filterProductsByCategory } from "../../../../data/products";
+import { AllProductType } from "../../../../data/products";
 import { useCart } from "@/context/CartContext";
-
+import { useEffect, useState } from "react";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
+  const query = `*[_type == "allproducts" && "${category}" in category]{
+      slug,
+      name,
+      price,
+      image,
+      oldPrice,
+      category,
+      stock,
+    }`
+  const allProducts = await client.fetch(query)
+  return allProducts
+  
+}
 const ShopingGrid = () => {
   const {addToCart} = useCart()
-  const shopGridProducts = filterProductsByCategory("shopGrid");
+  const [products, setProducts] = useState<AllProductType[]>([])
+    useEffect(() => {
+      const fetchProducts = async () => {
+        try {
+          const products = await fetchProductsbyCategory("shopGrid")
+          setProducts(products)
+        } catch (error) {
+          console.error("Error fetching products:", error)
+        }
+      }
+      fetchProducts()
+    }, [])
   return (
     <div className="font-sans text-[#151875]">
       <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -80,7 +107,7 @@ const ShopingGrid = () => {
       </div>
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {shopGridProducts.map((product) => (
+          {products.map((product) => (
             <div
               key={product.slug}
               className="bg-white group p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow"
@@ -88,7 +115,7 @@ const ShopingGrid = () => {
               {/* Image */}
               <div className="relative p-4 h-48 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
                 <Image
-                  src={product.image}
+                  src={urlFor(product.image).url()}
                   alt={product.name}
                   width={150}
                   height={200}
