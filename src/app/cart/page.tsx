@@ -4,7 +4,7 @@ import { useCart } from "@/context/CartContext";
 import { urlFor } from "@/sanity/lib/image";
 import router from "next/dist/client/router";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Cart = () => {
   const {
@@ -15,20 +15,11 @@ const Cart = () => {
     removeFromCart,
     calculateShipping,
   } = useCart();
- 
+
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [shippingCosts, setShippingCosts] = useState(0);
   // const [message, setMessage] = useState<string>("");
-  
-  useEffect(() => {
-    if (country && city) {
-      (async () => {
-        const shippingCost = await calculateShipping(country, city);
-        setShippingCosts(shippingCost);
-      })();
-    }
-  }, [country, city]);
 
   // useEffect(() => {
   //   if (shippingCost > 0) {
@@ -189,7 +180,7 @@ const Cart = () => {
             </p>
             <p className="flex justify-between mb-4">
               <span>Totals:</span>
-              <span>${(getTotalPrice() + shippingCosts)}</span>
+              <span>${getTotalPrice() + shippingCosts}</span>
             </p>
             <button
               onClick={async () => {
@@ -224,19 +215,19 @@ const Cart = () => {
               className="w-full mb-4 px-3 py-2 border rounded-md"
             />
             <button
-  onClick={async () => {
-    const cost = await calculateShipping(country, city);
-    
-    if (cost > 0) {
-      alert(`Shipping cost calculated: $${cost}`);
-    } else {
-      alert("Failed to calculate shipping");
-    }
-  }}
-  className="w-full py-2 bg-blue-500 text-white rounded-md"
->
-  Calculate Shipping
-</button>
+              onClick={async () => {
+                const cost = await calculateShipping(country, city);
+
+                if (cost > 0) {
+                  alert(`Shipping cost calculated: $${cost}`);
+                } else {
+                  alert("Failed to calculate shipping");
+                }
+              }}
+              className="w-full py-2 bg-blue-500 text-white rounded-md"
+            >
+              Calculate Shipping
+            </button>
           </div>
         </div>
       </div>

@@ -31,7 +31,6 @@ const BlogPage = async () => {
     image,
   }`
   const offer = await client.fetch(quaryOffer);
-  console.log(offer);
   return (
     <div className="text-[#151875] font-sans">
       <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">

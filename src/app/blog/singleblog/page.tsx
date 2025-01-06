@@ -40,7 +40,6 @@ const quaryOffer = `*[_type == "offer"]{
   image,
 }`
 const offer = await client.fetch(quaryOffer);
-console.log(offer);
 
 
   return (

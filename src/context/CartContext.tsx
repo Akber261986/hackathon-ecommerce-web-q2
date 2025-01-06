@@ -8,7 +8,6 @@ import React, {
   ReactNode,
 } from "react";
 import { AllProductType, CartContextType } from "../../data/products";
-import { error } from "console";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 

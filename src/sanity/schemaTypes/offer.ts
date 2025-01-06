@@ -1,4 +1,4 @@
-export default {
+export const offer = {
     name: "offer",
     title: "Offer",
     type: "document",

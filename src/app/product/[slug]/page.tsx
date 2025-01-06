@@ -41,7 +41,6 @@ export default function ProductDetailsPage({ params }: ProductDetailsProps) {
   const { addToCart } = useCart();
   const randomNum = Math.floor(Math.random() * 10);
   const randomNum1 = Math.floor(Math.random() * 2);
-  console.log(randomNum1);
 
   const { slug } = params;
   const [product, setProduct] = useState<AllProductType | null>(null);
