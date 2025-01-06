@@ -13,7 +13,7 @@ const fetchProductsbyCategory = async (category:string | string[]): Promise<AllP
       name,
       price,
       code,
-      image,
+      "image": image.asset->url,
       isSale,
       oldPrice,
       category,

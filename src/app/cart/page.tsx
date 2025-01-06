@@ -15,6 +15,7 @@ const Cart = () => {
     removeFromCart,
     calculateShipping,
   } = useCart();
+console.log(cartItems);
 
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
