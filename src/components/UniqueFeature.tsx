@@ -1,15 +1,26 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
-
-const UniqueFeature = () => {
+import { client } from "@/sanity/lib/client";
+const fetchData = async () => {
+  const quary = `*[_type == "product" && "Stylish Golden Metal Legs Mint Blue Fabric Velvet Sofa Leisure Armchair" == name][0]{
+       _id,
+       name,
+       price,
+       "image": image.asset->url,
+   }`
+   const res = await client.fetch(quary)
+   return res
+ }
+const UniqueFeature = async () => {
+  const product = await fetchData()
   return (
     <div className="flex flex-col md:flex-row items-center justify-center bg-[#F2F0FF]">
       <div>
-        <Image src={"/images/sofa.png"} alt="sofa" width={600} height={600} />
+        <Image src={product.image} alt="sofa" width={600} height={600} />
       </div>
       <div className="space-y-7 px-10">
         <h1 className="text-3xl text-[#151875] font-sans font-bold">
-          Unique Features Of leatest & Trending Poducts
+          {product.name}
         </h1>
         <div className="text-[#ACABC3] space-y-4">
           <div className="flex items-center gap-4">
@@ -27,7 +38,7 @@ const UniqueFeature = () => {
         </div>
         <div className="flex  items-center gap-4">
         <Button variant={"destructive"} className="py-6">Add To Cart</Button>
-        <p className="text-[#151875] font-bold">B&B Italian Sofa <br />$32.00</p>
+        <p className="text-[#151875] font-bold">B&B Italian Sofa <br />${product.price}.00</p>
         </div>
       </div>
     </div>

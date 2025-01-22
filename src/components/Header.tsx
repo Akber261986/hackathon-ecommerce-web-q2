@@ -4,15 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import LanguageSelector from "./LanguageSelector";
 
 const Header = () => {
-  const { cartItems } = useCart();
+  const { cartItems, wishlistItems } = useCart();
+  const { t } = useLanguage();
   const [show, setshow] = useState<boolean>(false);
   const [nav, setNav] = useState<string>("");
 
@@ -51,20 +54,7 @@ const Header = () => {
           </div>
         </div>
         <div className="flex items-center gap-4 py-3">
-          <select
-            id="sortBy"
-            className="p-1 rounded text-sm bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500"
-          >
-            <option value="bestMatch" className="text-black">
-              English
-            </option>
-            <option value="priceLowHigh" className="text-black">
-              Sindhi
-            </option>
-            <option value="priceHighLow" className="text-black">
-              Urdu
-            </option>
-          </select>
+          <LanguageSelector />
           <div className="flex items-center gap-1">
             <select
               id="sortBy"
@@ -85,20 +75,32 @@ const Header = () => {
             <p>Login</p>
             <Image src={"/icons/user.svg"} alt="env" width={16} height={16} />
           </Link>
-          <div className="flex items-center gap-1">
-            <p className="hidden sm:block">Wishlist</p>
-            <Image src={"/icons/heart.svg"} alt="env" width={20} height={20} />
-          </div>
-          <div className="flex items-center gap-1 relative">
-            <Link href={"/cart"}>
+          <Link href={"/wishlist"}>
+            <div className="flex items-center gap-1 relative">
+              <p className="hidden sm:block">Wishlist</p>
+              {wishlistItems.length > 0 && (
+                <div className="w-5 h-5 bg-[#FB2E86] text-white text-center rounded-full absolute -right-3 -top-2">
+                  {wishlistItems.length}
+                </div>
+              )}
+              <Image
+                src={"/icons/heart.svg"}
+                alt="env"
+                width={20}
+                height={20}
+              />
+            </div>
+          </Link>
+          <Link href={"/cart"}>
+            <div className="flex items-center gap-1 relative">
               {cartItems.length > 0 && (
                 <div className="w-5 h-5 bg-[#FB2E86] text-white text-center rounded-full absolute -right-2 -top-2">
                   {cartItems.length}
                 </div>
               )}
               <Image src={"/icons/cart.svg"} alt="env" width={24} height={24} />
-            </Link>
-          </div>
+            </div>
+          </Link>
         </div>
       </div>
 
@@ -174,7 +176,7 @@ const Header = () => {
             </li>
             <li>
               <Link
-                href={"/"}
+                href={"/all"}
                 className="group flex items-center gap-1 hover:text-[#FB2E86]"
               >
                 <p>Products</p>

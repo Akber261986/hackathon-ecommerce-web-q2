@@ -2,22 +2,20 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { AllProductType } from "../../data/products";
+import { Product } from "../../data/products";
 import { useCart } from "@/context/CartContext";
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
-const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
-  const query = `*[_type == "allproducts" && "${category}" in category]{
-      slug,
+const fetchProductsbyCategory = async () => {
+  const query = `*[_type == "product" && category == "Chair"][3...9]{
+      _id,
       name,
       price,
-      code,
       "image": image.asset->url,
-      isSale,
-      oldPrice,
+      discountPercentage,
       category,
-      stock,
+      stockLevel,
     }`
   const allProducts = await client.fetch(query)
   return allProducts
@@ -25,11 +23,11 @@ const fetchProductsbyCategory = async (category:string | string[]): Promise<AllP
 }
 const LatestProduct = () => {
   const {addToCart} = useCart()
-  const [products, setProducts] = useState<AllProductType[]>([])
+  const [products, setProducts] = useState<Product[]>([])
     useEffect(() => {
       const fetchProducts = async () => {
         try {
-          const products = await fetchProductsbyCategory("latestProducts")
+          const products = await fetchProductsbyCategory()
           setProducts(products)
         } catch (error) {
           console.error("Error fetching products:", error)
@@ -83,7 +81,7 @@ const LatestProduct = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
         {products.map((product) => (
           <div
-            key={product.slug}
+            key={product._id}
             className="bg-white shadow-md group rounded-lg p-4 hover:shadow-lg transition flex flex-col justify-between"
           >
             <div className="relative h-full p-6 bg-[#EEEFFB]">
@@ -95,7 +93,7 @@ const LatestProduct = () => {
                 className="w-full object-cover rounded-t-lg"
               />
               <div className="absolute bottom-2 left-2 flex flex-col gap-2 invisible group-hover:visible">
-                <button onClick={()=>addToCart(product)} className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
+                <button onClick={()=> addToCart(product)} className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
                   <Image
                     src={"/icons/cart-b.svg"}
                     alt={"heart"}
@@ -105,7 +103,7 @@ const LatestProduct = () => {
                 </button>
 
                 <Link
-                  href={`/product/${product.slug}`}
+                  href={`/product/${product._id}`}
                   className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200"
                 >
                   <button>
@@ -127,19 +125,19 @@ const LatestProduct = () => {
                   />
                 </button>
               </div>
-              {product.isSale && (
+              {/* {product.isSale && (
                 <span className="absolute top-10 left-0 bg-[#151875] text-white px-8 -rotate-45 py-1 text-xs rounded-s-3xl rounded-e-3xl rounded-se-none rounded-bl-none">
                   Sale
                 </span>
-              )}
+              )} */}
             </div>
             <div className="mt-4 text-center flex items-center justify-between ">
               <h3 className="text-lg font-semibold ">{product.name}</h3>
               <div className="flex items-center text-sm gap-2 ">
-                <span className="font-bold">${product.price.toFixed(2)}</span>
-                {product.oldPrice && (
+                <span className="font-bold">${product.price}.00</span>
+                {product.discountPercentage && (
                   <span className="line-through text-[#FB2448]">
-                    ${product.oldPrice.toFixed(2)}
+                    ${(product.discountPercentage)}.00
                   </span>
                 )}
               </div>

@@ -2,8 +2,8 @@
 
 import { useCart } from "@/context/CartContext";
 import { urlFor } from "@/sanity/lib/image";
-import router from "next/dist/client/router";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 const Cart = () => {
@@ -13,9 +13,7 @@ const Cart = () => {
     getTotalPrice,
     clearCart,
     removeFromCart,
-    calculateShipping,
   } = useCart();
-console.log(cartItems);
 
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -68,11 +66,11 @@ console.log(cartItems);
             </thead>
             <tbody>
               {cartItems.map((item) => (
-                <tr key={item.slug} className="text-center">
+                <tr key={item._id} className="text-center">
                   <td className="p-2 md:p-4 border flex flex-col md:flex-row items-center space-x-4">
                     <div className="relative">
                       <div
-                        onClick={() => removeFromCart(item.slug)}
+                        onClick={() => removeFromCart(item._id)}
                         className="w-4 h-4 flex items-center justify-center rounded-full bg-black text-white absolute -right-6 md:-right-3 md:-top-3 cursor-pointer"
                       >
                         x
@@ -88,18 +86,18 @@ console.log(cartItems);
                     <div>
                       <p className="font-semibold">{item.name}</p>
                       <p className="sm:hidden">${item.price}.00</p>
-                      <p className="text-sm text-start text-gray-500">
+                      {/* <p className="text-sm text-start text-gray-500">
                         {item.colors?.find((color) => (
                           <span
                             key={color}
                             className={`w-3 h-3 ${color[1]} rounded-full`}
                           ></span>
                         ))}
-                      </p>
+                      </p> */}
                     </div>
                   </td>
                   <td className="p-4 border hidden sm:table-cell">
-                    ${item.price.toFixed(2)}
+                    ${item.price}.00
                   </td>
                   <td className="p-2 border">
                     <div className="flex flex-col-reverse sm:flex-row items-center justify-center text-xl text-[#BEBFC2]">
@@ -107,11 +105,11 @@ console.log(cartItems);
                       <button
                         onClick={() => {
                           const currentItem = cartItems.find(
-                            (cartItem) => cartItem.slug === item.slug
+                            (cartItem) => cartItem._id === item._id
                           );
                           if (currentItem && currentItem.quantity > 1) {
                             updateCartItemQuantity(
-                              item.slug,
+                              item._id,
                               currentItem.quantity - 1
                             );
                           }
@@ -130,14 +128,14 @@ console.log(cartItems);
                       <button
                         onClick={() => {
                           const currentItem = cartItems.find(
-                            (cartItem) => cartItem.slug === item.slug
+                            (cartItem) => cartItem._id === item._id
                           );
                           if (
                             currentItem &&
-                            currentItem.quantity < item.stock
+                            currentItem.quantity < item.stockLevel
                           ) {
                             updateCartItemQuantity(
-                              item.slug,
+                              item._id,
                               currentItem.quantity + 1
                             );
                           }
@@ -150,7 +148,7 @@ console.log(cartItems);
                   </td>
 
                   <td className="p-4 border">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    ${(item.price * item.quantity)}.00
                   </td>
                 </tr>
               ))}
@@ -170,30 +168,31 @@ console.log(cartItems);
         </div>
 
         {/* Cart Totals */}
-        <div className="p-6 bg-gray-50 rounded-md shadow-md flex flex-col justify-between">
-          <div>
+        <div className="flex flex-col justify-between gap-4">
             <h2 className="text-xl font-bold mb-4">Cart Totals</h2>
+          <div className="p-6 bg-gray-50 rounded-md shadow-md space-y-6">
             <p className="flex justify-between mb-2">
               <span>Subtotal:</span> <span>${getTotalPrice()}</span>
             </p>
-            <p className="flex justify-between mb-2">
+            {/* <p className="flex justify-between mb-2">
               <span>Shipping:</span> <span>${shippingCosts}</span>
-            </p>
+            </p> */}
             <p className="flex justify-between mb-4">
               <span>Totals:</span>
               <span>${getTotalPrice() + shippingCosts}</span>
             </p>
-            <button
-              onClick={async () => {
-                const shippingCost = await calculateShipping(country, city);
-                setShippingCosts(shippingCost); // Update the state with the calculated cost
-                // Redirect to the checkout page if needed
-                router.push("/checkout");
-              }}
-              className="w-full py-2 bg-green-500 text-white rounded-md"
-            >
-              Proceed To Checkout
-            </button>
+            <p className="flex items-center  text-sm text-[#C1C8E1]">
+                  <input
+                    type="checkbox"
+                    className="mr-2 accent-[#22c55e] focus:ring-[#22c55e] checked:text-[#fff]"
+                  />
+                  Shipping & taxes calculated at checkout.
+                </p>
+            <Link href={"chekout"}>
+              <button className="w-full py-2 bg-green-500 text-white rounded-md mt-6">
+                Proceed To Checkout
+              </button>
+            </Link>
           </div>
           {/* Shipping Calculator */}
           <div className="p-6 bg-gray-50 rounded-md shadow-md">
@@ -215,18 +214,7 @@ console.log(cartItems);
               placeholder="Postal Code"
               className="w-full mb-4 px-3 py-2 border rounded-md"
             />
-            <button
-              onClick={async () => {
-                const cost = await calculateShipping(country, city);
-
-                if (cost > 0) {
-                  alert(`Shipping cost calculated: $${cost}`);
-                } else {
-                  alert("Failed to calculate shipping");
-                }
-              }}
-              className="w-full py-2 bg-blue-500 text-white rounded-md"
-            >
+            <button className="w-full py-2 bg-blue-500 text-white rounded-md">
               Calculate Shipping
             </button>
           </div>

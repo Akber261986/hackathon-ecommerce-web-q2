@@ -1,47 +1,43 @@
-import { NextResponse } from "next/server";
 import { client } from "@/sanity/lib/client";
+import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const category = searchParams.get("category");
+  const page = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || 10;
 
-  const query = category
-    ? `*[_type == "allproducts" && "${category}" in category]{
-        slug,
-        name,
-        price,
-        oldPrice,
-        code,
-        image,
-        rating,
-        category,
-        isSale,
-        description,
-        colors,
-        stock,
-        size,
-      }`
-    : `*[_type == "allproducts"]{
-        slug,
-        name,
-        price,
-        oldPrice,
-        code,
-        image,
-        rating,
-        category,
-        isSale,
-        description,
-        colors,
-        stock,
-        size,
-      }`;
+  const start = (page - 1) * limit;
+  const end = start + limit;
 
   try {
-    const products = await client.fetch(query);
-    return NextResponse.json(products);
+    // Fetch paginated products from Sanity
+    const products = await client.fetch(
+      `*[_type == "product"] | order(_createdAt desc) [${start}...${end}] {
+        _id,
+        name,
+        "image": image.asset->url,
+        price
+      }`
+    );
+
+    // Fetch total count of products
+    const totalCount = await client.fetch(
+      `count(*[_type == "product"])`
+    );
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return NextResponse.json({
+      products,
+      totalPages,
+      currentPage: page,
+    });
   } catch (error) {
     console.error("Error fetching products:", error);
-    return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Error fetching products" },
+      { status: 500 }
+    );
   }
 }
+

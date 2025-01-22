@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Josefin_Sans, Lato } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
+import LanguageProvider from "@/context/LanguageContext";
 
 const josefinSans = Josefin_Sans({
   weight: ["400", "700"],
@@ -46,11 +47,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CartProvider>
-          <Header />
-          {children}
-          <Footer />
-        </CartProvider>
+        <LanguageProvider>
+          <CartProvider>
+            <Header />
+            {children}
+            <Footer />
+          </CartProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -74,10 +74,15 @@ export default function CheckoutPage() {
                     placeholder="Apartment, suite, etc. (optional)"
                     className="w-full border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
                   />
+                  <input
+                    type="text"
+                    placeholder="City"
+                    className="w-full border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                  />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
                     <input
                       type="text"
-                      placeholder="City"
+                      placeholder="Country"
                       required
                       className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
                     />
@@ -143,7 +148,7 @@ export default function CheckoutPage() {
                   />
                   Shipping & taxes calculated at checkout.
                 </label>
-                <Link href={""}>
+                <Link href={"ordercompeleted"}>
                   <button
                     type="submit"
                     className="w-full mt-4 bg-green-500 text-white py-2 rounded-md font-semibold hover:bg-green-600 transition"
