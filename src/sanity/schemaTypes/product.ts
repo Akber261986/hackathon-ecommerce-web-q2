@@ -64,6 +64,11 @@ import { defineField, defineType } from "sanity";
       type: "number",
     }),
     defineField({
+      name: "quantity",
+      title: "Quantity",
+      type: "number",
+    }),
+    defineField({
         name: "image",
         title: "Image",
         type: "image",

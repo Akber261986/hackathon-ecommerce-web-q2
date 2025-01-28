@@ -13,6 +13,7 @@ export interface ProductType
     colors: string[];
     tags: string | string[];
     stockLevel: number;
+    quantity: number;
   };
 
 // data is fetching by CMS sanity
@@ -54,12 +55,12 @@ export interface CartContextType {
   addToCart: (product: ProductType) => void; 
   removeFromCart: (_id: string) => void; 
   clearCart: () => void;
-  updateCartItemstockLevel: (_id: string, stockLevel: number) => void; 
+  updateCartItemQuantity: (_id: string, stockLevel: number) => void; 
   getTotalPrice: () => number;
   wishlistItems: ProductType[];
   addToWishlist: (product: ProductType) => void;
   removeFromWishlist: (_id: string) => void;
-  updateWishlistItemstockLevel: (_id: string, stockLevel: number) => void;
+  updateWishlistItemQuantity: (_id: string, stockLevel: number) => void;
   isInCart: (_id: string) => boolean;
   isInWishlist: (_id: string) => boolean;
 }

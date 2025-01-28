@@ -4,21 +4,19 @@ import { useCart } from "@/context/CartContext";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import Link from "next/link";
-
 const Cart = () => {
   const {
     cartItems,
-    updateCartItemstockLevel,
+    updateCartItemQuantity,
     getTotalPrice,
     clearCart,
     removeFromCart,
   } = useCart();
 
-
   return (
     <div className="text-[#101750] font-sans">
-      {/* <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
-        {message && (
+      <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
+        {/* {message && (
           <div
             className={`text-center text-green-500 bg-[#cef5ce] dark:bg-[#363333] fixed right-4 top-10 transform duration-500 ease-out origin-right ${message ? "scale-100" : ""} rounded-lg shadow-md dark:shadow-[#a6ff95] font-bold px-8 md:px-10 py-5 z-10 flex gap-4`}
           >
@@ -30,14 +28,14 @@ const Cart = () => {
             />
             <p className="scrolLineGreen">{message}</p>
           </div>
-        )}
+        )} */}
         <h1 className="text-4xl font-bold">Shopping Cart</h1>
         <p className="flex gap-2">
           <span>Home.</span>
           <span>Page.</span>
           <span className="text-[#FB2E86]">Shopping Cart</span>
         </p>
-      </div> */}
+      </div>
       <div className="p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items Table */}
         <div className="lg:col-span-2">
@@ -46,7 +44,7 @@ const Cart = () => {
               <tr className="bg-gray-100 ">
                 <th className="p-4 border">Product</th>
                 <th className="p-4 border hidden sm:block">Price</th>
-                <th className="p-4 border">stockLevel</th>
+                <th className="p-4 border">Quantity</th>
                 <th className="p-4 border">Total</th>
               </tr>
             </thead>
@@ -72,14 +70,15 @@ const Cart = () => {
                     <div>
                       <p className="font-semibold">{item.name}</p>
                       <p className="sm:hidden">${item.price}.00</p>
-                      <p className="text-sm text-start text-gray-500">
-                        {item.colors.find((color) => (
-                          <span
+                      <div className="text-sm text-start text-gray-500 flex items-center gap-2 py-2">
+                        <p>Color: </p>
+                        {item.colors.map((color) => (
+                          <div
                             key={color}
-                            className={`w-3 h-3 bg-[${color[1]}] rounded-full`}
-                          ></span>
+                            className={`w-3 h-3 bg-[${color}] rounded-full`}
+                          ></div>
                         ))}
-                      </p>
+                      </div>
                     </div>
                   </td>
                   <td className="p-4 border hidden sm:table-cell">
@@ -93,21 +92,21 @@ const Cart = () => {
                           const currentItem = cartItems.find(
                             (cartItem) => cartItem._id === item._id
                           );
-                          if (currentItem && currentItem.stockLevel > 1) {
-                            updateCartItemstockLevel(
+                          if (currentItem && currentItem.quantity > 1) {
+                            updateCartItemQuantity(
                               item._id,
-                              currentItem.stockLevel - 1
+                              currentItem.quantity - 1
                             );
                           }
                         }}
-                        className="bg-[#E7E7EF] w-10 h-10 content-center"
+                        className="bg-[#bebec4] text-[#737374] w-10 h-10 text text-4xl"
                       >
-                        -
+                       -
                       </button>
 
-                      {/* Display Current stockLevel */}
-                      <span className="bg-gray-100 w-10 sm:w-20 h-10 flex items-center justify-center">
-                        {item.stockLevel}
+                      {/* Display Current Quantity */}
+                      <span className="bg-[#a4a4a5] text-white w-10 sm:w-20 h-10 flex items-center justify-center">
+                        {item.quantity}
                       </span>
 
                       {/* Increment Button */}
@@ -118,15 +117,15 @@ const Cart = () => {
                           );
                           if (
                             currentItem &&
-                            currentItem.stockLevel < item.stockLevel
+                            currentItem.quantity < item.stockLevel
                           ) {
-                            updateCartItemstockLevel(
+                            updateCartItemQuantity(
                               item._id,
-                              currentItem.stockLevel + 1
+                              currentItem.quantity + 1
                             );
                           }
                         }}
-                        className="bg-[#E7E7EF] w-10 h-10 content-center"
+                        className="bg-[#bebec4] text-[#737374] w-10 h-10 content-center"
                       >
                         +
                       </button>
@@ -134,7 +133,7 @@ const Cart = () => {
                   </td>
 
                   <td className="p-4 border">
-                    ${(item.price * item.stockLevel)}.00
+                    ${(item.price * item.quantity)}.00
                   </td>
                 </tr>
               ))}
@@ -165,7 +164,7 @@ const Cart = () => {
             </p> */}
             <p className="flex justify-between mb-4">
               <span>Totals:</span>
-              <span>${getTotalPrice() }</span>
+              <span>${getTotalPrice()}</span>
             </p>
             <p className="flex items-center  text-sm text-[#C1C8E1]">
                   <input
@@ -184,11 +183,13 @@ const Cart = () => {
           <div className="p-6 bg-gray-50 rounded-md shadow-md">
             <h2 className="text-xl font-bold mb-4">Calculate Shipping</h2>
             <input
+              // onChange={(e) => setCountry(e.target.value)}
               type="text"
               placeholder="Pakistan, Bangladesh"
               className="w-full mb-3 px-3 py-2 border rounded-md"
             />
             <input
+              // onChange={(e) => setCity(e.target.value)}
               type="text"
               placeholder="Karachi, Dhaka"
               className="w-full mb-3 px-3 py-2 border rounded-md"

@@ -18,7 +18,11 @@ export async function GET(request: Request) {
         "image": image.asset->url,
         price,
         discountedPrice,
-        productCode
+        productCode,
+        colors,
+        stockLevel,
+        rating,
+        quantity,
       }`
     );
 

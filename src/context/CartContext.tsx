@@ -7,7 +7,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { ProductType, CartContextType } from "@/app/Types";
+import { ProductType, CartContextType } from "../app/Types";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -38,11 +38,11 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const existingProduct = cartItems.find((item) => item._id  === product._id);
 
     if (existingProduct) {
-      if (existingProduct.stockLevel < product.stockLevel) {
+      if (existingProduct.quantity < product.stockLevel) {
         setCartItems((prev) =>
           prev.map((item) =>
             item._id === product._id
-              ? { ...item, stockLevel: item.stockLevel + 1 }
+              ? { ...item, quantity: item.quantity + 1 }
               : item
           )
         );
@@ -51,7 +51,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         alert("stockLevel limit reached for this product.");
       }
     } else {
-      setCartItems((prev) => [...prev, { ...product, stockLevel: 1 }]);
+      setCartItems((prev) => [...prev, { ...product, quantity: 1 }]);
       await updateSanitystockLevel(product._id, product.stockLevel - 1); // Update Sanity stockLevel
     }
   };
@@ -65,14 +65,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const removeFromCart = async (_id: string) => {
     const productToRemove = cartItems.find((item) => item._id === _id);
     if (productToRemove) {
-      await updateSanitystockLevel(_id, productToRemove.stockLevel + productToRemove.stockLevel); // Restore Sanity stockLevel
+      await updateSanitystockLevel(_id, productToRemove.stockLevel + productToRemove.quantity); // Restore Sanity stockLevel
     }
     setCartItems((prevItems) => prevItems.filter((item) => item._id !== _id));
   };
 
   const clearCart = async () => {
     for (const item of cartItems) {
-      await updateSanitystockLevel(item._id, item.stockLevel + item.stockLevel); // Restore stockLevel for all items
+      await updateSanitystockLevel(item._id, item.stockLevel + item.quantity); // Restore stockLevel for all items
     }
     setCartItems([]);
   };
@@ -98,24 +98,25 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const updateCartItemstockLevel = (_id: string, stockLevel: number) => {
+  const updateCartItemQuantity = (_id: string, quantity: number) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item._id === _id ? { ...item, stockLevel: Math.max(1, stockLevel) } : item
+        item._id === _id ? { ...item, quantity: Math.max(1, quantity) } : item
       )
     );
   };
-  
-  const updateWishlistItemstockLevel = (_id: string, stockLevel: number) => {
+
+ 
+  const updateWishlistItemQuantity = (_id: string, quantity: number) => {
     setWishlistItems((prevItems) =>
       prevItems.map((item) =>
-        item._id === _id ? { ...item, stockLevel: Math.max(1, stockLevel) } : item
+        item._id === _id ? { ...item, quantity: Math.max(1, quantity) } : item
       )
     );
   };
 
   const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.stockLevel, 0);
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
  const updateSanitystockLevel = async (_id: string, updatedstockLevel: number) => {
@@ -146,8 +147,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addToWishlist,
         removeFromWishlist,
         getTotalPrice,
-        updateCartItemstockLevel,
-        updateWishlistItemstockLevel,
+        updateCartItemQuantity,
+        updateWishlistItemQuantity,
         isInCart,
         isInWishlist,
       }}
