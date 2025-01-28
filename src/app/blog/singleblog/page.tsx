@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { blogPostType, offerType, blogProductType } from "../../../../data/products";
+import { blogPostType, offerType, blogProductType } from "../../Types";
 import { client } from "@/sanity/lib/client";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 
 const BlogPage = async () => {
   const quary =  `*[_type == "blog"]{
-    slug,
+    _id,
     title,
     price,
     oldPrice,
@@ -17,7 +17,7 @@ const BlogPage = async () => {
   const blogProducts = await client.fetch(quary);
   
   const quaryblogpost = `*[_type == "blogPost"][]{
-  slug,
+  _id,
   title,
   date,
   category,
@@ -31,7 +31,7 @@ const blogPost = await client.fetch(quaryblogpost);
 const recentPost = blogPost.slice(3, 7);
 const saleProducts = blogPost.slice(7);
 const quaryOffer = `*[_type == "offer"]{
-  slug,
+  _id,
   title,
   color,
   size,
@@ -56,7 +56,7 @@ const offer = await client.fetch(quaryOffer);
         {/* Blog Posts Section */}
         <div className="lg:w-2/3">
           {blogPost.slice(9).map((blog:blogPostType) => (
-            <div key={blog.slug} className="mb-10">
+            <div key={blog._id} className="mb-10">
               <Image
                 src={urlFor(blog.image).url()}
                 alt={blog.title}
@@ -137,10 +137,10 @@ const offer = await client.fetch(quaryOffer);
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 mt-6 py-6">
             {blogProducts.map((product:blogProductType) => (
-              <div key={product.slug}>
+              <div key={product._id}>
                 <Image
                   src={urlFor(product.image).url()}
-                  alt={product.slug}
+                  alt={product.name}
                   width={210}
                   height={250}
                   className="w-full sm:w-52 object-cover rounded-md"
@@ -371,7 +371,7 @@ const offer = await client.fetch(quaryOffer);
             <h3 className="text-lg font-bold mb-2">Recent Posts</h3>
             <ul className="space-y-2 text-[#3F509E]">
               {recentPost.map((blog:blogPostType) => (
-                <li key={blog.slug} className="flex items-center space-x-4">
+                <li key={blog._id} className="flex items-center space-x-4">
                   <Image
                     src={urlFor(blog.image).url()}
                     alt={blog.title}
@@ -394,7 +394,7 @@ const offer = await client.fetch(quaryOffer);
             <h3 className="text-lg font-bold mb-2">Sale Product</h3>
             <ul className="space-y-2 text-[#3F509E]">
               {saleProducts.map((blog:blogPostType) => (
-                <li key={blog.slug} className="flex items-center space-x-4">
+                <li key={blog._id} className="flex items-center space-x-4">
                   <Image
                     src={urlFor(blog.image).url()}
                     alt={blog.title}
@@ -418,12 +418,12 @@ const offer = await client.fetch(quaryOffer);
             <ul className="grid grid-cols-2 gap-4">
               {offer.map((offer:offerType) => (
                 <li
-                  key={offer.slug}
+                  key={offer._id}
                   className="flex flex-col items-center space-y-2"
                 >
                   <Image
                     src={urlFor(offer.image).url()}
-                    alt={offer.slug}
+                    alt={offer.title}
                     width={126}
                     height={80}
                     className="w-32 h-20 object-cover rounded-md"

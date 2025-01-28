@@ -2,20 +2,20 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Product } from "../../data/products";
+import { ProductType } from "@/app/Types";
 import { useCart } from "@/context/CartContext";
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
 const fetchProductsbyCategory = async () => {
-  const query = `*[_type == "product" && category == "Chair"][3...9]{
+  const query = `*[_type == "product" && "latest" in category]{
       _id,
       name,
       price,
       "image": image.asset->url,
-      discountPercentage,
-      category,
+      discountPrice,
       stockLevel,
+      isSale
     }`
   const allProducts = await client.fetch(query)
   return allProducts
@@ -23,7 +23,7 @@ const fetchProductsbyCategory = async () => {
 }
 const LatestProduct = () => {
   const {addToCart} = useCart()
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<ProductType[]>([])
     useEffect(() => {
       const fetchProducts = async () => {
         try {
@@ -125,19 +125,19 @@ const LatestProduct = () => {
                   />
                 </button>
               </div>
-              {/* {product.isSale && (
+              {product.isSale && (
                 <span className="absolute top-10 left-0 bg-[#151875] text-white px-8 -rotate-45 py-1 text-xs rounded-s-3xl rounded-e-3xl rounded-se-none rounded-bl-none">
                   Sale
                 </span>
-              )} */}
+              )}
             </div>
             <div className="mt-4 text-center flex items-center justify-between ">
               <h3 className="text-lg font-semibold ">{product.name}</h3>
               <div className="flex items-center text-sm gap-2 ">
                 <span className="font-bold">${product.price}.00</span>
-                {product.discountPercentage && (
+                {product.discountedPrice && (
                   <span className="line-through text-[#FB2448]">
-                    ${(product.discountPercentage)}.00
+                    ${(product.discountedPrice)}.00
                   </span>
                 )}
               </div>

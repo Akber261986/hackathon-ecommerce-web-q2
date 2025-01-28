@@ -2,7 +2,7 @@
 
 import { NextResponse } from "next/server";
 
-let mockReviews = [
+const mockReviews = [
   {
     id: "1",
     name: "Alice Johnson",

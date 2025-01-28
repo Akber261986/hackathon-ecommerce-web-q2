@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Product } from "../../data/products";
+import { ProductType } from "@/app/Types";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
@@ -11,7 +11,7 @@ import Pagination from "@/components/Pagination";
 
 const FeaturedProducts = () => {
   const { addToCart, addToWishlist, isInCart, isInWishlist } = useCart();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -105,7 +105,7 @@ const FeaturedProducts = () => {
 
                 {/* Price */}
                 <div className="mt-2 flex flex-col items-center justify-center ">
-                  <span className="text-lg font-bold">HUD65726</span>
+                  <span className="text-lg font-bold">{product.productCode}</span>
                   <span className="text-lg font-bold">${product.price}.00</span>
                 </div>
               </div>

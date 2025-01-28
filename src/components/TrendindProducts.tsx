@@ -1,20 +1,19 @@
 'use client'
 
 import Image from "next/image";
-import { Product } from "../../data/products";
+import { ProductType } from "@/app/Types";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
 const fetchProductsbyCategory = async () => {
-  const query = `*[_type == "product" && category == "Chair"][10...19]{
+  const query = `*[_type == "product" && "trending" in category]{
       _id,
       name,
       price,
       "image": image.asset->url,
-      discountPercentage,
-      category,
+      discountPrice,
       stockLevel,
     }`
   const allProducts = await client.fetch(query)
@@ -22,13 +21,12 @@ const fetchProductsbyCategory = async () => {
   
 }
 const fetchdata = async () => {
-  const query = `*[_type == "product" && category == "Executive"][0...3]{
+  const query = `*[_type == "product" && "executive" in category]{
       _id,
       name,
       price,
       "image": image.asset->url,
-      discountPercentage,
-      category,
+      discountPrice,
       stockLevel,
     }`
   const res = await client.fetch(query)
@@ -37,8 +35,8 @@ const fetchdata = async () => {
 }
 const TrendindProducts = () => {
   const {addToCart} = useCart()
-  const [products, setProducts] = useState<Product[]>([])
-  const [executive, setExecutive] = useState<Product[]>([])
+  const [products, setProducts] = useState<ProductType[]>([])
+  const [executive, setExecutive] = useState<ProductType[]>([])
     useEffect(() => {
       const fetchProducts = async () => {
         try {
@@ -109,15 +107,17 @@ const TrendindProducts = () => {
                 <h1 className="text-lg font-bold">{product.name}</h1>
                 <div className="flex items-center gap-4">
                   <p className="">${product.price}.00 </p>
-                  <p className="opacity-30 line-through">${product.discountPercentage}.00</p>
+                  <p className="opacity-30 line-through">${product.discountedPrice}.00</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
+
       <div className="flex items-center flex-col lg:flex-row justify-center gap-28 mt-10">
-        <div className="h-60 bg-[#FFF6FB] p-4 relative">
+        {executive.slice(3).map((product)=>(
+        <div key={product._id} className="h-60 bg-[#FFF6FB] p-4 relative">
           <h1 className="text-2xl font-semibold font-[Josefin Sans] text-[#151875]">
             23% off in all products
           </h1>
@@ -125,14 +125,15 @@ const TrendindProducts = () => {
             Shop Now
           </button>
           <Image
-            src={"/images/image15.png"}
+            src={product.image}
             alt="Logo"
             width={150}
             height={178}
             className="absolute bottom-0 right-0"
           />
         </div>
-        <div className="h-60 bg-[#EEEFFB] p-4 relative">
+        ))}
+        {/* <div className="h-60 bg-[#EEEFFB] p-4 relative">
           <h1 className="text-2xl font-semibold font-[Josefin Sans] text-[#151875]">
             23% off in all products
           </h1>
@@ -146,9 +147,9 @@ const TrendindProducts = () => {
             height={178}
             className="absolute bottom-0 right-0"
           />
-        </div>
+        </div> */}
         <div className="h-60 flex flex-col justify-between">
-          {executive.map((product)=>(
+          {executive.slice(0, 3).map((product)=>(
           <div key={product._id} className="flex  items-center ">
             <div className="bg-[#F6F7FB] p-1 ">
               <div className="">

@@ -4,10 +4,10 @@ import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Product } from "../../../data/products";
+import { ProductType } from "@/app/Types";
 
 const WishListPage = () => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductType[]>([]);
     
       useEffect(() => {
         const fetchProducts = async () => {
@@ -94,7 +94,7 @@ const WishListPage = () => {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {products.map((product)=>(
-            <div>
+            <div key={product._id}>
             <div className="relative w-full flex flex-col items-center justify-center gap-10 bg-[#F5F5F5] ">
               <div className="bg-[#DB4444] text-white px-4 py-1.5 rounded-md absolute top-4 left-4">
                 -35%

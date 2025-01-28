@@ -1,8 +1,31 @@
+'use client'
+
 import Image from "next/image";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { client } from "@/sanity/lib/client";
+import { useEffect, useState } from "react";
+import { ProductType } from "@/app/Types";
+
+const fetchData = async () => {
+  const quary = `*[_type == "product" && "Eams Sofa Compact" == name][0]{
+      _id,
+      name,
+      "image": image.asset->url,
+  }`
+  const res = await client.fetch(quary)
+  return res
+}
 
 export default function DiscountSection() {
+  const [product, setProduct] = useState<ProductType | null>(null)
+    useEffect(()=>{
+      const fetchedData = async () => {
+        const res = await fetchData()
+        setProduct(res)
+      }
+      fetchedData()
+    }, [])
   return (
     <div>
       <div className="flex flex-col items-center py-16 gap-6">
@@ -42,7 +65,7 @@ export default function DiscountSection() {
           <h3 className="text-2xl font-bold text-[#151875] font-sans">
             20% Discount Of All Products
           </h3>
-          <h4 className="text-xl text-[#FB2E86]">Eams Sofa Compact</h4>
+          <h4 className="text-xl text-[#FB2E86]">{product?.name}</h4>
           <p className="text-[#B7BACB] text-base">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br /> Eu
             eget feugiat habitasse nec, bibendum condimentum.
@@ -60,13 +83,15 @@ export default function DiscountSection() {
         {/* Right Section */}
         <div className=" flex items-center justify-center relative ">
           <div className="absolute bg-pink-100 rounded-full h-96 w-96"></div>
+          {product && (
           <Image
-            src="/images/image20.png" // Replace with your image path
-            alt="Eams Sofa Compact"
+            src={product?.image} 
+            alt={product?.name}
             width={500}
             height={500}
             className="relative z-10 w-80"
           />
+          )}
         </div>
       </div>
     </div>

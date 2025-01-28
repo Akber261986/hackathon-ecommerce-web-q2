@@ -2,23 +2,20 @@
 
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { AllProductType } from "../../data/products";
+import { ProductType } from "@/app/Types";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
-const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
-  const query = `*[_type == "allproducts" && "${category}" in category]{
-      slug,
+const fetchProductsbyCategory = async () => {
+  const query = `*[_type == "product" && "top" in category]{
+      _id,
       name,
       price,
-      code,
-      "image": image.asset->url,,
-      isSale,
-      oldPrice,
-      category,
-      stock,
+      "image": image.asset->url,
+      discountedPrice,
+      stockLevel,
     }`
   const allProducts = await client.fetch(query)
   return allProducts
@@ -26,11 +23,11 @@ const fetchProductsbyCategory = async (category:string | string[]): Promise<AllP
 }
 const TopCatagories = () => {
   const { addToCart } = useCart();
-  const [products, setProducts] = useState<AllProductType[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const products = await fetchProductsbyCategory("topProducts");
+        const products = await fetchProductsbyCategory();
         setProducts(products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -47,7 +44,7 @@ const TopCatagories = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {products.map((product) => (
             <div
-              key={product.slug}
+              key={product._id}
               className="group flex flex-col items-center "
             >
               <div className="bg-blue-500 rounded-full">
@@ -63,7 +60,7 @@ const TopCatagories = () => {
                   </div>
                 <Link
                   className="absolute bottom-4 right-[85px] invisible group-hover:visible"
-                  href={`/product/${product.slug}`}
+                  href={`/product/${product._id}`}
                 >
                   <Button size={"sm"} variant={"green"}>View Details</Button>
                 </Link>
@@ -83,7 +80,7 @@ const TopCatagories = () => {
                     />
                   </button>
                   <Link
-                    href={`/product/${product.slug}`}
+                    href={`/product/${product._id}`}
                     className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200"
                   >
                     <button>

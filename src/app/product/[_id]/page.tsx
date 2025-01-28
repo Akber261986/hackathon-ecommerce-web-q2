@@ -7,29 +7,25 @@ import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
-import { Product } from "../../../../data/products";
+import { ProductType } from "../../Types";
 import { useState, useEffect } from "react";
 const fetchProductsbyId = async (
   _id: string
-): Promise<Product | null> => {
+): Promise<ProductType | null> => {
   const query = `*[_type == "product" && _id == $_id][0]{
     _id,
     name,
     price,
-    discountPercentage,
-    code,
-    image,
+    discountPrice,
+    "image": image.asset->url,
     rating,
-    category,
-    isSale,
     description,
     colors,
     stockLevel,
-    size,
   }`;
-  const allProducts = await client.fetch(query, { _id });
+  const res = await client.fetch(query, { _id });
 
-  return allProducts;
+  return res;
 };
 
 type ProductDetailsProps = {
@@ -42,7 +38,7 @@ export default function ProductDetailsPage({ params }: ProductDetailsProps) {
   const randomNum = Math.floor(Math.random() * 10);
 
   const { _id } = params;
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<ProductType | null>(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -133,14 +129,17 @@ export default function ProductDetailsPage({ params }: ProductDetailsProps) {
           <div className="flex gap-4">
             <p className="text-xl font-semibold">${product.price}.00</p>
             <p className="text-red-600 font-semibold line-through">
-              ${product.discountPercentage}.00
+              ${product.discountedPrice}.00
             </p>
           </div>
           <div className="font-semibold flex items-center gap-2">
             <p>Color</p>
-            <div
-              // className={`${product.colors[randomNum1] == "Yellow" ? "bg-yellow-400" : "bg-red-500"} w-4 h-4 rounded-full`}
-            ></div>
+            {product.colors.map((color, index) => (
+              <div
+                key={index}
+                className={`w-6 h-6 rounded-full bg-[${color}] cursor-pointer`}
+              ></div>
+            ))}
           </div>
           <p className="text-[#A9ACC6] leading-7">
             High-quality plywood chair with ergonomic design. Corporis

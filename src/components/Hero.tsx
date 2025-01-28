@@ -2,16 +2,12 @@
 
 import { client } from "@/sanity/lib/client";
 import { Button } from "./ui/button";
+import { ProductType } from "@/app/Types";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useLanguage } from "@/context/LanguageContext";
-interface ProductType {
-  _id: string;
-  price: number;
-  image: string;
-}
+
 const fetchData = async () => {
-  const quary = `*[_type == "product" && "Luxury Flower Shell Sofa Chair" == name][0]{
+  const quary = `*[_type == "product" && "Tribu Elio Chair" == name][0]{
       _id,
       price,
       "image": image.asset->url,
@@ -20,7 +16,6 @@ const fetchData = async () => {
   return res
 }
 const Hero = () => {
-  const {t} = useLanguage()
   const [product, setProduct] = useState<ProductType | null>(null)
   useEffect(()=>{
     const fetchedData = async () => {
@@ -42,9 +37,9 @@ const Hero = () => {
         />
       </div>
         <p className="text-[#FB2E86]">Best Furniture For Your Castle....</p>
-        <h1 className="text-4xl text-[#151875] font-bold">{t("New Furniture Collection Trends in 2020")}</h1>
+        <h1 className="text-4xl text-[#151875] font-bold">New Furniture Collection Trends in 2020</h1>
         <p className="text-[#8A8FB9]">
-          {t("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.")}
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna in est adipiscing in phasellus non in justo.
         </p>
         <Button variant={"destructive"}>Shop Now</Button>
       </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import Image from "next/image";
-import { AllProductType } from "../../../../data/products";
+import { ProductType } from "@/app/Types";
 import { useCart } from "@/context/CartContext";
 import { Search } from "lucide-react";
 import Link from "next/link";
@@ -16,17 +16,17 @@ const filterByColor = [
   { color: "bg-[#E248FF]", name: "Purple" },
   { color: "bg-[#26CBFF]", name: "Sky" },
 ];
-const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
-  const query = `*[_type == "allproducts" && "${category}" in category] | order(_createdAt asc){
-      slug,
+const fetchProductsbyCategory = async () => {
+  const query = `*[_type == "product" && "shopleftsider" in category] | order(_createdAt asc){
+      _id,
       name,
       price,
       rating,
-      image,
-      oldPrice,
+      "image": image.asset->url,
+      discountedPrice,
       description,
-      category,
-      stock,
+      stockLevel,
+      colors,
     }`
   const allProducts = await client.fetch(query)
   return allProducts
@@ -34,11 +34,11 @@ const fetchProductsbyCategory = async (category:string | string[]): Promise<AllP
 }
 const ShopLeftSider = () => {
   const { addToCart } = useCart()
-  const [products, setProducts] = useState<AllProductType[]>([])
+  const [products, setProducts] = useState<ProductType[]>([])
     useEffect(() => {
       const fetchProducts = async () => {
         try {
-          const products = await fetchProductsbyCategory("shopLeftSider")
+          const products = await fetchProductsbyCategory()
           setProducts(products)
         } catch (error) {
           console.error("Error fetching products:", error)
@@ -263,7 +263,7 @@ const ShopLeftSider = () => {
         <section className="space-y-6">
           {products.map((product) => (
             <div
-              key={product.slug}
+              key={product._id}
               className="flex lg:items-center flex-col lg:flex-row bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
               {/* Product Image */}
@@ -281,14 +281,10 @@ const ShopLeftSider = () => {
                   <h3 className="text-xl font-semibold">{product.name}</h3>
                   {/* Color Options */}
                   <div className="mt-2 flex items-start gap-1">
-                    {[
-                      { color: "bg-[#FF9437]" },
-                      { color: "bg-[#E60584]" },
-                      { color: "bg-[#5E37FF]" },
-                    ].map((color, index) => (
+                    {product.colors.map((color, index) => (
                       <span
                         key={index}
-                        className={`w-3 h-3 ${color.color} rounded-full`}
+                        className={`w-3 h-3 bg-[${color}] rounded-full`}
                       ></span>
                     ))}
                   </div>
@@ -298,7 +294,7 @@ const ShopLeftSider = () => {
                   <div className="flex items-center space-x-4 text-sm">
                     <span>${product.price}.00</span>
                     <span className="text-[#FF2AAA] line-through">
-                      ${product.oldPrice}.00
+                      ${product.discountedPrice}.00
                     </span>
                   </div>
                   {/* Rating */}
@@ -338,7 +334,7 @@ const ShopLeftSider = () => {
                       height={20}
                     />
                   </button>
-                  <Link href={`/product/${product.slug}`}>
+                  <Link href={`/product/${product._id}`}>
                   <button className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300">
                     <Image
                       src={"/icons/view.svg"}

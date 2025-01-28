@@ -1,4 +1,6 @@
+'use client';
 
+import { useState, useEffect } from "react";
 
 interface Order {
   id: string;
@@ -14,17 +16,47 @@ interface User {
   orderHistory: Order[];
 }
 
-const UserProfilePage = async () => {
-  // Fetch user data from the API
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user`, {
-    cache: "no-store", // Disable caching for dynamic data
-  });
+const UserProfilePage = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch user data");
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        // Fetch user data from the API
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user`, {
+          cache: "no-store", // Disable caching for dynamic data
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const userData: User = await res.json();
+        setUser(userData);
+      } catch (err) {
+        setError("Failed to load user data. Please try again later.");
+        console.error("User Data not found:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
-  const user: User = await res.json();
+  if (error) {
+    return <p className="text-red-500">{error}</p>;
+  }
+
+  if (!user) {
+    return <p>No user data available.</p>;
+  }
 
   return (
     <div className="p-6 max-w-4xl mx-auto bg-white shadow-md rounded-md">

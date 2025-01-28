@@ -12,17 +12,19 @@ export async function GET(request: Request) {
   try {
     // Fetch paginated products from Sanity
     const products = await client.fetch(
-      `*[_type == "product"] | order(_createdAt desc) [${start}...${end}] {
+      `*[_type == "product" && "featured" in category] | order(_createdAt desc) [${start}...${end}] {
         _id,
         name,
         "image": image.asset->url,
-        price
+        price,
+        discountedPrice,
+        productCode
       }`
     );
 
     // Fetch total count of products
     const totalCount = await client.fetch(
-      `count(*[_type == "product"])`
+      `count(*[_type == "product" && "featured" in category])`
     );
 
     const totalPages = Math.ceil(totalCount / limit);

@@ -1,66 +1,77 @@
-export default {
-    name: 'product',
-    type: 'document',
-    title: 'Product',
-    fields: [
-      {
-        name: 'name',
-        type: 'string',
-        title: 'Name',
-        validation: (Rule: any) => Rule.required().error('Name is required'),
-      },
-      {
-        name: 'image',
-        type: 'image',
-        title: 'Image',
+import { defineField, defineType } from "sanity";
+
+ const product = defineType({
+  name: "product",
+  title: "Product",
+  type: "document",
+  fields: [
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string",
+    }),
+    defineField({
+      name: "price",
+      title: "Price",
+      type: "number",
+    }),
+    defineField({
+      name: "discountedPrice",
+      title: "Discounted Price",
+      type: "number",
+    }),
+    defineField({
+      name: "productCode",
+      title: "Product Code",
+      type: "string",
+    }),
+    defineField({
+      name: "rating",
+      title: "Rating",
+      type: "number",
+    }),
+    defineField({
+      name: "category",
+      title: "Category",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "isSale",
+      title: "Is Sale?",
+      type: "boolean",
+    }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+    }),
+    defineField({
+      name: "colors",
+      title: "Colors",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "tags",
+      title: "Tags",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "stockLevel",
+      title: "Stock Level",
+      type: "number",
+    }),
+    defineField({
+        name: "image",
+        title: "Image",
+        type: "image",
         options: {
           hotspot: true,
         },
-        description: 'Upload an image of the product.',
-      },
-      {
-        name: 'price',
-        type: 'string',
-        title: 'Price',
-        validation: (Rule: any) => Rule.required().error('Price is required'),
-      },
-      {
-        name: 'description',
-        type: 'text',
-        title: 'Description',
-        validation: (Rule: any) =>
-          Rule.max(150).warning('Keep the description under 150 characters.'),
-      },
-      {
-        name: 'discountPercentage',
-        type: 'number',
-        title: 'Discount Percentage',
-        validation: (Rule: any) =>
-          Rule.min(0).max(100).warning('Discount must be between 0 and 100.'),
-      },
-      {
-        name: 'isFeaturedProduct',
-        type: 'boolean',
-        title: 'Is Featured Product',
-      },
-      {
-        name: 'stockLevel',
-        type: 'number',
-        title: 'Stock Level',
-        validation: (Rule: any) => Rule.min(0).error('Stock level must be a positive number.'),
-      },
-      {
-        name: 'category',
-        type: 'string',
-        title: 'Category',
-        options: {
-          list: [
-            { title: 'Chair', value: 'Chair' },
-            { title: 'Sofa', value: 'Sofa' },
-            { title: 'Executive', value: 'Executive' },
-          ],
-        },
-        validation: (Rule: any) => Rule.required().error('Category is required'),
-      },
-    ],
-  };
+      }),
+  ],
+});
+
+export default product;

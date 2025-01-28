@@ -4,18 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { useLanguage } from "@/context/LanguageContext";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import LanguageSelector from "./LanguageSelector";
 
 const Header = () => {
   const { cartItems, wishlistItems } = useCart();
-  const { t } = useLanguage();
   const [show, setshow] = useState<boolean>(false);
   const [nav, setNav] = useState<string>("");
 
@@ -54,7 +51,22 @@ const Header = () => {
           </div>
         </div>
         <div className="flex items-center gap-4 py-3">
-          <LanguageSelector />
+          <div className="flex items-center gap-1">
+            <select
+              id="sortBy"
+              className="p-1 rounded text-sm bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500"
+            >
+              <option value="en" className="text-black">
+                English
+              </option>
+              <option value="es" className="text-black">
+                Español
+              </option>
+              <option value="ur" className="text-black">
+                Urdu
+              </option>
+            </select>
+          </div>
           <div className="flex items-center gap-1">
             <select
               id="sortBy"

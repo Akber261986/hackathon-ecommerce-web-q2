@@ -2,32 +2,32 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { AllProductType } from "../../../../data/products";
+import { ProductType } from "@/app/Types";
 import { useCart } from "@/context/CartContext";
 import { useEffect, useState } from "react";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
-const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
-  const query = `*[_type == "allproducts" && "${category}" in category]{
-      slug,
+const fetchProductsbyCategory = async () => {
+  const query = `*[_type == "product" && "shopgrid" in category]{
+      _id,
       name,
       price,
-      image,
-      oldPrice,
-      category,
-      stock,
+      "image": image.asset->url,
+      discountedPrice,
+      stockLevel,
+      colors ,
     }`
-  const allProducts = await client.fetch(query)
-  return allProducts
+  const res = await client.fetch(query)
+  return res
   
 }
 const ShopingGrid = () => {
   const {addToCart} = useCart()
-  const [products, setProducts] = useState<AllProductType[]>([])
+  const [products, setProducts] = useState<ProductType[]>([])
     useEffect(() => {
       const fetchProducts = async () => {
         try {
-          const products = await fetchProductsbyCategory("shopGrid")
+          const products = await fetchProductsbyCategory()
           setProducts(products)
         } catch (error) {
           console.error("Error fetching products:", error)
@@ -109,7 +109,7 @@ const ShopingGrid = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <div
-              key={product.slug}
+              key={product._id}
               className="bg-white group p-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
               {/* Image */}
@@ -133,7 +133,7 @@ const ShopingGrid = () => {
                     />
                   </button>
                   <Link
-                    href={`/product/${product.slug}`}
+                    href={`/product/${product._id}`}
                     className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200"
                   >
                     <button>
@@ -162,16 +162,15 @@ const ShopingGrid = () => {
               </h3>
               {/* Color Indicators */}
               <div className="mt-2 flex justify-center gap-1">
-                <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
-                <span className="w-3 h-3 bg-red-500 rounded-full"></span>
-                <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+              {product.colors.map((color)=>
+                <span key={color}  className={`w-3 h-3 bg-[${color}] rounded-full`}></span>
+              )}
               </div>
-
               {/* Price */}
               <div className="mt-2 flex items-center justify-center space-x-2">
                 <span className="text-lg font-bold">${product.price}.00</span>
                 <span className="text-red-500 line-through">
-                  ${product.oldPrice}.00
+                  ${product.discountedPrice}.00
                 </span>
               </div>
             </div>

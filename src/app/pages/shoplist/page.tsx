@@ -1,34 +1,34 @@
 'use client'
 
 import Image from "next/image";
-import { AllProductType } from "../../../../data/products";
+import { ProductType } from "@/app/Types";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
-const fetchProductsbyCategory = async (category:string | string[]): Promise<AllProductType[]> => {
-  const query = `*[_type == "allproducts" && "${category}" in category] | order(_createdAt asc ){
-      slug,
+const fetchProductsbyCategory = async () => {
+  const query = `*[_type == "product" && "shoplist" in category] | order(_createdAt asc ){
+      _id,
       name,
       price,
-      image,
+      "image": image.asset->url,
       rating,
-      oldPrice,
+      discountedPrice,
       description,
-      category,
-      stock,
+      stockLevel,
+      colors,
     }`
-  const allProducts = await client.fetch(query)
-  return allProducts
+  const res = await client.fetch(query)
+  return res
 }
 const ShopList = () => {
   const {addToCart} = useCart()
-  const [products, setProducts] = useState<AllProductType[]>([])
+  const [products, setProducts] = useState<ProductType[]>([])
     useEffect(() => {
       const fetchProducts = async () => {
         try {
-          const products = await fetchProductsbyCategory("shopList")
+          const products = await fetchProductsbyCategory()
           setProducts(products)
         } catch (error) {
           console.error("Error fetching products:", error)
@@ -110,7 +110,7 @@ const ShopList = () => {
         <div className="space-y-6">
           {products.map((product) => (
             <div
-              key={product.slug}
+              key={product._id}
               className="flex flex-col lg:flex-row bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
               {/* Product Image */}
@@ -130,14 +130,10 @@ const ShopList = () => {
                   <h3 className="text-xl font-semibold">{product.name}</h3>
                   {/* Color Options */}
                   <div className="mt-2 flex items-start gap-1">
-                    {[
-                      { color: "bg-[#FF9437]" },
-                      { color: "bg-[#E60584]" },
-                      { color: "bg-[#5E37FF]" },
-                    ].map((color, index) => (
+                    {product.colors.map((color) => (
                       <span
-                        key={index}
-                        className={`w-3 h-3 ${color.color} rounded-full`}
+                        key={color}
+                        className={`w-3 h-3 bg-[${color}] rounded-full`}
                       ></span>
                     ))}
                   </div>
@@ -146,7 +142,7 @@ const ShopList = () => {
                 <div className="mt-4 flex items-center space-x-2">
                   <span className=" text-md font-semibold">${product.price.toFixed(2)}</span>
                   <span className="text-red-500 line-through">
-                    ${product.oldPrice.toFixed(2)}
+                    ${product.discountedPrice}.00
                   </span>
                 </div>
                 <p className="mt-2 text-gray-600 w-96">{product.description}</p>
@@ -185,7 +181,7 @@ const ShopList = () => {
                       height={24}
                     />
                   </button>
-                  <Link href={`/product/${product.slug}`}>
+                  <Link href={`/product/${product._id}`}>
                     <button className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300">
                       <Image
                         src={"/icons/view.svg"}

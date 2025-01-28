@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { Product } from "../../data/products";
+import { ProductType } from "../app/Types";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 const SearchBar = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,14 +32,16 @@ const SearchBar = () => {
   }, [filteredProducts]);
 
 
-  // Debounce function for optimizing search input handling
-  const debounce = (func: (...args: any[]) => void, delay: number) => {
-    let timeout: NodeJS.Timeout;
-    return (...args: any[]) => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => func(...args), delay);
-    };
+ // Debounce function for optimizing search input handling
+const debounce = <T extends (...args: Parameters<T>) => void>(func: T, delay: number): ((...args: Parameters<T>) => void) => {
+  let timeout: NodeJS.Timeout;
+
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
   };
+};
+
 
   // Handle Search with Debounce
   const handleSearch = debounce((term: string) => {
@@ -81,9 +84,11 @@ const SearchBar = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
         {filteredProducts.map((product) => (
           <div key={product._id} className="border p-4 rounded-md shadow-md flex flex-col items-center justify-between">
-            <img
+            <Image
               src={product.image}
               alt={product.name}
+              width={500}
+              height={500}
               className="w-full object-cover rounded-md"
             />
             <div className="flex items-center gap-3">

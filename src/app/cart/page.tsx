@@ -4,30 +4,16 @@ import { useCart } from "@/context/CartContext";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 const Cart = () => {
   const {
     cartItems,
-    updateCartItemQuantity,
+    updateCartItemstockLevel,
     getTotalPrice,
     clearCart,
     removeFromCart,
   } = useCart();
 
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
-  const [shippingCosts, setShippingCosts] = useState(0);
-  // const [message, setMessage] = useState<string>("");
-
-  // useEffect(() => {
-  //   if (shippingCost > 0) {
-  //     setMessage(`Shipment calculated successfully`);
-  //     setTimeout(() => {
-  //       setMessage("");
-  //     }, 4000);
-  //   }
-  // }, [shippingCost]);
 
   return (
     <div className="text-[#101750] font-sans">
@@ -60,7 +46,7 @@ const Cart = () => {
               <tr className="bg-gray-100 ">
                 <th className="p-4 border">Product</th>
                 <th className="p-4 border hidden sm:block">Price</th>
-                <th className="p-4 border">Quantity</th>
+                <th className="p-4 border">stockLevel</th>
                 <th className="p-4 border">Total</th>
               </tr>
             </thead>
@@ -86,14 +72,14 @@ const Cart = () => {
                     <div>
                       <p className="font-semibold">{item.name}</p>
                       <p className="sm:hidden">${item.price}.00</p>
-                      {/* <p className="text-sm text-start text-gray-500">
-                        {item.colors?.find((color) => (
+                      <p className="text-sm text-start text-gray-500">
+                        {item.colors.find((color) => (
                           <span
                             key={color}
-                            className={`w-3 h-3 ${color[1]} rounded-full`}
+                            className={`w-3 h-3 bg-[${color[1]}] rounded-full`}
                           ></span>
                         ))}
-                      </p> */}
+                      </p>
                     </div>
                   </td>
                   <td className="p-4 border hidden sm:table-cell">
@@ -107,10 +93,10 @@ const Cart = () => {
                           const currentItem = cartItems.find(
                             (cartItem) => cartItem._id === item._id
                           );
-                          if (currentItem && currentItem.quantity > 1) {
-                            updateCartItemQuantity(
+                          if (currentItem && currentItem.stockLevel > 1) {
+                            updateCartItemstockLevel(
                               item._id,
-                              currentItem.quantity - 1
+                              currentItem.stockLevel - 1
                             );
                           }
                         }}
@@ -119,9 +105,9 @@ const Cart = () => {
                         -
                       </button>
 
-                      {/* Display Current Quantity */}
+                      {/* Display Current stockLevel */}
                       <span className="bg-gray-100 w-10 sm:w-20 h-10 flex items-center justify-center">
-                        {item.quantity}
+                        {item.stockLevel}
                       </span>
 
                       {/* Increment Button */}
@@ -132,11 +118,11 @@ const Cart = () => {
                           );
                           if (
                             currentItem &&
-                            currentItem.quantity < item.stockLevel
+                            currentItem.stockLevel < item.stockLevel
                           ) {
-                            updateCartItemQuantity(
+                            updateCartItemstockLevel(
                               item._id,
-                              currentItem.quantity + 1
+                              currentItem.stockLevel + 1
                             );
                           }
                         }}
@@ -148,7 +134,7 @@ const Cart = () => {
                   </td>
 
                   <td className="p-4 border">
-                    ${(item.price * item.quantity)}.00
+                    ${(item.price * item.stockLevel)}.00
                   </td>
                 </tr>
               ))}
@@ -179,7 +165,7 @@ const Cart = () => {
             </p> */}
             <p className="flex justify-between mb-4">
               <span>Totals:</span>
-              <span>${getTotalPrice() + shippingCosts}</span>
+              <span>${getTotalPrice() }</span>
             </p>
             <p className="flex items-center  text-sm text-[#C1C8E1]">
                   <input
@@ -198,13 +184,11 @@ const Cart = () => {
           <div className="p-6 bg-gray-50 rounded-md shadow-md">
             <h2 className="text-xl font-bold mb-4">Calculate Shipping</h2>
             <input
-              onChange={(e) => setCountry(e.target.value)}
               type="text"
               placeholder="Pakistan, Bangladesh"
               className="w-full mb-3 px-3 py-2 border rounded-md"
             />
             <input
-              onChange={(e) => setCity(e.target.value)}
               type="text"
               placeholder="Karachi, Dhaka"
               className="w-full mb-3 px-3 py-2 border rounded-md"

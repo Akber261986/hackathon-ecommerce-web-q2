@@ -7,13 +7,13 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { Product, CartContextType } from "../../data/products";
+import { ProductType, CartContextType } from "@/app/Types";
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartItems, setCartItems] = useState<Product[]>([]);
-  const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
+  const [cartItems, setCartItems] = useState<ProductType[]>([]);
+  const [wishlistItems, setWishlistItems] = useState<ProductType[]>([]);
 
   // Load cart and wishlist from localStorage on initial render
   useEffect(() => {
@@ -34,15 +34,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
   }, [wishlistItems]);
 
-  const addToCart = async (product: Product) => {
+  const addToCart = async (product: ProductType) => {
     const existingProduct = cartItems.find((item) => item._id  === product._id);
 
     if (existingProduct) {
-      if (existingProduct.quantity < product.stockLevel) {
+      if (existingProduct.stockLevel < product.stockLevel) {
         setCartItems((prev) =>
           prev.map((item) =>
             item._id === product._id
-              ? { ...item, quantity: item.quantity + 1 }
+              ? { ...item, stockLevel: item.stockLevel + 1 }
               : item
           )
         );
@@ -51,7 +51,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         alert("stockLevel limit reached for this product.");
       }
     } else {
-      setCartItems((prev) => [...prev, { ...product, quantity: 1 }]);
+      setCartItems((prev) => [...prev, { ...product, stockLevel: 1 }]);
       await updateSanitystockLevel(product._id, product.stockLevel - 1); // Update Sanity stockLevel
     }
   };
@@ -65,19 +65,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const removeFromCart = async (_id: string) => {
     const productToRemove = cartItems.find((item) => item._id === _id);
     if (productToRemove) {
-      await updateSanitystockLevel(_id, productToRemove.stockLevel + productToRemove.quantity); // Restore Sanity stockLevel
+      await updateSanitystockLevel(_id, productToRemove.stockLevel + productToRemove.stockLevel); // Restore Sanity stockLevel
     }
     setCartItems((prevItems) => prevItems.filter((item) => item._id !== _id));
   };
 
   const clearCart = async () => {
     for (const item of cartItems) {
-      await updateSanitystockLevel(item._id, item.stockLevel + item.quantity); // Restore stockLevel for all items
+      await updateSanitystockLevel(item._id, item.stockLevel + item.stockLevel); // Restore stockLevel for all items
     }
     setCartItems([]);
   };
 
-  const addToWishlist = (product: Product) => {
+  const addToWishlist = (product: ProductType) => {
     if (product) {
       console.log("product found here")
     } else {
@@ -98,53 +98,29 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const updateCartItemQuantity = (_id: string, quantity: number) => {
+  const updateCartItemstockLevel = (_id: string, stockLevel: number) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item._id === _id ? { ...item, quantity: Math.max(1, quantity) } : item
+        item._id === _id ? { ...item, stockLevel: Math.max(1, stockLevel) } : item
       )
     );
   };
-
-  const calculateShipping = async (country: string, city: string): Promise<number> => {
-    try {
-      const response = await fetch("/api/shippo/calculate-shipping", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ country, city, items: cartItems }),
-      });
   
-      if (!response.ok) {
-        throw new Error("Failed to calculate shipping");
-      }
-  
-      const data = await response.json();
-      return data.shippingCost;
-    } catch (error) {
-      console.error("Error calculating shipping:", error);
-      return 0; // Fallback in case of error
-    }
-  };
-  
-
-
-  const updateWishlistItemQuantity = (_id: string, quantity: number) => {
+  const updateWishlistItemstockLevel = (_id: string, stockLevel: number) => {
     setWishlistItems((prevItems) =>
       prevItems.map((item) =>
-        item._id === _id ? { ...item, quantity: Math.max(1, quantity) } : item
+        item._id === _id ? { ...item, stockLevel: Math.max(1, stockLevel) } : item
       )
     );
   };
 
   const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    return cartItems.reduce((total, item) => total + item.price * item.stockLevel, 0);
   };
 
  const updateSanitystockLevel = async (_id: string, updatedstockLevel: number) => {
     try {
-      const res = await fetch(`/api/update-stockLevel`, {
+      const res = await fetch(`/api/update-stock`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ _id, stockLevel: updatedstockLevel }),
@@ -169,10 +145,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         clearCart,
         addToWishlist,
         removeFromWishlist,
-        calculateShipping,
         getTotalPrice,
-        updateCartItemQuantity,
-        updateWishlistItemQuantity,
+        updateCartItemstockLevel,
+        updateWishlistItemstockLevel,
         isInCart,
         isInWishlist,
       }}
