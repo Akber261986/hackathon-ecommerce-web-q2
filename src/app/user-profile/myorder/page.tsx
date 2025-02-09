@@ -6,13 +6,11 @@ import { Order } from "@/app/Types";
 
 const MyOrder = () => {
   const  session  = useUser();
-  const [userId, setUserId] = useState("");
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (session?.user) {
-      setUserId(session.user.id || "");
       setLoading(false)
       setOrders([])
     }
