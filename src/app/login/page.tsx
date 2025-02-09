@@ -39,7 +39,7 @@ export default function Login() {
       } else {
         console.log(signInAttempt);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error("Error:", err);
   
       // Display proper error messages
