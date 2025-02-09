@@ -17,7 +17,6 @@ const MyOrder = () => {
       setOrders([])
     }
   }, [session.user]);
-console.log(userId)
    
   return (
     <div>
