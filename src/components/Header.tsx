@@ -34,7 +34,6 @@ const Header = () => {
     setshow(!show);
     setProfile("profile");
   };
- console.log(session.user)
 
   return (
     <header className="font-sans ">
@@ -148,7 +147,7 @@ const Header = () => {
                       className="rounded-full object-cover"
                     />
                   </div>
-                  <p>{ session.user.id}</p>
+                  <p>{ session.user.fullName}</p>
                   <p>{session.user.primaryEmailAddress.emailAddress}</p>
                 </div>
                 <div className="flex flex-col items-start w-full space-y-2">

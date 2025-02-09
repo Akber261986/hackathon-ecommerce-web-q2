@@ -7,17 +7,17 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const  session  = useUser();
+
   const [allow, setAllow] = useState<boolean>(false);
   const [userId, setUserId] = useState("")
   const router = useRouter();
 
-  const  session  = useUser();
-  
   useEffect(() => {
     if (session.user){
       setUserId(session.user.id)
     }
-    const permissions = () => {     
+    const permissions = async () => {
       if (session?.user && userId === "user_2snFefrCfuQUBxiOIRNDTjaUbUo") {
         setAllow(true);
         router.push("dashboard")
@@ -27,7 +27,7 @@ export default function Page() {
       }
     }
     permissions()
-  }, [router]);
+  }, [router, session.user, userId]);
 
   return (
     <main className="h-screen ">

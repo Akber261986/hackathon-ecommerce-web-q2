@@ -16,7 +16,7 @@ const MyOrder = () => {
       setLoading(false)
       setOrders([])
     }
-  }, []);
+  }, [session.user]);
 console.log(userId)
    
   return (
