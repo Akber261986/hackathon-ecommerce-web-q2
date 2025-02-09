@@ -14,8 +14,8 @@ export default function Login() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [code, setCode] = useState('')
-  const [useBackupCode, setUseBackupCode] = useState(false)
+  // const [code, setCode] = useState('')
+  // const [useBackupCode, setUseBackupCode] = useState(false)
   // const [displayTOTP, setDisplayTOTP] = useState(false)
 
   // Handle user submitting email and pass and swapping to TOTP form
@@ -53,41 +53,41 @@ export default function Login() {
   
 
   // Handle the submission of the TOTP of Backup Code submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault()
 
-    if (!isLoaded) return
+  //   if (!isLoaded) return
 
-    // Start the sign-in process using the email and password provided
-    try {
-      await signIn.create({
-        identifier: email,
-        password,
-      })
+  //   // Start the sign-in process using the email and password provided
+  //   try {
+  //     await signIn.create({
+  //       identifier: email,
+  //       password,
+  //     })
 
-      // Attempt the TOTP or backup code verification
-      const signInAttempt = await signIn.attemptSecondFactor({
-        strategy: useBackupCode ? 'backup_code' : 'totp',
-        code: code,
-      })
+  //     // Attempt the TOTP or backup code verification
+  //     const signInAttempt = await signIn.attemptSecondFactor({
+  //       strategy: useBackupCode ? 'backup_code' : 'totp',
+  //       code: code,
+  //     })
 
-      // If verification was completed, set the session to active
-      // and redirect the user
-      if (signInAttempt.status === 'complete') {
-        await setActive({ session: signInAttempt.createdSessionId })
-        router.push('/')
-      } else {
-        // If the status is not complete, check why. User may need to
-        // complete further steps.
-        console.log(signInAttempt)
-      }
-    } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      setError("Failed to signin")
-      console.error('Error:', JSON.stringify(err, null, 2))
-    }
-  }
+  //     // If verification was completed, set the session to active
+  //     // and redirect the user
+  //     if (signInAttempt.status === 'complete') {
+  //       await setActive({ session: signInAttempt.createdSessionId })
+  //       router.push('/')
+  //     } else {
+  //       // If the status is not complete, check why. User may need to
+  //       // complete further steps.
+  //       console.log(signInAttempt)
+  //     }
+  //   } catch (err) {
+  //     // See https://clerk.com/docs/custom-flows/error-handling
+  //     // for more info on error handling
+  //     setError("Failed to signin")
+  //     console.error('Error:', JSON.stringify(err, null, 2))
+  //   }
+  // }
   // if (displayTOTP) {
   //   return (
   //     <div>
