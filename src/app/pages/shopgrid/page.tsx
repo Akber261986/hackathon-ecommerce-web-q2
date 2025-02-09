@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -7,34 +7,37 @@ import { useCart } from "@/context/CartContext";
 import { useEffect, useState } from "react";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
+import { motion } from "framer-motion";
 const fetchProductsbyCategory = async () => {
   const query = `*[_type == "product" && "shopgrid" in category]{
       _id,
       name,
       price,
-      "image": image.asset->url,
       discountedPrice,
-      stockLevel,
+      rating,
+      description,
       colors ,
-    }`
-  const res = await client.fetch(query)
-  return res
-  
-}
+      tags,
+      stockLevel,
+      "image": image.asset->url,
+    }`;
+  const res = await client.fetch(query);
+  return res;
+};
 const ShopingGrid = () => {
-  const {addToCart} = useCart()
-  const [products, setProducts] = useState<ProductType[]>([])
-    useEffect(() => {
-      const fetchProducts = async () => {
-        try {
-          const products = await fetchProductsbyCategory()
-          setProducts(products)
-        } catch (error) {
-          console.error("Error fetching products:", error)
-        }
+  const { addToCart, addToWishlist, isInCart, isInWishlist } = useCart();
+  const [products, setProducts] = useState<ProductType[]>([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await fetchProductsbyCategory();
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-      fetchProducts()
-    }, [])
+    };
+    fetchProducts();
+  }, []);
   return (
     <div className="font-sans text-[#151875]">
       <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -122,16 +125,39 @@ const ShopingGrid = () => {
                   className=""
                 />
                 <div className="absolute bottom-2 left-2 flex flex-col gap-2 invisible group-hover:visible">
-                  <button 
-                  onClick={()=>addToCart(product)}
-                  className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
-                    <Image
-                      src={"/icons/cart-b.svg"}
-                      alt={"cart"}
-                      width={20}
-                      height={20}
-                    />
-                  </button>
+                  <motion.button
+                    onClick={() => addToCart(product)}
+                    whileTap={{ scale: 0.9 }}
+                    className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInCart(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
+                  >
+                    {isInCart(product._id) ? (
+                      <Image
+                        src={"/icons/Cart-g.svg"}
+                        alt={"cart"}
+                        width={24}
+                        height={24}
+                      />
+                    ) : (
+                      <Image
+                        src={"/icons/cart-b.svg"}
+                        alt={"cart"}
+                        width={24}
+                        height={24}
+                      />
+                    )}
+
+                    {/* Confetti effect */}
+                    {isInCart(product._id) && (
+                      <motion.div
+                        initial={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 1 }}
+                        className="absolute top-0 left-0 right-0 flex justify-center"
+                      >
+                        ✨ 💥 🌟
+                      </motion.div>
+                    )}
+                  </motion.button>
                   <Link
                     href={`/product/${product._id}`}
                     className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200"
@@ -145,14 +171,39 @@ const ShopingGrid = () => {
                       />
                     </button>
                   </Link>
-                  <button className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
-                    <Image
-                      src={"/icons/heart-b.svg"}
-                      alt={"heart"}
-                      width={20}
-                      height={20}
-                    />
-                  </button>
+                  <motion.button
+                    onClick={() => addToWishlist(product)}
+                    whileTap={{ scale: 0.9 }}
+                    className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInWishlist(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
+                  >
+                    {isInWishlist(product._id) ? (
+                      <Image
+                        src={"/icons/heart-g.svg"}
+                        alt={"heart"}
+                        width={24}
+                        height={24}
+                      />
+                    ) : (
+                      <Image
+                        src={"/icons/heart-b.svg"}
+                        alt={"heart"}
+                        width={24}
+                        height={24}
+                      />
+                    )}
+
+                    {/* Confetti effect */}
+                    {isInWishlist(product._id) && (
+                      <motion.div
+                        initial={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 1 }}
+                        className="absolute top-0 left-0 right-0 flex justify-center"
+                      >
+                        ✨ 💥 🌟
+                      </motion.div>
+                    )}
+                  </motion.button>
                 </div>
               </div>
 
@@ -162,9 +213,12 @@ const ShopingGrid = () => {
               </h3>
               {/* Color Indicators */}
               <div className="mt-2 flex justify-center gap-1">
-              {product.colors.map((color)=>
-                <span key={color}  className={`w-3 h-3 bg-[${color}] rounded-full`}></span>
-              )}
+                {product.colors.map((color) => (
+                  <span
+                    key={color}
+                    className={`w-3 h-3 bg-[${color}] rounded-full`}
+                  ></span>
+                ))}
               </div>
               {/* Price */}
               <div className="mt-2 flex items-center justify-center space-x-2">

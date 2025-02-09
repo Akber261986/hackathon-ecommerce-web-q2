@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Josefin_Sans, Lato } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const josefinSans = Josefin_Sans({
   weight: ["400", "700"],
@@ -46,11 +47,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ClerkProvider>
           <CartProvider>
             <Header />
             {children}
             <Footer />
           </CartProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

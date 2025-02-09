@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import { ProductType } from "@/app/Types";
@@ -8,6 +8,8 @@ import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
+import { motion } from "framer-motion";
+
 const filterByColor = [
   { color: "bg-[#5E37FF]", name: "Blue" },
   { color: "bg-[#FF9437]", name: "Orange" },
@@ -21,31 +23,31 @@ const fetchProductsbyCategory = async () => {
       _id,
       name,
       price,
-      rating,
-      "image": image.asset->url,
       discountedPrice,
+      rating,
       description,
+      colors ,
+      tags,
       stockLevel,
-      colors,
-    }`
-  const allProducts = await client.fetch(query)
-  return allProducts
-  
-}
+      "image": image.asset->url,
+    }`;
+  const allProducts = await client.fetch(query);
+  return allProducts;
+};
 const ShopLeftSider = () => {
-  const { addToCart } = useCart()
-  const [products, setProducts] = useState<ProductType[]>([])
-    useEffect(() => {
-      const fetchProducts = async () => {
-        try {
-          const products = await fetchProductsbyCategory()
-          setProducts(products)
-        } catch (error) {
-          console.error("Error fetching products:", error)
-        }
+  const { addToCart, addToWishlist, isInCart, isInWishlist } = useCart();
+  const [products, setProducts] = useState<ProductType[]>([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await fetchProductsbyCategory();
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-      fetchProducts()
-    }, [])
+    };
+    fetchProducts();
+  }, []);
   return (
     <div>
       <div className="text-[#101750] font-sans bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -176,7 +178,7 @@ const ShopLeftSider = () => {
                     {"★".repeat(rating)}
                     {"☆".repeat(5 - rating)}
                   </span>
-                  <p>({(rating)* 23})</p>
+                  <p>({rating * 23})</p>
                 </li>
               ))}
             </ul>
@@ -247,7 +249,6 @@ const ShopLeftSider = () => {
             </h2>
             <div className="grid grid-cols-3 md:grid-cols-2 gap-3">
               {filterByColor.map((item, index) => (
-                    
                 <div key={index} className="flex items-center gap-2">
                   <span
                     className={`w-4 h-4 rounded-full border border-gray-300 ${item.color}`}
@@ -318,32 +319,82 @@ const ShopLeftSider = () => {
                 </p>
                 {/* Action Buttons */}
                 <div className="mt-4 flex space-x-4">
-                  <button className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300">
-                    <Image
-                      src={"/icons/heart-b.svg"}
-                      alt={"heart"}
-                      width={20}
-                      height={20}
-                    />
-                  </button>
-                  <button onClick={()=>addToCart(product)} className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300">
-                    <Image
-                      src={"/icons/cart-b.svg"}
-                      alt={"cart"}
-                      width={20}
-                      height={20}
-                    />
-                  </button>
-                  <Link href={`/product/${product._id}`}>
-                  <button className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300">
-                    <Image
-                      src={"/icons/view.svg"}
-                      alt={"view"}
-                      width={20}
-                      height={20}
+                  <motion.button
+                    onClick={() => addToWishlist(product)}
+                    whileTap={{ scale: 0.9 }}
+                    className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInWishlist(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
+                  >
+                    {isInWishlist(product._id) ? (
+                      <Image
+                        src={"/icons/heart-g.svg"}
+                        alt={"heart"}
+                        width={24}
+                        height={24}
                       />
-                  </button>
-                      </Link>
+                    ) : (
+                      <Image
+                        src={"/icons/heart-b.svg"}
+                        alt={"heart"}
+                        width={24}
+                        height={24}
+                      />
+                    )}
+
+                    {/* Confetti effect */}
+                    {isInWishlist(product._id) && (
+                      <motion.div
+                        initial={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 1 }}
+                        className="absolute top-0 left-0 right-0 flex justify-center"
+                      >
+                        ✨ 💥 🌟
+                      </motion.div>
+                    )}
+                  </motion.button>
+                  <motion.button
+                    onClick={() => addToCart(product)}
+                    whileTap={{ scale: 0.9 }}
+                    className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInCart(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
+                  >
+                    {isInCart(product._id) ? (
+                      <Image
+                        src={"/icons/Cart-g.svg"}
+                        alt={"cart"}
+                        width={24}
+                        height={24}
+                      />
+                    ) : (
+                      <Image
+                        src={"/icons/cart-b.svg"}
+                        alt={"cart"}
+                        width={24}
+                        height={24}
+                      />
+                    )}
+
+                    {/* Confetti effect */}
+                    {isInCart(product._id) && (
+                      <motion.div
+                        initial={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 1 }}
+                        className="absolute top-0 left-0 right-0 flex justify-center"
+                      >
+                        ✨ 💥 🌟
+                      </motion.div>
+                    )}
+                  </motion.button>
+                  <Link href={`/product/${product._id}`}>
+                    <button className="flex items-center justify-center w-8 h-8 bg-gray-200 rounded-full hover:bg-gray-300">
+                      <Image
+                        src={"/icons/view.svg"}
+                        alt={"view"}
+                        width={20}
+                        height={20}
+                      />
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

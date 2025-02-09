@@ -1,23 +1,21 @@
-export interface ProductType 
-  {
-    _id: string;
-    name: string;
-    price: number;
-    discountedPrice: number;
-    productCode?: string;
-    image: string;
-    rating: number ;
-    category: string | string[];
-    isSale?: boolean;
-    description?: string;
-    colors: string[];
-    tags: string | string[];
-    stockLevel: number;
-    quantity: number;
-  };
+export interface ProductType {
+  _id: string;
+  name: string;
+  price: number;
+  discountedPrice: number;
+  productCode?: string;
+  image: string;
+  rating: number;
+  category: string | string[];
+  isSale?: boolean;
+  description?: string;
+  colors: string[];
+  tags:  string[];
+  stockLevel: number;
+  quantity: number;
+}
 
 // data is fetching by CMS sanity
-
 
 export interface offerType {
   _id: string;
@@ -49,13 +47,26 @@ export interface blogProductType {
   image: string;
 }
 
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  image: string;
+}
+export interface Order {
+  userId: string;
+  totalPrice: number;
+  status: string[];
+  createdAt: Date;
+}
 
 export interface CartContextType {
-  cartItems: ProductType[]; 
-  addToCart: (product: ProductType) => void; 
-  removeFromCart: (_id: string) => void; 
+  cartItems: ProductType[];
+  addToCart: (product: ProductType) => void;
+  removeFromCart: (_id: string) => void;
   clearCart: () => void;
-  updateCartItemQuantity: (_id: string, stockLevel: number) => void; 
+  updateCartItemQuantity: (_id: string, stockLevel: number) => void;
   getTotalPrice: () => number;
   wishlistItems: ProductType[];
   addToWishlist: (product: ProductType) => void;
@@ -64,5 +75,3 @@ export interface CartContextType {
   isInCart: (_id: string) => boolean;
   isInWishlist: (_id: string) => boolean;
 }
-
-

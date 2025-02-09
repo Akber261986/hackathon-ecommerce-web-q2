@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -6,30 +6,42 @@ import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { ProductType } from "@/app/Types";
+import { useRouter } from "next/navigation";
 
 const fetchData = async () => {
   const quary = `*[_type == "product" && "Eams Sofa Compact" == name][0]{
       _id,
       name,
+      price,
+      discountedPrice,
+      rating,
+      description,
+      colors ,
+      tags,
+      stockLevel,
       "image": image.asset->url,
-  }`
-  const res = await client.fetch(quary)
-  return res
-}
+  }`;
+  const res = await client.fetch(quary);
+  return res;
+};
 
 export default function DiscountSection() {
-  const [product, setProduct] = useState<ProductType | null>(null)
-    useEffect(()=>{
-      const fetchedData = async () => {
-        const res = await fetchData()
-        setProduct(res)
-      }
-      fetchedData()
-    }, [])
+  const [product, setProduct] = useState<ProductType | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchedData = async () => {
+      const res = await fetchData();
+      setProduct(res);
+    };
+    fetchedData();
+  }, []);
   return (
     <div>
       <div className="flex flex-col items-center py-16 gap-6">
-        <h2 className="text-3xl font-bold text-blue-900 font-sans">Discount Item</h2>
+        <h2 className="text-3xl font-bold text-blue-900 font-sans">
+          Discount Item
+        </h2>
         <div className="space-x-4 text-pink-600 font-semibold">
           <ul className="flex items-center justify-center flex-shrink-0 gap-4 sm:gap-8 text-[#0D0E43] font-semibold">
             <li>
@@ -76,7 +88,11 @@ export default function DiscountSection() {
             <li>✔ Clear lines and geometric figures</li>
             <li>✔ Material expose like metals</li>
           </ul>
-          <Button variant={"destructive"} className=" px-8 py-6 ">
+          <Button
+            onClick={() => router.push(`/product/${product?._id}`)}
+            variant={"destructive"}
+            className=" px-8 py-6 "
+          >
             Shop Now
           </Button>
         </div>
@@ -84,13 +100,13 @@ export default function DiscountSection() {
         <div className=" flex items-center justify-center relative ">
           <div className="absolute bg-pink-100 rounded-full h-96 w-96"></div>
           {product && (
-          <Image
-            src={product?.image} 
-            alt={product?.name}
-            width={500}
-            height={500}
-            className="relative z-10 w-80"
-          />
+            <Image
+              src={product?.image}
+              alt={product?.name}
+              width={500}
+              height={500}
+              className="relative z-10 w-80"
+            />
           )}
         </div>
       </div>

@@ -10,11 +10,16 @@ import {
   SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useClerk, useUser } from "@clerk/nextjs"; 
 
 const Header = () => {
   const { cartItems, wishlistItems } = useCart();
+  const session = useUser()
+  const { signOut } = useClerk()
+
   const [show, setshow] = useState<boolean>(false);
   const [nav, setNav] = useState<string>("");
+  const [profile, setProfile] = useState<string>("");
 
   const handleVisibilityBlog = () => {
     setshow(!show);
@@ -25,9 +30,14 @@ const Header = () => {
     setshow(!show);
     setNav("pages");
   };
+  const handleVisibilityProfile = () => {
+    setshow(!show);
+    setProfile("profile");
+  };
+ console.log(session.user)
 
   return (
-    <div className="font-sans ">
+    <header className="font-sans ">
       {/* Upper Header */}
       <div className="flex flex-wrap items-center justify-center lg:justify-between bg-[#7E33E0] text-white px-4 sm:px-8">
         <div className="hidden lg:flex items-center gap-6">
@@ -83,10 +93,7 @@ const Header = () => {
               </option>
             </select>
           </div>
-          <Link href={"/login"} className="flex items-center gap-1">
-            <p>Login</p>
-            <Image src={"/icons/user.svg"} alt="env" width={16} height={16} />
-          </Link>
+
           <Link href={"/wishlist"}>
             <div className="flex items-center gap-1 relative">
               <p className="hidden sm:block">Wishlist</p>
@@ -113,6 +120,79 @@ const Header = () => {
               <Image src={"/icons/cart.svg"} alt="env" width={24} height={24} />
             </div>
           </Link>
+          {session.user ? (
+            // Show profile and logout if user is logged in
+            <div className="flex items-center gap-4 w-8 h-8  rounded-full relative">
+              <button
+                onClick={handleVisibilityProfile}
+                className="flex items-center gap-1 "
+              >
+                <Image
+                  src={ "/images/user.png"}
+                  alt="user"
+                  width={250}
+                  height={250}
+                  className="rounded-full cursor-pointer"
+                />
+              </button>
+              <div
+                className={`flex flex-col justify-around gap-1 absolute top-11 right-0 bg-gray-800 w-72 h-96 py-2 shadow-lg rounded-lg ${show && profile == "profile" ? "block" : "hidden"} z-30`}
+              >
+                <div className="w-full flex flex-col items-center gap-2 py-4">
+                  <div className="w-10 h-10 rounded-full bg-red-300">
+                    <Image
+                      src={"/images/user.png"}
+                      alt="user"
+                      width={250}
+                      height={250}
+                      className="rounded-full object-cover"
+                    />
+                  </div>
+                  <p>{ session.user.id}</p>
+                  <p>{session.user.primaryEmailAddress.emailAddress}</p>
+                </div>
+                <div className="flex flex-col items-start w-full space-y-2">
+                  <Link
+                    className="hover:bg-gray-600 w-full px-6 py-1"
+                    href={"/user-profile"}
+                    onClick={ handleVisibilityProfile }
+                  >
+                    <p>Profile</p>
+                  </Link>
+                  <Link
+                    className="hover:bg-gray-600 w-full px-6 py-1"
+                    href={"/dashboard"}
+                    onClick={handleVisibilityProfile}
+                  >
+                    <p>Dashboard</p>
+                  </Link>
+                  <Link
+                    className="hover:bg-gray-600 w-full px-6 py-1"
+                    href={""}
+                  >
+                    <p>Summary</p>
+                  </Link>
+                  <Link
+                    className="hover:bg-gray-600 w-full px-6 py-1"
+                    href={""}
+                  >
+                    <p>Order</p>
+                  </Link>
+                  <button
+                  onClick={() => signOut({ redirectUrl: '/' })}
+                    className="flex items-center gap-1 bg-pink-500 hover:bg-pink-600 px-2 ml-5 py-1 rounded"
+                  >
+                    <p>Logout</p>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <Link href={"/login"} className="flex items-center gap-1">
+              <p>Login</p>
+              <Image src={"/icons/user.svg"} alt="env" width={16} height={16} />
+            </Link>
+          )}
         </div>
       </div>
 
@@ -272,7 +352,7 @@ const Header = () => {
           {/* Search Bar */}
           <div className="flex items-center justify-between border-2 border-[#E7E6EF] rounded self-end mx-4">
             <input
-              type="text"
+              type={"search"}
               placeholder="Search"
               className="outline-none px-2 py-1 w-[calc(100%-80px)]"
             />
@@ -420,7 +500,7 @@ const Header = () => {
           </Sheet>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

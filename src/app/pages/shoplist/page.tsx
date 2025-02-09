@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import { ProductType } from "@/app/Types";
@@ -7,35 +7,38 @@ import Link from "next/link";
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
+import { motion } from "framer-motion";
+
 const fetchProductsbyCategory = async () => {
   const query = `*[_type == "product" && "shoplist" in category] | order(_createdAt asc ){
       _id,
       name,
       price,
-      "image": image.asset->url,
-      rating,
       discountedPrice,
+      rating,
       description,
+      colors ,
+      tags,
       stockLevel,
-      colors,
-    }`
-  const res = await client.fetch(query)
-  return res
-}
+      "image": image.asset->url,
+    }`;
+  const res = await client.fetch(query);
+  return res;
+};
 const ShopList = () => {
-  const {addToCart} = useCart()
-  const [products, setProducts] = useState<ProductType[]>([])
-    useEffect(() => {
-      const fetchProducts = async () => {
-        try {
-          const products = await fetchProductsbyCategory()
-          setProducts(products)
-        } catch (error) {
-          console.error("Error fetching products:", error)
-        }
+  const { addToCart, addToWishlist, isInCart, isInWishlist } = useCart();
+  const [products, setProducts] = useState<ProductType[]>([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await fetchProductsbyCategory();
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-      fetchProducts()
-    }, [])
+    };
+    fetchProducts();
+  }, []);
   return (
     <div className="font-sans text-[#151875]">
       <div className="text-[#101750] font-sans bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -140,7 +143,9 @@ const ShopList = () => {
                 </div>
                 {/* Price and Old Price */}
                 <div className="mt-4 flex items-center space-x-2">
-                  <span className=" text-md font-semibold">${product.price.toFixed(2)}</span>
+                  <span className=" text-md font-semibold">
+                    ${product.price.toFixed(2)}
+                  </span>
                   <span className="text-red-500 line-through">
                     ${product.discountedPrice}.00
                   </span>
@@ -164,23 +169,73 @@ const ShopList = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="mt-4 flex space-x-4">
-                  <button className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300">
-                    <Image
-                      src={"/icons/heart-b.svg"}
-                      alt={"heart"}
-                      width={24}
-                      height={24}
-                    />
-                  </button>
-                  <button onClick={()=>addToCart(product)} className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300">
-                    <Image
-                      src={"/icons/cart-b.svg"}
-                      alt={"cart"}
-                      width={24}
-                      height={24}
-                    />
-                  </button>
+                <div className="mt-4 flex space-x-3">
+                  <motion.button
+                    onClick={() => addToWishlist(product)}
+                    whileTap={{ scale: 0.9 }}
+                    className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInWishlist(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
+                  >
+                    {isInWishlist(product._id) ? (
+                      <Image
+                        src={"/icons/heart-g.svg"}
+                        alt={"heart"}
+                        width={24}
+                        height={24}
+                      />
+                    ) : (
+                      <Image
+                        src={"/icons/heart-b.svg"}
+                        alt={"heart"}
+                        width={24}
+                        height={24}
+                      />
+                    )}
+
+                    {/* Confetti effect */}
+                    {isInWishlist(product._id) && (
+                      <motion.div
+                        initial={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 1 }}
+                        className="absolute top-0 left-0 right-0 flex justify-center"
+                      >
+                        ✨ 💥 🌟
+                      </motion.div>
+                    )}
+                  </motion.button>
+                  <motion.button
+                    onClick={() => addToCart(product)}
+                    whileTap={{ scale: 0.9 }}
+                    className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInCart(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
+                  >
+                    {isInCart(product._id) ? (
+                      <Image
+                        src={"/icons/Cart-g.svg"}
+                        alt={"cart"}
+                        width={24}
+                        height={24}
+                      />
+                    ) : (
+                      <Image
+                        src={"/icons/cart-b.svg"}
+                        alt={"cart"}
+                        width={24}
+                        height={24}
+                      />
+                    )}
+
+                    {/* Confetti effect */}
+                    {isInCart(product._id) && (
+                      <motion.div
+                        initial={{ opacity: 1, y: 0 }}
+                        animate={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 1 }}
+                        className="absolute top-0 left-0 right-0 flex justify-center"
+                      >
+                        ✨ 💥 🌟
+                      </motion.div>
+                    )}
+                  </motion.button>
                   <Link href={`/product/${product._id}`}>
                     <button className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300">
                       <Image

@@ -1,21 +1,43 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
+
 export default function CheckoutPage() {
+  const session  = useUser();
+  const router = useRouter()
   const { cartItems, getTotalPrice, } = useCart();
   const total = getTotalPrice() + 15; // Assuming $6 for shipping
+  
+  const [loading, setLoading] = useState(false);
+
+
+  const handlePlaceOrder = async () => {
+    if (!session?.user) return 
+    setLoading(true);
+    try {
+      router.push("stripe-payment")
+    } catch (error) {
+      console.error("Order Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="text-[#1D3178] font-sans">
-      <div className="bg-[#F6F5FF] py-16 px-4 sm:px-8">
-        <h1 className="text-4xl font-bold">Hecto Demo</h1>
+      <div className="text-[#101750] font-sans bg-[#F6F5FF] py-6 px-4 sm:px-8 relative">
+        {!session?.user && ( <p className="absolute right-6 top-6 font-semibold text-xl text-red-500">You need to log in before <br /> proceeding to checkout.</p> )}
+        <h1 className="text-4xl font-bold">Checkout</h1>
+        <p className="flex gap-2">
+          <span>Home</span>
+          <span>. Page</span>
+          <span className="text-[#FB2E86]">. Checkout</span>
+        </p>
       </div>
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <div className="self-start px-8">
-          <h1 className="text-2xl font-bold ">Hekto Demo</h1>
-          <p>Cart/ Information/ Shipping/ Payment</p>
-        </div>
         <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-12 gap-8 px-6 py-12">
           {/* Left Section: Checkout Form */}
           <div className="col-span-7 bg-white p-6 rounded-lg shadow-md ">
@@ -26,16 +48,16 @@ export default function CheckoutPage() {
                   <h2 className="text-lg font-bold mb-4">
                     Contact Information
                   </h2>
-                  <p className="text-sm text-[#C1C8E1]">
+                  <p className="text-sm text-[#7691ca]">
                     Already have an account? <a href="login"> Login</a>
                   </p>
                 </div>
                 <input
                   type="email"
                   placeholder="Email or mobile phone number"
-                  className="w-full border-b-2 border-b-[#C1C8E1] my-4 py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm"
+                  className="w-full border-b-2 border-b-[#6b6f7c] my-4 py-2 focus:outline-none placeholder:text-[#6b6f7c] placeholder:text-sm"
                 />
-                <label className="flex items-center mt-2 text-sm text-[#C1C8E1]">
+                <label className="flex items-center mt-2 text-sm text-[#797d8d]">
                   <input
                     type="checkbox"
                     className="mr-2 accent-[#22c55e] focus:ring-[#22c55e] checked:text-[#fff]"
@@ -54,43 +76,43 @@ export default function CheckoutPage() {
                       type="text"
                       placeholder="First name"
                       required
-                      className=" border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                      className=" border-b-2 border-b-[#6b6f7c] py-2 focus:outline-none placeholder:text-[#6b6f7c] placeholder:text-sm my-4"
                     />
                     <input
                       type="text"
                       placeholder="Last name"
                       required
-                      className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                      className="border-b-2 border-b-[#6b6f7c] py-2 focus:outline-none placeholder:text-[#6b6f7c] placeholder:text-sm my-4"
                     />
                   </div>
                   <input
                     type="text"
                     placeholder="Address"
                     required
-                    className="w-full border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                    className="w-full border-b-2 border-b-[#6b6f7c] py-2 focus:outline-none placeholder:text-[#6b6f7c] placeholder:text-sm my-4"
                   />
                   <input
                     type="text"
                     placeholder="Apartment, suite, etc. (optional)"
-                    className="w-full border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                    className="w-full border-b-2 border-b-[#6b6f7c] py-2 focus:outline-none placeholder:text-[#6b6f7c] placeholder:text-sm my-4"
                   />
                   <input
                     type="text"
                     placeholder="City"
-                    className="w-full border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                    className="w-full border-b-2 border-b-[#6b6f7c] py-2 focus:outline-none placeholder:text-[#6b6f7c] placeholder:text-sm my-4"
                   />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
                     <input
                       type="text"
                       placeholder="Country"
                       required
-                      className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                      className="border-b-2 border-b-[#6b6f7c] py-2 focus:outline-none placeholder:text-[#6b6f7c] placeholder:text-sm my-4"
                     />
                     <input
                       type="text"
                       placeholder="Postal Code"
                       required
-                      className="border-b-2 border-b-[#C1C8E1] py-2 focus:outline-none placeholder:text-[#C1C8E1] placeholder:text-sm my-4"
+                      className="border-b-2 border-b-[#6b6f7c] py-2 focus:outline-none placeholder:text-[#6b6f7c] placeholder:text-sm my-4"
                     />
                   </div>
               </div>
@@ -128,6 +150,7 @@ export default function CheckoutPage() {
                     </div>
                     <p className="font-medium">${item.price}</p>
                   </div>
+                  
                 ))}
               </div>
 
@@ -141,21 +164,21 @@ export default function CheckoutPage() {
                   <p className="text-lg font-semibold">Total:</p>
                   <p className="font-medium">${total}</p>
                 </div>
-                <label className="flex items-center mt-2 text-sm text-[#C1C8E1]">
+                <label className="flex items-center mt-2 text-sm text-[#6b6f7c]">
                   <input
                     type="checkbox"
                     className="mr-2 accent-[#22c55e] focus:ring-[#22c55e] checked:text-[#fff]"
                   />
                   Shipping & taxes calculated at checkout.
                 </label>
-                <Link href={"ordercompeleted"}>
                   <button
+                    onClick={ handlePlaceOrder }
+                    disabled={loading}
                     type="submit"
                     className="w-full mt-4 bg-green-500 text-white py-2 rounded-md font-semibold hover:bg-green-600 transition"
                   >
-                    Proceed to Checkout
+                    {loading ? "Placing Order..." : "Place Order"}
                   </button>
-                </Link>
               </div>
             </div>
           </div>

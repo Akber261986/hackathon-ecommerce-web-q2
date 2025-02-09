@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -7,34 +7,39 @@ import { useCart } from "@/context/CartContext";
 import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import { urlFor } from "@/sanity/lib/image";
+import { motion } from "framer-motion";
+
 const fetchProductsbyCategory = async () => {
   const query = `*[_type == "product" && "latest" in category]{
       _id,
       name,
       price,
-      "image": image.asset->url,
-      discountPrice,
+      discountedPrice,
+      rating,
+      description,
+      colors ,
+      tags,
       stockLevel,
-      isSale
-    }`
-  const allProducts = await client.fetch(query)
-  return allProducts
-  
-}
+      isSale,
+      "image": image.asset->url,
+    }`;
+  const allProducts = await client.fetch(query);
+  return allProducts;
+};
 const LatestProduct = () => {
-  const {addToCart} = useCart()
-  const [products, setProducts] = useState<ProductType[]>([])
-    useEffect(() => {
-      const fetchProducts = async () => {
-        try {
-          const products = await fetchProductsbyCategory()
-          setProducts(products)
-        } catch (error) {
-          console.error("Error fetching products:", error)
-        }
+  const { addToCart, addToWishlist, isInCart, isInWishlist } = useCart();
+  const [products, setProducts] = useState<ProductType[]>([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await fetchProductsbyCategory();
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-      fetchProducts()
-    }, [])
+    };
+    fetchProducts();
+  }, []);
   return (
     <div className="px-4 md:px-28 py-6">
       <div className="flex flex-col items-center gap-6">
@@ -93,14 +98,39 @@ const LatestProduct = () => {
                 className="w-full object-cover rounded-t-lg"
               />
               <div className="absolute bottom-2 left-2 flex flex-col gap-2 invisible group-hover:visible">
-                <button onClick={()=> addToCart(product)} className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
-                  <Image
-                    src={"/icons/cart-b.svg"}
-                    alt={"heart"}
-                    width={20}
-                    height={20}
-                  />
-                </button>
+                <motion.button
+                  onClick={() => addToCart(product)}
+                  whileTap={{ scale: 0.9 }}
+                  className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInCart(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
+                >
+                  {isInCart(product._id) ? (
+                    <Image
+                      src={"/icons/Cart-g.svg"}
+                      alt={"cart"}
+                      width={24}
+                      height={24}
+                    />
+                  ) : (
+                    <Image
+                      src={"/icons/cart-b.svg"}
+                      alt={"cart"}
+                      width={24}
+                      height={24}
+                    />
+                  )}
+
+                  {/* Confetti effect */}
+                  {isInCart(product._id) && (
+                    <motion.div
+                      initial={{ opacity: 1, y: 0 }}
+                      animate={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 1 }}
+                      className="absolute top-0 left-0 right-0 flex justify-center"
+                    >
+                      ✨ 💥 🌟
+                    </motion.div>
+                  )}
+                </motion.button>
 
                 <Link
                   href={`/product/${product._id}`}
@@ -116,14 +146,39 @@ const LatestProduct = () => {
                   </button>
                 </Link>
 
-                <button className="w-8 h-8 flex items-center justify-center p-1 bg-white rounded-full shadow hover:bg-gray-200">
-                  <Image
-                    src={"/icons/heart-b.svg"}
-                    alt={"heart"}
-                    width={20}
-                    height={20}
-                  />
-                </button>
+                <motion.button
+                  onClick={() => addToWishlist(product)}
+                  whileTap={{ scale: 0.9 }}
+                  className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInWishlist(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
+                >
+                  {isInWishlist(product._id) ? (
+                    <Image
+                      src={"/icons/heart-g.svg"}
+                      alt={"heart"}
+                      width={24}
+                      height={24}
+                    />
+                  ) : (
+                    <Image
+                      src={"/icons/heart-b.svg"}
+                      alt={"heart"}
+                      width={24}
+                      height={24}
+                    />
+                  )}
+
+                  {/* Confetti effect */}
+                  {isInWishlist(product._id) && (
+                    <motion.div
+                      initial={{ opacity: 1, y: 0 }}
+                      animate={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 1 }}
+                      className="absolute top-0 left-0 right-0 flex justify-center"
+                    >
+                      ✨ 💥 🌟
+                    </motion.div>
+                  )}
+                </motion.button>
               </div>
               {product.isSale && (
                 <span className="absolute top-10 left-0 bg-[#151875] text-white px-8 -rotate-45 py-1 text-xs rounded-s-3xl rounded-e-3xl rounded-se-none rounded-bl-none">
@@ -137,7 +192,7 @@ const LatestProduct = () => {
                 <span className="font-bold">${product.price}.00</span>
                 {product.discountedPrice && (
                   <span className="line-through text-[#FB2448]">
-                    ${(product.discountedPrice)}.00
+                    ${product.discountedPrice}.00
                   </span>
                 )}
               </div>

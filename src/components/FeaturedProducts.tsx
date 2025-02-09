@@ -8,12 +8,15 @@ import { useCart } from "@/context/CartContext";
 import { useState, useEffect } from "react";
 import { urlFor } from "@/sanity/lib/image";
 import Pagination from "@/components/Pagination";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const FeaturedProducts = () => {
   const { addToCart, addToWishlist, isInCart, isInWishlist } = useCart();
   const [products, setProducts] = useState<ProductType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -59,18 +62,43 @@ const FeaturedProducts = () => {
                     <Button variant={"green"}>View Details</Button>
                   </Link>
                   <div className="absolute top-2 left-2  space-x-2">
-                    <button
+                    <motion.button
                       onClick={() => addToCart(product)}
-                      className={`p-1 ${isInCart(product._id) ? "bg-green-300 hover:bg-green-400" : "bg-white hover:bg-gray-200"}  rounded-full shadow hover:bg-gray-200`}
+                      whileTap={{ scale: 0.9 }}
+                      className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInCart(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
                     >
-                      <Image
-                        src={"/icons/cart-b.svg"}
-                        alt={"cart"}
-                        width={24}
-                        height={24}
-                      />
-                    </button>
-                    <button className="p-1 bg-white rounded-full shadow hover:bg-gray-200">
+                      {isInCart(product._id) ? (
+                        <Image
+                          src={"/icons/Cart-g.svg"}
+                          alt={"cart"}
+                          width={24}
+                          height={24}
+                        />
+                      ) : (
+                        <Image
+                          src={"/icons/cart-b.svg"}
+                          alt={"cart"}
+                          width={24}
+                          height={24}
+                        />
+                      )}
+
+                      {/* Confetti effect */}
+                      {isInCart(product._id) && (
+                        <motion.div
+                          initial={{ opacity: 1, y: 0 }}
+                          animate={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 1 }}
+                          className="absolute top-0 left-0 right-0 flex justify-center"
+                        >
+                          ✨ 💥 🌟
+                        </motion.div>
+                      )}
+                    </motion.button>
+                    <button
+                      onClick={() => router.push(`/product/${product._id}`)}
+                      className="p-1 bg-white rounded-full shadow hover:bg-gray-200"
+                    >
                       <Image
                         src={"/icons/view.svg"}
                         alt={"view"}
@@ -78,17 +106,39 @@ const FeaturedProducts = () => {
                         height={24}
                       />
                     </button>
-                    <button
-                      className={`p-1 ${isInWishlist(product._id) ? "bg-green-300 hover:bg-green-400" : "bg-white hover:bg-gray-200"}  rounded-full shadow `}
+                    <motion.button
                       onClick={() => addToWishlist(product)}
+                      whileTap={{ scale: 0.9 }}
+                      className={`relative p-1 rounded-full shadow hover:bg-gray-200 ${isInWishlist(product._id) ? "bg-[#b8f3b8] hover:bg-[#a5daa5]" : ""}`}
                     >
-                      <Image
-                        src={"/icons/heart-b.svg"}
-                        alt={"heart"}
-                        width={24}
-                        height={24}
-                      />
-                    </button>
+                      {isInWishlist(product._id) ? (
+                        <Image
+                          src={"/icons/heart-g.svg"}
+                          alt={"heart"}
+                          width={24}
+                          height={24}
+                        />
+                      ) : (
+                        <Image
+                          src={"/icons/heart-b.svg"}
+                          alt={"heart"}
+                          width={24}
+                          height={24}
+                        />
+                      )}
+
+                      {/* Confetti effect */}
+                      {isInWishlist(product._id) && (
+                        <motion.div
+                          initial={{ opacity: 1, y: 0 }}
+                          animate={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 1 }}
+                          className="absolute top-0 left-0 right-0 flex justify-center"
+                        >
+                          ✨ 💥 🌟
+                        </motion.div>
+                      )}
+                    </motion.button>
                   </div>
                 </div>
 
@@ -105,23 +155,24 @@ const FeaturedProducts = () => {
 
                 {/* Price */}
                 <div className="mt-2 flex flex-col items-center justify-center ">
-                  <span className="text-lg font-bold">{product.productCode}</span>
+                  <span className="text-lg font-bold">
+                    {product.productCode}
+                  </span>
                   <span className="text-lg font-bold">${product.price}.00</span>
                 </div>
               </div>
             ))}
           </div>
           {/* Pagination */}
-  <Pagination
-  currentPage={currentPage}
-  totalPages={totalPages}
-  onPageChange={setCurrentPage}
-/>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </div>
   );
-  
 };
 
 export default FeaturedProducts;

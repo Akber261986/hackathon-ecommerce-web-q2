@@ -93,3 +93,20 @@ body {
     transform: scale(0, 1);
   }
 }
+.scrolLineRed::after {
+  content: "";
+  width: 100%;
+  height: 4px;
+  background: red;
+  position: fixed;
+  bottom: 2px;
+  right: 0;
+  transform:  scale(1, 1);
+  transform-origin: left;
+  animation: slideRightRed 4s ease;
+}
+@keyframes slideRightRed{
+  to {
+    transform: scale(0, 1);
+  }
+}

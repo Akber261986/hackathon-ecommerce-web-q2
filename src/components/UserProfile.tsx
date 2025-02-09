@@ -1,118 +1,251 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import {
+  BellIcon,
+  LogOutIcon,
+  PenIcon,
+  SettingsIcon,
+  User,
+} from "lucide-react";
+import { getUserOrders } from "@/lib/action";
+import { Order } from "@/app/Types";
 
-interface Order {
-  id: string;
-  date: string;
-  total: number;
-  status: string;
-}
-
-interface User {
-  name: string;
-  email: string;
-  savedAddresses: string[];
-  orderHistory: Order[];
-}
-
-const UserProfilePage = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+const UserProfile = () => {
+  const { data: session, status } = useSession();
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [image, setImage] = useState("");
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        // Fetch user data from the API
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user`, {
-          cache: "no-store", // Disable caching for dynamic data
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch user data");
+    if (session?.user) {
+      setUserId(session.user.id || "Id Not Found");
+      setName(session.user.name || "");
+      setEmail(session.user.email || "");
+      setImage(session.user.image || "");
+    }
+  }, [session]);
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.id) {
+      const fetchOrders = async () => {
+        try {
+          const data = await getUserOrders(userId);
+          setOrders(data);
+        } catch (error) {
+          console.error("Error fetching orders:", error);
+        } finally {
+          setLoading(false);
         }
-
-        const userData: User = await res.json();
-        setUser(userData);
-      } catch (err) {
-        setError("Failed to load user data. Please try again later.");
-        console.error("User Data not found:", err);
-      } finally {
-        setLoading(false);
+      };
+      fetchOrders();
+    }
+  }, [session, status, userId]);
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const res = await fetch("/api/update-profile", {
+        method: "POST",
+        body: JSON.stringify({ name }),
+      });
+      if (res.ok) {
+        setOpen(false);
+      } else {
+        console.error("Data couldnot upload");
       }
-    };
-
-    fetchUser();
-  }, []);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p className="text-red-500">{error}</p>;
-  }
-
-  if (!user) {
-    return <p>No user data available.</p>;
-  }
-
+    } catch (error) {
+      console.error("Data couldnot upload", error);
+    }
+  };
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-white shadow-md rounded-md">
-      <h1 className="text-2xl font-bold mb-4">User Profile</h1>
-
-      {/* User Info */}
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold">Personal Details</h2>
-        <p>Name: {user.name}</p>
-        <p>Email: {user.email}</p>
+    <div className="flex flex-col md:flex-row gap-6 min-h-screen p-6">
+      {/* Profile Card */}
+      <div className=" md:w-1/4 py-4 rounded-lg bg-white ">
+        <CardContent className="flex items-center gap-3">
+          <Image
+            src={image || "/images/user.png"}
+            alt="User Avatar"
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
+          <div>
+            <p className="font-semibold">{name}</p>
+            <p className="text-sm text-gray-500">{email}</p>
+          </div>
+        </CardContent>
+        <CardContent className="mt-4 space-y-3">
+          <div className="flex gap-2 items-center">
+            <User />
+            <button
+              onClick={() => setOpen(true)}
+              className="w-full text-left p-2 hover:bg-gray-100 rounded"
+            >
+              My Profile
+            </button>
+          </div>
+          <DropdownMenu>
+            <div className="flex gap-2 items-center">
+              <SettingsIcon />
+              <DropdownMenuTrigger className="w-full text-left p-2 hover:bg-gray-100 rounded">
+                Settings
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Light</DropdownMenuItem>
+                <DropdownMenuItem>Dark</DropdownMenuItem>
+              </DropdownMenuContent>
+            </div>
+          </DropdownMenu>
+          <DropdownMenu>
+            <div className="flex gap-2 items-center">
+              <BellIcon />
+              <DropdownMenuTrigger className="w-full text-left p-2 hover:bg-gray-100 rounded">
+                Notification
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>Allow</DropdownMenuItem>
+                <DropdownMenuItem>Mute</DropdownMenuItem>
+              </DropdownMenuContent>
+            </div>
+          </DropdownMenu>
+          <div className="flex gap-2 items-center">
+            <LogOutIcon />
+            <button
+              className="w-full text-left p-2 hover:bg-gray-100 rounded text-red-500"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            >
+              Log Out
+            </button>
+          </div>
+        </CardContent>
       </div>
 
-      {/* Saved Addresses */}
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold">Saved Addresses</h2>
-        {user.savedAddresses.length > 0 ? (
-          <ul className="list-disc ml-6">
-            {user.savedAddresses.map((address, index) => (
-              <li key={index}>{address}</li>
+      {/* user orders section */}
+      <div className="max-w-3xl mx-auto p-4">
+        <h2 className="text-2xl font-bold mb-4">My Orders</h2>
+        {loading ? (
+          <p>Loading orders...</p>
+        ) : orders.length > 0 ? (
+          <ul>
+            {orders.map((order) => (
+              <li
+                key={order.userId}
+                className="p-4 mb-2 border rounded-lg shadow-sm"
+              >
+                <p>
+                  Total Price: <strong>${order.totalPrice}</strong>
+                </p>
+                <p>
+                  Status: <span className="text-blue-500">{order.status}</span>
+                </p>
+                <p>Ordered On: {new Date(order.createdAt).toLocaleString()}</p>
+              </li>
             ))}
           </ul>
-        ) : (
-          <p>No saved addresses found.</p>
-        )}
-      </div>
-
-      {/* Order History */}
-      <div>
-        <h2 className="text-lg font-semibold">Order History</h2>
-        {user.orderHistory.length > 0 ? (
-          <table className="w-full text-left border-collapse mt-4">
-            <thead>
-              <tr className="border-b">
-                <th className="p-2">Order ID</th>
-                <th className="p-2">Date</th>
-                <th className="p-2">Total</th>
-                <th className="p-2">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {user.orderHistory.map((order) => (
-                <tr key={order.id} className="border-b">
-                  <td className="p-2">{order.id}</td>
-                  <td className="p-2">{order.date}</td>
-                  <td className="p-2">${order.total}</td>
-                  <td className="p-2">{order.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         ) : (
           <p>No orders found.</p>
         )}
       </div>
+      {/* Profile Modal */}
+      <form onSubmit={handleUpdateProfile}>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="w-96 p-6 bg-white rounded-lg">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-3 relative">
+                <div>
+                  <Label
+                    htmlFor="file"
+                    className="cursor-pointer absolute top-0 left-16"
+                  >
+                    <PenIcon className="w-4 opacity-50 hover:opacity-100" />
+                  </Label>
+                  <Input
+                    type="file"
+                    id="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        setImage(URL.createObjectURL(e.target.files[0]));
+                      }
+                      return; // Explicit return (optional but helps avoid ESLint warnings)
+                    }}
+                    className="hidden"
+                  />
+                </div>
+                <Image
+                  src={image || "/images/user.png"}
+                  alt="User Avatar"
+                  width={50}
+                  height={50}
+                  className="rounded-full"
+                />
+                <div className="ml-4">
+                  <p className="font-semibold">{name}</p>
+                  <p className="text-sm text-gray-500">{email}</p>
+                </div>
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3">
+              <div className="flex items-center gap-4 justify-between">
+                <Label>Name</Label>
+                <Input
+                  type="text"
+                  className="text-gray-900 outline-none focus:ring-2 px-2"
+                  placeholder={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="flex items-center gap-4 justify-between">
+                <Label>Mobile</Label>
+                <Input
+                  type="number"
+                  className="text-gray-900 outline-none focus:ring-2 px-2"
+                  placeholder="Your Mobile Number"
+                />
+              </div>
+              <div className="flex items-center gap-4 justify-between">
+                <Label>Location</Label>
+                <Input
+                  type="text"
+                  className="text-gray-900 outline-none focus:ring-2 px-2"
+                  placeholder="USA"
+                />
+              </div>
+            </div>
+            <Button
+              type="submit"
+              className="mt-4 w-full bg-blue-500 text-white"
+            >
+              Save Change
+            </Button>
+          </DialogContent>
+        </Dialog>
+      </form>
     </div>
   );
 };
 
-export default UserProfilePage;
+export default UserProfile;
