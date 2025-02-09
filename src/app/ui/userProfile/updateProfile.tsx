@@ -1,73 +1,73 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { OctagonAlert, PenIcon } from "lucide-react";
-import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
+// import { useState, useEffect } from "react";
+// import { OctagonAlert, PenIcon } from "lucide-react";
+// import Image from "next/image";
+// import { useUser } from "@clerk/nextjs";
 
 export default function ProfileUpdate() {
-  const session = useUser();
+  // const session = useUser();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [image, setImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [mobile, setMobile] = useState("");
-  const [location, setLocation] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [image, setImage] = useState<File | null>(null);
+  // const [imagePreview, setImagePreview] = useState<string | null>(null);
+  // const [loading, setLoading] = useState(false);
+  // const [mobile, setMobile] = useState("");
+  // const [location, setLocation] = useState("");
+  // const [message, setMessage] = useState("");
+  // const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (session.isSignedIn) {
-      setEmail(session.user.primaryEmailAddress?.emailAddress || "");
-      setName(session.user.fullName || "");
-    }
-  }, [session]);
+  // useEffect(() => {
+  //   if (session.isSignedIn) {
+  //     setEmail(session.user.primaryEmailAddress?.emailAddress || "");
+  //     setName(session.user.fullName || "");
+  //   }
+  // }, [session]);
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      let base64Image = null;
-      if (image) {
-        const reader = new FileReader();
-        reader.readAsDataURL(image);
-        base64Image = await new Promise((resolve) => {
-          reader.onloadend = () => resolve(reader.result?.toString().split(",")[1]);
-        });
-      }
-      const res = await fetch("/api/update-profile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          mobile,
-          location,
-          image: base64Image,
-        }),
-      });
-      if (res.ok) {
-        setMessage("Profile Updated Successfully");
-      } else {
-        setError("Profile Update Failed");
-      }
-      setTimeout(() => {
-        setMessage("");
-        setError("");
-      }, 4000);
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      setError("An unexpected error occurred");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const handleUpdateProfile = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   try {
+  //     let base64Image = null;
+  //     if (image) {
+  //       const reader = new FileReader();
+  //       reader.readAsDataURL(image);
+  //       base64Image = await new Promise((resolve) => {
+  //         reader.onloadend = () => resolve(reader.result?.toString().split(",")[1]);
+  //       });
+  //     }
+  //     const res = await fetch("/api/update-profile", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         name,
+  //         email,
+  //         mobile,
+  //         location,
+  //         image: base64Image,
+  //       }),
+  //     });
+  //     if (res.ok) {
+  //       setMessage("Profile Updated Successfully");
+  //     } else {
+  //       setError("Profile Update Failed");
+  //     }
+  //     setTimeout(() => {
+  //       setMessage("");
+  //       setError("");
+  //     }, 4000);
+  //   } catch (error) {
+  //     console.error("Error updating profile:", error);
+  //     setError("An unexpected error occurred");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="flex">
-      {message && (
+      {/* {message && (
         <div className="fixed right-4 top-10 text-green-500 bg-[#cef5ce] dark:bg-[#363333] rounded-lg shadow-md px-8 py-5 z-10 flex gap-4">
           <Image src="/icons/circle-check-solid.svg" alt="check" width={20} height={20} />
           <p>{message}</p>
@@ -78,8 +78,8 @@ export default function ProfileUpdate() {
           <OctagonAlert />
           <p>{error}</p>
         </div>
-      )}
-      <div className="bg-white p-6 rounded-lg">
+      )} */}
+      {/* <div className="bg-white p-6 rounded-lg">
         <h2 className="text-lg font-semibold mb-4">Update Profile</h2>
         <form onSubmit={handleUpdateProfile} className="space-y-4">
           <div className="flex items-center gap-4">
@@ -150,7 +150,7 @@ export default function ProfileUpdate() {
             {loading ? "Updating..." : "Save Changes"}
           </button>
         </form>
-      </div>
+      </div> */}
       Will update soon
     </div>
   );
