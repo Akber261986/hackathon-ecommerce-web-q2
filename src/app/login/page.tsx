@@ -16,13 +16,41 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [code, setCode] = useState('')
   const [useBackupCode, setUseBackupCode] = useState(false)
-  const [displayTOTP, setDisplayTOTP] = useState(false)
+  // const [displayTOTP, setDisplayTOTP] = useState(false)
 
   // Handle user submitting email and pass and swapping to TOTP form
-  const handleFirstStage = (e: React.FormEvent) => {
-    e.preventDefault()
-    setDisplayTOTP(true)
-  }
+  const handleFirstStage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(""); // Reset error message
+  
+    if (!isLoaded) return;
+  
+    try {
+      // Start sign-in process
+      const signInAttempt = await signIn.create({
+        identifier: email,
+        password,
+      });
+  
+     if (signInAttempt.status === "complete") {
+        // If sign-in is successful without TOTP, set session and redirect
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.push("/");
+      } else {
+        console.log(signInAttempt);
+      }
+    } catch (err: any) {
+      console.error("Error:", err);
+  
+      // Display proper error messages
+      if (err.errors && err.errors.length > 0) {
+        setError(err.errors[0].message);
+      } else {
+        setError("Invalid email or password. Please try again.");
+      }
+    }
+  };
+  
 
   // Handle the submission of the TOTP of Backup Code submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,36 +88,36 @@ export default function Login() {
       console.error('Error:', JSON.stringify(err, null, 2))
     }
   }
-  if (displayTOTP) {
-    return (
-      <div>
-        <h1>Verify your account</h1>
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <div>
-            <label htmlFor="code">Code</label>
-            <input
-              onChange={(e) => setCode(e.target.value)}
-              id="code"
-              name="code"
-              type="text"
-              value={code}
-            />
-          </div>
-          <div>
-            <label htmlFor="backupcode">This code is a backup code</label>
-            <input
-              onChange={() => setUseBackupCode((prev) => !prev)}
-              id="backupcode"
-              name="backupcode"
-              type="checkbox"
-              checked={useBackupCode}
-            />
-          </div>
-          <button type="submit">Verify</button>
-        </form>
-      </div>
-    )
-  }
+  // if (displayTOTP) {
+  //   return (
+  //     <div>
+  //       <h1>Verify your account</h1>
+  //       <form onSubmit={(e) => handleSubmit(e)}>
+  //         <div>
+  //           <label htmlFor="code">Code</label>
+  //           <input
+  //             onChange={(e) => setCode(e.target.value)}
+  //             id="code"
+  //             name="code"
+  //             type="text"
+  //             value={code}
+  //           />
+  //         </div>
+  //         <div>
+  //           <label htmlFor="backupcode">This code is a backup code</label>
+  //           <input
+  //             onChange={() => setUseBackupCode((prev) => !prev)}
+  //             id="backupcode"
+  //             name="backupcode"
+  //             type="checkbox"
+  //             checked={useBackupCode}
+  //           />
+  //         </div>
+  //         <button type="submit">Verify</button>
+  //       </form>
+  //     </div>
+  //   )
+  // }
   return (
     <div>
       <div className="text-[#101750] font-sans bg-[#F6F5FF] py-4 px-4 sm:px-8">
