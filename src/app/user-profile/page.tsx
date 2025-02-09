@@ -1,10 +1,10 @@
-import UserProfile from '@/components/UserProfile'
+import ProfileUpdate from '../ui/userProfile/updateProfile'
 import React from 'react'
 
 const UserProfilePage = () => {
   return (
     <div>
-      <UserProfile/>
+      <ProfileUpdate/>
     </div>
   )
 }

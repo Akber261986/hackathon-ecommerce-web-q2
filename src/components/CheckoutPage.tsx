@@ -47,7 +47,7 @@ const CheckoutPage = ({ amount }: { amount: number }) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://www.localhost:3000/ordercompeleted?amount=${amount}`,
+        return_url: `https://hackathon-ecommerce-web-q2.vercel.app/ordercompeleted?amount=${amount}`,
       },
     });
 
