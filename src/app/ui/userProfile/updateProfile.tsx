@@ -1,90 +1,114 @@
 "use client";
 
-// import { useState, useEffect } from "react";
-// import { OctagonAlert, PenIcon } from "lucide-react";
-// import Image from "next/image";
-// import { useUser } from "@clerk/nextjs";
+import { useState } from "react";
+import { OctagonAlert, PenIcon } from "lucide-react";
+import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
 
 export default function ProfileUpdate() {
-  // const session = useUser();
+  const { user } = useUser();
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+  const [phone, setPhone] = useState(
+    user?.primaryPhoneNumber?.phoneNumber || ""
+  );
+  const [image, setImage] = useState(user?.imageUrl || "");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  // const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [image, setImage] = useState<File | null>(null);
-  // const [imagePreview, setImagePreview] = useState<string | null>(null);
-  // const [loading, setLoading] = useState(false);
-  // const [mobile, setMobile] = useState("");
-  // const [location, setLocation] = useState("");
-  // const [message, setMessage] = useState("");
-  // const [error, setError] = useState("");
-
-  // useEffect(() => {
-  //   if (session.isSignedIn) {
-  //     setEmail(session.user.primaryEmailAddress?.emailAddress || "");
-  //     setName(session.user.fullName || "");
-  //   }
-  // }, [session]);
-
-  // const handleUpdateProfile = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   try {
-  //     let base64Image = null;
-  //     if (image) {
-  //       const reader = new FileReader();
-  //       reader.readAsDataURL(image);
-  //       base64Image = await new Promise((resolve) => {
-  //         reader.onloadend = () => resolve(reader.result?.toString().split(",")[1]);
-  //       });
-  //     }
-  //     const res = await fetch("/api/update-profile", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         name,
-  //         email,
-  //         mobile,
-  //         location,
-  //         image: base64Image,
-  //       }),
-  //     });
-  //     if (res.ok) {
-  //       setMessage("Profile Updated Successfully");
-  //     } else {
-  //       setError("Profile Update Failed");
-  //     }
-  //     setTimeout(() => {
-  //       setMessage("");
-  //       setError("");
-  //     }, 4000);
-  //   } catch (error) {
-  //     console.error("Error updating profile:", error);
-  //     setError("An unexpected error occurred");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+   
+  const handleUpdateProfile = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!user ) return;
+  
+    setLoading(true);
+    setMessage("");
+    setError("");
+    if (!firstName || !lastName){
+      setError("Name fields Shouldn't Blank")
+      setLoading(false)
+      setTimeout(() => {
+        setError("")
+      }, 4000);
+      return
+    }
+    try {
+      // Prepare updates
+      const updates = {
+        firstName,
+        lastName,
+      };
+      // Update user profile
+      await user.update(updates);
+  
+      // If there's an image file, update profile picture
+      if (imageFile) {
+        await user.setProfileImage({ file: imageFile });
+      }
+      setFirstName("")
+      setLastName("")
+      setPhone("")
+      setImageFile(null)
+      setMessage("Profile updated successfully! ");
+      setTimeout(() => {
+        setMessage("")
+      }, 4000);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      setError("Failed to update profile ");
+      setTimeout(() => {
+        setError("")
+      }, 4000);
+    }
+  
+    setLoading(false);
+  };
+  
+  // Handle Image Upload (Now Updates in handleUpdateProfile)
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+  
+    setImageFile(file); // Store file for later upload
+  
+    // Preview image
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result) {
+        setImage(reader.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+  
 
   return (
     <div className="flex">
-      {/* {message && (
-        <div className="fixed right-4 top-10 text-green-500 bg-[#cef5ce] dark:bg-[#363333] rounded-lg shadow-md px-8 py-5 z-10 flex gap-4">
-          <Image src="/icons/circle-check-solid.svg" alt="check" width={20} height={20} />
-          <p>{message}</p>
+      {message && (
+        <div className={`text-center text-green-500 bg-[#cef5ce] dark:bg-[#363333] fixed right-4 top-10 transform duration-500 ease-out origin-right ${message ? "scale-100" : ""} rounded-lg shadow-md dark:shadow-[#a6ff95] font-bold px-8 md:px-10 py-5 z-10 flex gap-4`}>
+          <Image
+            src="/icons/circle-check-solid.svg"
+            alt="check"
+            width={20}
+            height={20}
+          />
+          <p className="scrolLineGreen">{message}</p>
         </div>
       )}
       {error && (
-        <div className="fixed right-4 top-10 text-red-500 bg-[#f5ced5] dark:bg-[#363333] rounded-lg shadow-md px-8 py-5 z-10 flex gap-4">
+        <div className={`text-center text-red-500 bg-[#f5d3ce] dark:bg-[#363333] fixed right-4 top-10 transform duration-500 ease-out origin-right ${error ? "scale-100" : ""} rounded-lg shadow-md dark:shadow-[#ff9595] font-bold px-8 md:px-10 py-5 z-10 flex gap-4`}>
           <OctagonAlert />
-          <p>{error}</p>
+          <p className="scrolLineRed">{error}</p>
         </div>
-      )} */}
-      {/* <div className="bg-white p-6 rounded-lg">
+      )}
+      <div className="bg-white px-6 rounded-lg">
         <h2 className="text-lg font-semibold mb-4">Update Profile</h2>
         <form onSubmit={handleUpdateProfile} className="space-y-4">
           <div className="flex items-center gap-4">
             <label htmlFor="file" className="cursor-pointer relative">
-              <div className="absolute top-0 -right-2 p-1">
+              <div className="absolute bottom-2 -right-2 p-1">
                 <PenIcon size={16} className="opacity-50" />
               </div>
               <input
@@ -92,17 +116,10 @@ export default function ProfileUpdate() {
                 id="file"
                 accept="image/*"
                 className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) {
-                    setImage(file);
-                    setImagePreview(URL.createObjectURL(file));
-                    e.target.value = "";
-                  }
-                }}
+                onChange={handleImageUpload}
               />
               <Image
-                src={imagePreview || "/images/user.png"}
+                src={image || "/images/user.png"}
                 alt="User Avatar"
                 width={50}
                 height={50}
@@ -110,48 +127,53 @@ export default function ProfileUpdate() {
               />
             </label>
             <div>
-              <p className="font-semibold">{name || "Your Name"}</p>
-              <p className="text-sm text-gray-500">{email}</p>
+              <p className="font-semibold">{user?.fullName == null ? "Your Name" : `${user?.fullName}`}</p>
+              <p className="text-sm text-gray-500">
+                {user?.primaryEmailAddress?.emailAddress || ""}
+              </p>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="col-span-4">
-              <label className="block text-sm font-medium">Name</label>
+              <label className="block text-sm font-medium m-2">First Name</label>
               <input
                 type="text"
-                value={name || ""}
-                placeholder="Your Name"
-                onChange={(e) => setName(e.target.value)}
+                value={firstName || ""}
+                placeholder="Your First Name"
+                onChange={(e) => setFirstName(e.target.value)}
+                className="w-full border p-2 rounded-md focus:ring-2"
+              />
+            </div>
+            <div className="col-span-4">
+              <label className="block text-sm font-medium m-2">Last Name</label>
+              <input
+                type="text"
+                value={lastName || ""}
+                placeholder="Your Last Name"
+                onChange={(e) => setLastName(e.target.value)}
                 className="w-full border p-2 rounded-md focus:ring-2"
               />
             </div>
             <div className="col-span-4 md:col-span-2">
-              <label className="block text-sm font-medium">Mobile</label>
+              <label className="block text-sm font-medium m-2">Mobile</label>
               <input
                 type="tel"
-                value={mobile}
+                value={phone}
                 placeholder="Your Mobile Number"
-                onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
-                className="w-full border p-2 rounded-md focus:ring-2"
-              />
-            </div>
-            <div className="col-span-4 md:col-span-2">
-              <label className="block text-sm font-medium">Location</label>
-              <input
-                type="text"
-                value={location || ""}
-                placeholder="Your Location"
-                onChange={(e) => setLocation(e.target.value)}
+                onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                 className="w-full border p-2 rounded-md focus:ring-2"
               />
             </div>
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md">
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-md"
+          >
             {loading ? "Updating..." : "Save Changes"}
           </button>
         </form>
-      </div> */}
-      Will update soon
+      </div>
     </div>
   );
 }
+

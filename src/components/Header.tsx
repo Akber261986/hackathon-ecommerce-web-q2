@@ -127,7 +127,7 @@ const Header = () => {
                 className="flex items-center gap-1 "
               >
                 <Image
-                  src={ "/images/user.png"}
+                  src={session.user.imageUrl || "/images/user.png"}
                   alt="user"
                   width={250}
                   height={250}
@@ -140,7 +140,7 @@ const Header = () => {
                 <div className="w-full flex flex-col items-center gap-2 py-4">
                   <div className="w-10 h-10 rounded-full bg-red-300">
                     <Image
-                      src={"/images/user.png"}
+                      src={ session.user.imageUrl ||"/images/user.png"}
                       alt="user"
                       width={250}
                       height={250}

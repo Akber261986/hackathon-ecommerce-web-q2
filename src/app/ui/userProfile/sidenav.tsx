@@ -21,6 +21,8 @@ export default function SideNav() {
       setImage(session.user.imageUrl)
     }
   },[session])
+  console.log(session.user);
+  
   return (
     <div className="flex h-full flex-col px-3 py-4 md:px-2">
     <div className=" md:w-1/4 py-4 rounded-lg bg-white ">
