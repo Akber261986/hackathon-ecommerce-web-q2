@@ -30,7 +30,7 @@ export default function Page() {
   }, [router, session.user, userId]);
 
   return (
-    <main className="h-screen ">
+    <main className="full">
       {allow && (
         <div>
           <h1 className={` mb-4 text-xl md:text-2xl`}>Dashboard</h1>

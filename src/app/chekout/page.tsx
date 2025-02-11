@@ -40,7 +40,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
         <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-12 gap-8 px-6 py-12">
           {/* Left Section: Checkout Form */}
-          <div className="col-span-7 bg-white p-6 rounded-lg shadow-md ">
+          <div className="col-span-6 md:col-span-7 bg-white p-6 rounded-lg shadow-md ">
             <form className="space-y-8 ">
               {/* Contact Information */}
               <div>
@@ -125,7 +125,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Right Section: Cart Summary */}
-          <div className="col-span-5 bg-white p-6 rounded-lg shadow-md">
+          <div className="col-span-6 md:col-span-5 bg-white p-6 rounded-lg shadow-md">
             <div>
               <div className="space-y-4">
                 {cartItems.map((item) => (
