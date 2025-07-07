@@ -1,6 +1,39 @@
-import React from "react";
+'use client'
+
+import React, { useState } from "react";
 
 const FAQPage = () => {
+  
+  const [question, setQuestion] = useState("")
+  const [answer, setAnswer] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [name, setName] = useState("")
+
+  const handleSubmit = async () => {
+    if (!question.trim()) return
+    setLoading(true)
+    setAnswer("")
+
+    try {
+      const res = await fetch("https://uvicorn-main-production-faa0.up.railway.app/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ question }),
+      })
+
+      if (!res.ok) throw new Error("Request failed")
+
+      const data = await res.json()
+      setAnswer(data.answer)
+    } catch (error) {
+      console.error("Error:", error)
+      setAnswer("Something went wrong.")
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <div className="font-sans text-[#1D3178]">
       <div className="text-[#101750] font-sans bg-[#F6F5FF] py-16 px-4 sm:px-8">
@@ -68,19 +101,31 @@ const FAQPage = () => {
                 type="text"
                 placeholder="Your Name*"
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[#A1ABCC]"
+                value={name}
+                onChange={(e)=> setName(e.target.value)}
               />
               <input
                 type="text"
-                placeholder="Subject*"
+                placeholder="Type Your question..."
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[#A1ABCC]"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
               />
-              <textarea
-                placeholder="Type Your Message*"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[#A1ABCC]"
-                rows={4}
-              ></textarea>
-              <button className=" bg-[#FB2E86] text-white py-2 px-6 rounded-md text-lg font-medium hover:bg-[#f14d94] transition duration-200">
-                Send Mail
+              { answer && (
+
+                  <div
+                  className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[#A1ABCC]"
+                >
+                  <strong>Hello, Mr: {name}</strong>
+                  <p>{answer}</p>
+                </div>
+              )}
+              <button 
+              className=" bg-[#FB2E86] text-white py-2 px-6 rounded-md text-lg font-medium hover:bg-[#f14d94] transition duration-200"
+              onClick={handleSubmit}
+              disabled={loading}
+              >
+              {loading ? "Thinking..." : "Ask"}
               </button>
             </form>
           </div>
